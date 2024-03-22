@@ -2,6 +2,7 @@ package QTDL.QLSV;
 
 import javax.swing.UIManager;
 
+import view.QLDangNhap;
 import view.QLHS;
 
 /**
@@ -19,7 +20,7 @@ public class App
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-        QLHS app = new QLHS();
-        app.openDL();
+        QLDangNhap app = new QLDangNhap();
+        
     }
 }

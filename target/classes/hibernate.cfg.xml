@@ -25,5 +25,6 @@
         <mapping class="model.MonHoc"/>
         <mapping class="model.PhongHoc"/>
         <mapping class="model.Phong_Lop"/>
+        <mapping class="model.TaiKhoan"/>
     </session-factory>
 </hibernate-configuration>
