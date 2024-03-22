@@ -131,7 +131,6 @@ public class QLDangNhap extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dangKy();
-
 			}
 		});
 		panelDangKy.add(btnDangKy);
@@ -181,6 +180,18 @@ public class QLDangNhap extends JFrame {
 	}
 
 	public void dangKy() {
+		String tenTKDK = this.textFieldTenTKDK.getText();
+		String matKhauTKDK  = this.passwordFieldDK.getText();
+		String matKhauTKDKNL = this.passwordFieldDKNL.getText();
+		
+		TaiKhoan tk = new TaiKhoan(tenTKDK,matKhauTKDK);
+		if(matKhauTKDK.equals(matKhauTKDKNL)) {
+			TaiKhoanDAO tkDAO = new TaiKhoanDAO();
+			tkDAO.saveOrUpdate(tk);
+		}else {
+			JOptionPane.showMessageDialog(contentPane, "Tài khoản hoặc mật khẩu sai, vui lòng nhập lại");
+			this.xoaDLNhap();
+		}
 
 	}
 }

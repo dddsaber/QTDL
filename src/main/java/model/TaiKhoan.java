@@ -8,6 +8,13 @@ public class TaiKhoan {
 	private String tenTK;
 	private String matKhauTK;
 	
+	
+	public TaiKhoan() {
+	}
+	public TaiKhoan(String tenTKDK, String matKhauTKDK) {
+		this.tenTK = tenTKDK;
+		this.matKhauTK = matKhauTKDK;
+	}
 	@Id
 	public String getTenTK() {
 		return tenTK;

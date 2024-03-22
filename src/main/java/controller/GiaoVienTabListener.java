@@ -34,7 +34,6 @@ public class GiaoVienTabListener implements ActionListener {
 		else if(actionCommand.equals("Tìm kiếm")) {
 			//
 		}
-		
 		else if(actionCommand.equals("About me")) {
 			view.aboutMe();
 		}
