@@ -37,6 +37,7 @@ import java.awt.Component;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import com.jgoodies.forms.factories.DefaultComponentFactory;
 
 public class QLHS extends JFrame {
 
@@ -74,11 +75,6 @@ public class QLHS extends JFrame {
 	private JTextField textFieldSDTPhuHuynh;
 	private JTextField textFieldMaLopHS;
 	private JTable tableHocSinh;
-	private JTextField textFieldQLDiemMaHS;
-	private JTextField textFieldSoDiem;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
 
 	private JTable tableThongTinDiem;
 	private JTextField textFieldsoDienThoaiGV;
@@ -86,6 +82,9 @@ public class QLHS extends JFrame {
 	private JTextArea textAreaDiaChiHS;
 
 	private JTextArea textAreaDiaChiGV;
+	private JTextField textField;
+	private JTextField textField_1;
+	private JTextField textField_2;
 
 	/**
 	 * Launch the application.
@@ -489,128 +488,68 @@ public class QLHS extends JFrame {
 		lblNewLabel_4_1.setFont(new Font("Tahoma", Font.ITALIC, 18));
 		lblNewLabel_4_1.setBounds(10, 156, 234, 20);
 		panelScore.add(lblNewLabel_4_1);
-
-		JLabel lblMSinhVin_1 = new JLabel("Mã học sinh");
-		lblMSinhVin_1.setBounds(10, 31, 60, 20);
-		panelScore.add(lblMSinhVin_1);
-
-		textFieldQLDiemMaHS = new JTextField();
-		textFieldQLDiemMaHS.setColumns(10);
-		textFieldQLDiemMaHS.setBounds(84, 31, 86, 20);
-		panelScore.add(textFieldQLDiemMaHS);
-
-		JLabel lblNewLabel_3_1_1_1_1 = new JLabel("Thông tin điểm số");
-		lblNewLabel_3_1_1_1_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_3_1_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lblNewLabel_3_1_1_1_1.setAlignmentX(0.5f);
-		lblNewLabel_3_1_1_1_1.setBounds(84, 3, 219, 20);
-		panelScore.add(lblNewLabel_3_1_1_1_1);
-
-		JButton btnLuuDiem = new JButton("Lưu");
-		btnLuuDiem.setBounds(84, 103, 89, 23);
-
-		/*
-		 * Xai tạm test
-		 */
-		btnLuuDiem.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				luuDSDiem();
-
-			}
-
-		});
-		panelScore.add(btnLuuDiem);
-
-		JLabel lblTeacherName_1_1 = new JLabel("Môn học");
-		lblTeacherName_1_1.setBounds(187, 31, 60, 20);
-		panelScore.add(lblTeacherName_1_1);
-
-		JLabel lblTeacherDate_1_1 = new JLabel("Loại điểm");
-		lblTeacherDate_1_1.setBounds(187, 62, 60, 20);
-		panelScore.add(lblTeacherDate_1_1);
-
-		String[] cacMonHoc = new String[] { "Toán", "Ngữ văn", "Anh văn", "Lịch sử", "Địa lý" };
-		JComboBox<String> comboBoxMonHoc = new JComboBox<String>(cacMonHoc);
-		comboBoxMonHoc.setBounds(261, 31, 86, 20);
-		panelScore.add(comboBoxMonHoc);
-
-		String[] cacLoaiDiem = new String[] { "Điểm miệng", "15 phút", "1 tiết", "Học kỳ" };
-		JComboBox<String> comboBoxLoaiDiem = new JComboBox<String>(cacLoaiDiem);
-		comboBoxLoaiDiem.setBounds(261, 62, 86, 20);
-		panelScore.add(comboBoxLoaiDiem);
-
-		JLabel lblTeacherPhone_1_1 = new JLabel("Số điểm");
-		lblTeacherPhone_1_1.setBounds(10, 61, 84, 20);
-		panelScore.add(lblTeacherPhone_1_1);
-
-		textFieldSoDiem = new JTextField();
-		textFieldSoDiem.setColumns(10);
-		textFieldSoDiem.setBounds(84, 61, 86, 20);
-		panelScore.add(textFieldSoDiem);
-
+		
 		JLabel lblNewLabel_3_1_2_1 = new JLabel("Tìm kiếm");
 		lblNewLabel_3_1_2_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_3_1_2_1.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblNewLabel_3_1_2_1.setAlignmentX(0.5f);
-		lblNewLabel_3_1_2_1.setBounds(396, 3, 219, 20);
+		lblNewLabel_3_1_2_1.setBounds(274, 0, 219, 20);
 		panelScore.add(lblNewLabel_3_1_2_1);
-
+		
 		textField = new JTextField();
 		textField.setColumns(10);
-		textField.setBounds(494, 31, 86, 20);
+		textField.setBounds(287, 30, 86, 20);
 		panelScore.add(textField);
-
+		
 		textField_1 = new JTextField();
 		textField_1.setColumns(10);
-		textField_1.setBounds(494, 62, 86, 20);
+		textField_1.setBounds(287, 61, 86, 20);
 		panelScore.add(textField_1);
-
+		
 		JLabel lblSearchTeacherCode_1_1 = new JLabel("Mã học sinh");
-		lblSearchTeacherCode_1_1.setBounds(394, 31, 60, 20);
+		lblSearchTeacherCode_1_1.setBounds(187, 30, 60, 20);
 		panelScore.add(lblSearchTeacherCode_1_1);
-
+		
 		JLabel lblSearchTeacherName_1_1 = new JLabel("Họ tên");
-		lblSearchTeacherName_1_1.setBounds(394, 62, 60, 20);
+		lblSearchTeacherName_1_1.setBounds(187, 61, 60, 20);
 		panelScore.add(lblSearchTeacherName_1_1);
-
+		
 		JButton btnTimKiemHS_1 = new JButton("Tìm kiếm");
-		btnTimKiemHS_1.setBounds(427, 124, 89, 23);
+		btnTimKiemHS_1.setBounds(220, 123, 89, 23);
 		panelScore.add(btnTimKiemHS_1);
-
+		
 		JLabel lblSearchTeacherAddress_1_1 = new JLabel("Mã lớp");
-		lblSearchTeacherAddress_1_1.setBounds(394, 93, 60, 20);
+		lblSearchTeacherAddress_1_1.setBounds(187, 92, 60, 20);
 		panelScore.add(lblSearchTeacherAddress_1_1);
-
+		
 		textField_2 = new JTextField();
 		textField_2.setColumns(10);
-		textField_2.setBounds(494, 93, 86, 20);
+		textField_2.setBounds(287, 92, 86, 20);
 		panelScore.add(textField_2);
-
+		
 		JButton btnHuyTimHS_1 = new JButton("Huỷ tìm");
-		btnHuyTimHS_1.setBounds(526, 124, 89, 23);
+		btnHuyTimHS_1.setBounds(319, 123, 89, 23);
 		panelScore.add(btnHuyTimHS_1);
-
+		
 		JLabel lblTeacherName_1_1_1 = new JLabel("Môn học");
-		lblTeacherName_1_1_1.setBounds(590, 31, 60, 20);
+		lblTeacherName_1_1_1.setBounds(407, 30, 60, 20);
 		panelScore.add(lblTeacherName_1_1_1);
-
+		
+		String[] cacMonHoc = new String[] { "Toán", "Ngữ văn", "Anh văn", "Lịch sử", "Địa lý" };
 		JComboBox<String> comboBoxTimKiemMonHoc = new JComboBox<String>(cacMonHoc);
-		comboBoxTimKiemMonHoc.setBounds(653, 31, 86, 20);
+		comboBoxTimKiemMonHoc.setBounds(470, 30, 86, 20);
 		panelScore.add(comboBoxTimKiemMonHoc);
 		
-		JButton btnLayDSDiemCSDL = new JButton("Lấy danh sách điểm");
-		btnLayDSDiemCSDL.setBounds(197, 103, 150, 23);
-		btnLayDSDiemCSDL.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				layDSDiem();
-				
-			}
-		});
-		panelScore.add(btnLayDSDiemCSDL);
+		JLabel lblNewJgoodiesLabel = DefaultComponentFactory.getInstance().createLabel("Lọc theo:");
+		lblNewJgoodiesLabel.setBounds(534, 157, 60, 20);
+		panelScore.add(lblNewJgoodiesLabel);
+		
+		String[] thuTuLocDiem = new String[] { "tb >= 8.0", "tb >= 6.5", "tb >= 5.0", "tb >= 3.0"};
+		JComboBox<String> comboBox = new JComboBox<String>(thuTuLocDiem);
+		comboBox.setBounds(587, 157, 80, 20);
+		panelScore.add(comboBox);
+		
+
 
 		/*
 		 * Tab quản lý điểm kết thúc ở đây SCORE END
@@ -989,27 +928,6 @@ public class QLHS extends JFrame {
 		}
 		
 		this.diemModel.setdsDiem(dsDiem);
-	}
-	
-	private void luuDSDiem() {
-		this.layDuLieuTuBang();
-		int soPhanTu = this.diemModel.getdsDiem().size();
-		for(int i = 0; i < soPhanTu; i++) {
-			this.diemModel.getdiemDAO().saveOrUpdate(this.diemModel.getdsDiem().get(i));
-		}
-
-	}
-	private void layDSDiem() {
-		try {
-			ArrayList<Diem> ds = new ArrayList<Diem>();
-			ds = (ArrayList<Diem>) this.diemModel.getdiemDAO().selectAll();
-			this.diemModel.setdsDiem(ds);
-			System.out.println(ds);
-			huytimDiem();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
 	}
 
 	private void huytimDiem() {
