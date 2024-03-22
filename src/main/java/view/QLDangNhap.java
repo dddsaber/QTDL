@@ -26,6 +26,9 @@ public class QLDangNhap extends JFrame {
 	private JPanel contentPane;
 	private JTextField textFieldTenTKDN;
 	private JPasswordField passwordFieldDN;
+	private JTextField textFieldTenTKDK;
+	private JPasswordField passwordFieldDK;
+	private JPasswordField passwordFieldDKNL;
 
 	/**
 	 * Launch the application.
@@ -83,7 +86,7 @@ public class QLDangNhap extends JFrame {
 		panelDangNhap.add(passwordFieldDN);
 		
 		JButton btnDangNhap = new JButton("Đăng nhập");
-		btnDangNhap.setBounds(103, 256, 89, 23);
+		btnDangNhap.setBounds(120, 257, 89, 23);
 		btnDangNhap.addActionListener(new ActionListener() {
 			
 			@Override
@@ -101,14 +104,61 @@ public class QLDangNhap extends JFrame {
 		JPanel panelDangKy = new JPanel();
 		tabbedPane.addTab("Đăng ký", null, panelDangKy, null);
 		panelDangKy.setLayout(null);
+		
+		JLabel lblTaiKhoan_1 = new JLabel("Tài khoản");
+		lblTaiKhoan_1.setBounds(58, 108, 63, 36);
+		panelDangKy.add(lblTaiKhoan_1);
+		
+		JLabel lblMtKhu_1 = new JLabel("Mật khẩu");
+		lblMtKhu_1.setBounds(58, 155, 74, 36);
+		panelDangKy.add(lblMtKhu_1);
+		
+		textFieldTenTKDK = new JTextField();
+		textFieldTenTKDK.setColumns(10);
+		textFieldTenTKDK.setBounds(142, 116, 111, 20);
+		panelDangKy.add(textFieldTenTKDK);
+		
+		passwordFieldDK = new JPasswordField();
+		passwordFieldDK.setBounds(142, 163, 111, 20);
+		panelDangKy.add(passwordFieldDK);
+		
+		JButton btnDangNhap_1 = new JButton("Đăng ký");
+		btnDangNhap_1.setBounds(124, 265, 89, 23);
+		panelDangKy.add(btnDangNhap_1);
+		
+		JLabel lblNewLabel_1 = new JLabel("Welcome To This App");
+		lblNewLabel_1.setBounds(104, 32, 141, 50);
+		panelDangKy.add(lblNewLabel_1);
+		
+		JLabel lblMKNhapLai = new JLabel("Nhập lại mk");
+		lblMKNhapLai.setBounds(58, 202, 74, 36);
+		panelDangKy.add(lblMKNhapLai);
+		
+		passwordFieldDKNL = new JPasswordField();
+		passwordFieldDKNL.setBounds(142, 210, 111, 20);
+		panelDangKy.add(passwordFieldDKNL);
+		
 		this.setVisible(true);
+	}
+	
+	public void xoaDLNhap() {
+		this.textFieldTenTKDN.setText("");
+		this.passwordFieldDN.setText("");
+		
+		this.textFieldTenTKDK.setText("");
+		this.passwordFieldDK.setText("");
+		this.passwordFieldDKNL.setText("");
 	}
 	
 	public void dangNhap() {
 		String tenTK = this.textFieldTenTKDN.getText();
 		String matKhauTK = this.passwordFieldDN.getText();
+		//TaiKhoan tk = new TaiKhoan(tenTK, matKhauTK);
+		
 		TaiKhoanDAO tkdao = new TaiKhoanDAO();
 		TaiKhoan tkCanXacThuc = tkdao.selectById(tenTK);
+		
+		//tkdao.saveOrUpdate(tk);
 		
 		if(tkCanXacThuc.xacthuc(tenTK, matKhauTK)) {
 			this.setVisible(false);
@@ -117,8 +167,7 @@ public class QLDangNhap extends JFrame {
 		}
 		else {
 			JOptionPane.showMessageDialog(contentPane, "Tài khoản hoặc mật khẩu sai, vui lòng nhập lại");
-			this.textFieldTenTKDN.setText("");
-			this.passwordFieldDN.setText("");
+			this.xoaDLNhap();
 		}
 	}
 }

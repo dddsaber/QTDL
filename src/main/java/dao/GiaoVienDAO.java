@@ -57,11 +57,6 @@ public class GiaoVienDAO implements DAOInterface<GiaoVien> {
 				query.setParameter("id", id);
 				resultList = query.list();
 				
-//				String hql = "from GiaoVien ts where ts.id = :id";
-//				Query query = session.createQuery(hql);
-//				
-//				resultList = query.getResultList();
-				
 				transaction.commit();
 				session.close();
 			}

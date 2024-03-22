@@ -46,20 +46,34 @@ public class TaiKhoanDAO implements DAOInterface<TaiKhoan>{
 
 	@Override
 	public boolean saveOrUpdate(TaiKhoan element) {
-		// TODO Auto-generated method stub
-		return false;
+		try {
+			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+			if(sessionFactory != null) {
+				Session session = sessionFactory.openSession();
+				Transaction transaction = session.beginTransaction();
+				
+				session.saveOrUpdate(element);
+				
+				transaction.commit();
+				session.close();
+			}
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	@Override
 	public boolean insert(TaiKhoan element) {
 		// TODO Auto-generated method stub
-		return false;
+		return saveOrUpdate(element);
 	}
 
 	@Override
 	public boolean update(TaiKhoan element) {
 		// TODO Auto-generated method stub
-		return false;
+		return saveOrUpdate(element);
 	}
 
 	@Override
