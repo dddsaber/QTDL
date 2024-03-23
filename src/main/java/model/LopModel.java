@@ -49,8 +49,7 @@ public class LopModel {
 	
 	public void update(Lop Lop) {
 		this.lopDao.saveOrUpdate(Lop);
-		this.dsLop.remove(Lop);
-		this.dsLop.add(Lop);
+		this.dsLop = (ArrayList<model.Lop>) this.lopDao.selectAll();
 	}
 	
 	public boolean daTonTai(Lop lop) {

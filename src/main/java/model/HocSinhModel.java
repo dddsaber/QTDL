@@ -48,8 +48,7 @@ public class HocSinhModel {
 	
 	public void update(HocSinh HocSinh) {
 		this.hocSinhDao.saveOrUpdate(HocSinh);
-		this.dsHocSinh.remove(HocSinh);
-		this.dsHocSinh.add(HocSinh);
+		this.dsHocSinh = (ArrayList<model.HocSinh>) this.hocSinhDao.selectAll();
 	}
 	
 	public boolean daTonTai(HocSinh hs) {

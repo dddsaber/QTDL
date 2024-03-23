@@ -48,8 +48,7 @@ public class PhongLopModel {
   	
   	public void update(PhongLop PhongLop) {
   		this.phongLopDao.saveOrUpdate(PhongLop);
-  		this.dsPhongLop.remove(PhongLop);
-  		this.dsPhongLop.add(PhongLop);
+  		this.dsPhongLop = (ArrayList<model.PhongLop>) this.phongLopDao.selectAll();
   	}
   	
   	public boolean daTonTai(PhongLop pl) {

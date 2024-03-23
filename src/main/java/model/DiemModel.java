@@ -51,8 +51,7 @@ public class DiemModel {
 	
 	public void update(Diem Diem) {
 		this.diemDAO.saveOrUpdate(Diem);
-		this.dsDiem.remove(Diem);
-		this.dsDiem.add(Diem);
+		this.dsDiem =  (ArrayList<model.Diem>) this.diemDAO.selectAll();
 	}
 
 	public boolean daTonTai(Diem diem) {

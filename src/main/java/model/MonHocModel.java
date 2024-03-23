@@ -22,9 +22,6 @@ public class MonHocModel {
         this.monHocDao = new MonHocDAO();
     }
 
-
-
-
     
     public ArrayList<MonHoc> getDsMonHoc() {
         return dsMonHoc;
@@ -54,8 +51,7 @@ public class MonHocModel {
 	
 	public void update(MonHoc  MonHoc ) {
 		this.monHocDao.saveOrUpdate(MonHoc );
-		this.dsMonHoc.remove(MonHoc);
-		this.dsMonHoc.add(MonHoc);
+		this.dsMonHoc = (ArrayList<model.MonHoc>) this.monHocDao.selectAll();
 	}
 	
 	public boolean daTonTai(MonHoc mh) {

@@ -46,8 +46,7 @@ public class PhongHocModel {
   	
   	public void update(PhongHoc PhongHoc ) {
   		this.phongHocDAO.saveOrUpdate(PhongHoc);
-  		this.dsPhongHoc.remove(PhongHoc);
-  		this.dsPhongHoc.add(PhongHoc);
+  		this.dsPhongHoc = (ArrayList<model.PhongHoc>) this.phongHocDAO.selectAll();
   	}
   	
   	public boolean daTonTai(PhongHoc ph) {
