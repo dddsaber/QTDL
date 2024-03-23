@@ -63,7 +63,14 @@ public class MonHocModel {
 		return false;
 	}
     
-    
+    public String getMabyTen(String maMon) {
+    	this.dsMonHoc = (ArrayList<MonHoc>) this.monHocDao.selectAll();
+    	for(MonHoc mh : this.dsMonHoc) {
+    		if(mh.getTenMonHoc().equals(maMon))
+    			return mh.getMaMonHoc();
+    	}
+    	return "All";
+    }
 
 
     

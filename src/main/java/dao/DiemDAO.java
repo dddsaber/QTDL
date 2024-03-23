@@ -123,4 +123,51 @@ public class DiemDAO implements DAOInterface<Diem>{
 		}
 	}
 	
+	public List<Diem> selectOnConditions(String maLop, String maMon) {
+		List<Diem> resultList = new ArrayList<Diem>();
+		try {
+			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+			if(sessionFactory != null) {
+				Session session = sessionFactory.openSession();
+				Transaction transaction = session.beginTransaction();
+				
+				
+//				String sql = "SELECT * FROM diem";
+//				SQLQuery query = session.createSQLQuery(sql);
+//				query.addEntity(Diem.class);	
+				
+				
+				Query query = session.createSQLQuery("call Bang_Nhap_Diem;");
+				((SQLQuery) query).addEntity(Diem.class);		
+				query.executeUpdate();
+				System.out.println(maLop+" "+maMon);
+				if(maMon.equals("All")) {
+					String sql = "SELECT * FROM diem";
+					SQLQuery query2 = session.createSQLQuery(sql);
+					query2.addEntity(Diem.class);
+					resultList = query2.list();
+					System.out.println("CHECK");
+				}
+				else {
+					Query query2 = session.createSQLQuery("call LayDiemTheoMonLop(:maMon, :maLop);");
+					((SQLQuery) query2).addEntity(Diem.class);		
+					query2.setParameter("maLop", maLop);
+					query2.setParameter("maMon", maMon);
+//					System.out.println(query2);
+					resultList = query2.list();
+				}
+				
+//				String hql = "from GiaoVien";
+//				Query query = session.createQuery(hql);
+//				resultList = query.getResultList();
+				
+				transaction.commit();
+				session.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resultList;
+	}
+	
 }

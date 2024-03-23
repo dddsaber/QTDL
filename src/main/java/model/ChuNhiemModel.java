@@ -49,8 +49,7 @@ public class ChuNhiemModel {
 	
 	public void update(ChuNhiem ChuNhiem) {
 		this.chuNhiemDao.saveOrUpdate(ChuNhiem);
-		this.dsChuNhiem.remove(ChuNhiem);
-		this.dsChuNhiem.add(ChuNhiem);
+		
 	}
 
 	public boolean daTonTai(ChuNhiem cn) {
