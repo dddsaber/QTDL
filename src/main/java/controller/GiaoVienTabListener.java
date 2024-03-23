@@ -28,11 +28,15 @@ public class GiaoVienTabListener implements ActionListener {
 		else if(actionCommand.equals("Chọn")) {
 			view.hienThiThongTinGVDangChon();
 		}
+		else if(actionCommand.equals("Cập nhật")) {
+			view.luuDSChuNhiem();
+			view.hienthiDSChuNhiemHienTai();
+		}
 		else if(actionCommand.equals("Huỷ tìm")) {
 			view.huytimGV();
 		}
 		else if(actionCommand.equals("Tìm kiếm")) {
-			//
+			view.timKiemGV();
 		}
 		else if(actionCommand.equals("About me")) {
 			view.aboutMe();

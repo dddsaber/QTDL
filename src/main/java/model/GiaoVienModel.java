@@ -47,8 +47,7 @@ public class GiaoVienModel {
 	
 	public void update(GiaoVien GiaoVien) {
 		this.gvDAO.saveOrUpdate(GiaoVien);
-		this.dsGiaoVien.remove(GiaoVien);
-		this.dsGiaoVien.add(GiaoVien);
+		this.dsGiaoVien = (ArrayList<model.GiaoVien>) this.gvDAO.selectAll();
 	}
 
 	public boolean daTonTai(GiaoVien gv) {

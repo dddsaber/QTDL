@@ -25,12 +25,13 @@ public class DiemDAO implements DAOInterface<Diem>{
 				Transaction transaction = session.beginTransaction();
 				
 				
-//				String sql = "SELECT * FROM diem";
-//				SQLQuery query = session.createSQLQuery(sql);
+				String sql = "SELECT * FROM diem";
+				SQLQuery query = session.createSQLQuery(sql);
+				query.addEntity(Diem.class);	
 				
 				
-				Query query = session.createSQLQuery("call Bang_Diem_TB('AV10');");
-				((SQLQuery) query).addEntity(Diem.class);		
+//				Query query = session.createSQLQuery("call Bang_Diem_TB('AV10');");
+//				((SQLQuery) query).addEntity(Diem.class);		
 				resultList = query.list();
 				
 //				String hql = "from GiaoVien";

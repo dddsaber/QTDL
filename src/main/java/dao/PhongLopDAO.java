@@ -9,14 +9,14 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 
-import model.MonHoc;
+import model.PhongLop;
 import util.HibernateUtil;
 
-public class MonHocDAO implements DAOInterface<MonHoc>{
+public class PhongLopDAO implements DAOInterface<PhongLop>{
 
 	@Override
-	public List<MonHoc> selectAll() {
-		List<MonHoc> resultList = new ArrayList<MonHoc>();
+	public List<PhongLop> selectAll() {
+		List<PhongLop> resultList = new ArrayList<PhongLop>();
 		try {
 			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 			if(sessionFactory != null) {
@@ -24,9 +24,9 @@ public class MonHocDAO implements DAOInterface<MonHoc>{
 				Transaction transaction = session.beginTransaction();
 				
 				
-				String sql = "SELECT * FROM monhoc";
+				String sql = "SELECT * FROM phonglop";
 				SQLQuery query = session.createSQLQuery(sql);
-				query.addEntity(MonHoc.class);		
+				query.addEntity(PhongLop.class);		
 				resultList = query.list();
 
 				transaction.commit();
@@ -39,17 +39,17 @@ public class MonHocDAO implements DAOInterface<MonHoc>{
 	}
 
 	@Override
-	public MonHoc selectById(String id) {
-		List<MonHoc> resultList = new ArrayList<MonHoc>();
+	public PhongLop selectById(String id) {
+		List<PhongLop> resultList = new ArrayList<PhongLop>();
 		try {
 			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 			if(sessionFactory != null) {
 				Session session = sessionFactory.openSession();
 				Transaction transaction = session.beginTransaction();
 				
-				String sql = "SELECT * FROM MonHoc mh WHERE mh.maMonHoc = :id";
+				String sql = "SELECT * FROM PhongLop ph WHERE ph.MaPhong= :id";
 				SQLQuery query = session.createSQLQuery(sql);
-				query.addEntity(MonHoc.class);		
+				query.addEntity(PhongLop.class);		
 				query.setParameter("id", id);
 				resultList = query.list();
 				
@@ -63,7 +63,7 @@ public class MonHocDAO implements DAOInterface<MonHoc>{
 	}
 
 	@Override
-	public boolean saveOrUpdate(MonHoc element) {
+	public boolean saveOrUpdate(PhongLop element) {
 		try {
 			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 			if(sessionFactory != null) {
@@ -83,19 +83,19 @@ public class MonHocDAO implements DAOInterface<MonHoc>{
 	}
 
 	@Override
-	public boolean insert(MonHoc element) {
+	public boolean insert(PhongLop element) {
 		// TODO Auto-generated method stub
 		return saveOrUpdate(element);
 	}
 
 	@Override
-	public boolean update(MonHoc element) {
+	public boolean update(PhongLop element) {
 		// TODO Auto-generated method stub
 		return saveOrUpdate(element);
 	}
 
 	@Override
-	public boolean delete(MonHoc element) {
+	public boolean delete(PhongLop element) {
 		try {
 			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 			if(sessionFactory != null) {
@@ -115,4 +115,3 @@ public class MonHocDAO implements DAOInterface<MonHoc>{
 	}
 
 }
-

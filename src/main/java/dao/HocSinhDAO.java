@@ -47,7 +47,7 @@ public class HocSinhDAO implements DAOInterface<HocSinh>{
 				Session session = sessionFactory.openSession();
 				Transaction transaction = session.beginTransaction();
 				
-				String sql = "SELECT * FROM HocSinh hs WHERE hs.id = :id";
+				String sql = "SELECT * FROM HocSinh hs WHERE hs.maHS = :id";
 				SQLQuery query = session.createSQLQuery(sql);
 				query.addEntity(HocSinh.class);		
 				query.setParameter("id", id);

@@ -169,14 +169,14 @@ public class QLDangNhap extends JFrame {
 
 		// tkdao.saveOrUpdate(tk);
 
-		if (tkCanXacThuc.xacthuc(tenTK, matKhauTK)) {
+//		if (tkCanXacThuc.xacthuc(tenTK, matKhauTK)) {
 			this.setVisible(false);
 			QLHS mainView = new QLHS();
 			mainView.openDL();
-		} else {
-			JOptionPane.showMessageDialog(contentPane, "Tài khoản hoặc mật khẩu sai, vui lòng nhập lại");
-			this.xoaDLNhap();
-		}
+//		} else {
+//			JOptionPane.showMessageDialog(contentPane, "Tài khoản hoặc mật khẩu sai, vui lòng nhập lại");
+//			this.xoaDLNhap();
+//		}
 	}
 
 	public void dangKy() {
