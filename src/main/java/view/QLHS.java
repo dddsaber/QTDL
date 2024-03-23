@@ -23,6 +23,8 @@ import model.Diem;
 import model.DiemModel;
 import model.GiaoVien;
 import model.GiaoVienModel;
+import model.HocSinh;
+import model.HocSinhModel;
 import model.ThiSinh;
 import model.Tinh;
 
@@ -43,6 +45,7 @@ public class QLHS extends JFrame {
 
 	// DAO Object Attributes
 	private GiaoVienModel gvModel;
+	private HocSinhModel hsModel;
 	private DiemModel diemModel;
 	// View Object Attributes
 	private static final long serialVersionUID = 1L;
@@ -107,6 +110,7 @@ public class QLHS extends JFrame {
 	 */
 	public QLHS() {
 		this.gvModel = new GiaoVienModel();
+		this.hsModel = new HocSinhModel();
 		this.diemModel = new DiemModel();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 891, 538);
@@ -305,8 +309,8 @@ public class QLHS extends JFrame {
 		/*
 		 * Tab học sinh bắt đầu từ đây STUDENT START
 		 */
-		ActionListener hstl = new HocSinhTabListener(this);
-
+		HocSinhTabListener hstl = new HocSinhTabListener(this);
+		
 		JPanel panelStudent = new JPanel();
 		tabbedPane.addTab("Học sinh", null, panelStudent, null);
 		panelStudent.setLayout(null);
@@ -317,7 +321,7 @@ public class QLHS extends JFrame {
 //		panelStudent.add(panelStudent);
 
 		tableHocSinh = new JTable();
-		tableHocSinh.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Mã học sinh", "Họ tên",
+		tableHocSinh.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "STT", "Mã học sinh", "Họ tên",
 				"Ngày sinh", "Địa chỉ", "SDT Phụ huynh", "Mã lớp", "Tên lớp" }));
 
 		JScrollPane scrollPaneThongTinHocSinh = new JScrollPane(tableHocSinh);
@@ -350,6 +354,7 @@ public class QLHS extends JFrame {
 		panelStudent.add(lblSearchTeacherName_1);
 
 		JButton btnTimKiemHS = new JButton("Tìm kiếm");
+		btnTimKiemHS.addActionListener(hstl);
 		btnTimKiemHS.setBounds(551, 135, 89, 23);
 		panelStudent.add(btnTimKiemHS);
 
@@ -363,10 +368,7 @@ public class QLHS extends JFrame {
 		panelStudent.add(textFieldMaLopHSTimKiem);
 
 		JButton btnHuyTimHS = new JButton("Huỷ tìm");
-		btnHuyTimHS.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		btnHuyTimHS.addActionListener(hstl);
 		btnHuyTimHS.setBounds(650, 135, 89, 23);
 		panelStudent.add(btnHuyTimHS);
 
@@ -415,15 +417,18 @@ public class QLHS extends JFrame {
 		lblTeacherAddress_1.setBounds(223, 34, 95, 14);
 		panelStudent.add(lblTeacherAddress_1);
 
-		JButton btnChonGV_1 = new JButton("Chọn");
-		btnChonGV_1.setBounds(369, 30, 89, 23);
-		panelStudent.add(btnChonGV_1);
+		JButton btnChonHS = new JButton("Chọn");
+		btnChonHS.addActionListener(hstl);
+		btnChonHS.setBounds(369, 30, 89, 23);
+		panelStudent.add(btnChonHS);
 
 		JButton btnLuuHS = new JButton("Lưu");
+		btnLuuHS.addActionListener(hstl);
 		btnLuuHS.setBounds(369, 61, 89, 23);
 		panelStudent.add(btnLuuHS);
 
 		JButton btnXoaHS = new JButton("Xoá");
+		btnXoaHS.addActionListener(hstl);
 		btnXoaHS.setBounds(369, 92, 89, 23);
 		panelStudent.add(btnXoaHS);
 
@@ -484,7 +489,7 @@ public class QLHS extends JFrame {
 		scrollPaneThongTinDiemHocSinh.setBounds(10, 187, 729, 266);
 		panelScore.add(scrollPaneThongTinDiemHocSinh);
 
-		JLabel lblNewLabel_4_1 = new JLabel("Danh sách học sinh");
+		JLabel lblNewLabel_4_1 = new JLabel("Danh sách điểm");
 		lblNewLabel_4_1.setFont(new Font("Tahoma", Font.ITALIC, 18));
 		lblNewLabel_4_1.setBounds(10, 156, 234, 20);
 		panelScore.add(lblNewLabel_4_1);
@@ -903,10 +908,10 @@ public class QLHS extends JFrame {
 	 * 
 	 * 
 	 */
-	public void xoaTextFieldDiem() {
-		this.textFieldQLDiemMaHS.setText("");
-		this.textFieldSoDiem.setText("");
-	}
+//	public void xoaTextFieldDiem() {
+//		this.textFieldQLDiemMaHS.setText("");
+//		this.textFieldSoDiem.setText("");
+//	}
 
 	public void layDuLieuTuBang() {
 		DefaultTableModel mode = (DefaultTableModel) tableThongTinDiem.getModel();
@@ -961,4 +966,142 @@ public class QLHS extends JFrame {
 				diem.getMaMonHoc(), diem.getDiemMieng(),diem.getDiem15Phut(), diem.getDiem1Tiet(), diem.getDiemHocKy() });
 		
 	}
+	
+	/*
+	 * CÁC PHƯƠNG THỨC LIÊN QUAN ĐẾN TAB HỌC SINH BẮT ĐẦU Ở ĐÂY
+	 * 
+	 * 
+	 */
+	
+	public void xoaTextFieldHS() {
+		textFieldMaHS.setText("");
+		textFieldHoTenHS.setText("");
+		textFieldNgaySinhHS.setText("");
+		textFieldSDTPhuHuynh.setText("");
+		textAreaDiaChiHS.setText("");
+		textFieldMaLopHS.setText("");
+	}
+
+	public void xoaHS() {
+		// TODO Auto-generated method stub
+		DefaultTableModel mode = (DefaultTableModel) this.tableHocSinh.getModel();
+		int i_row = this.tableHocSinh.getSelectedRow();
+		int luaChon = JOptionPane.showConfirmDialog(this,
+				"Bạn có chắc muốn xoá Học sinh này ra khỏi cơ sở dữ liệu không?");
+
+		if (luaChon == JOptionPane.YES_OPTION) {
+			HocSinh hs = layThongTinHSDangChon();
+			this.hsModel.delete(hs);
+			mode.removeRow(i_row);
+		}
+	}
+
+	private HocSinh layThongTinHSDangChon() {
+		DefaultTableModel mode = (DefaultTableModel) this.tableHocSinh.getModel();
+		int i_row = this.tableHocSinh.getSelectedRow();
+
+		String maHS = mode.getValueAt(i_row, 1).toString();
+		String hoTenHS = mode.getValueAt(i_row, 2).toString();
+		Date ngaySinhHS = new Date(mode.getValueAt(i_row, 3).toString());
+		String diaChiHS = mode.getValueAt(i_row, 4).toString();
+		String soDienThoaiPH = mode.getValueAt(i_row, 5).toString();
+		String maLop = mode.getValueAt(i_row, 6) != null ? mode.getValueAt(i_row, 6).toString() : "";
+		HocSinh hs = new HocSinh(maHS, hoTenHS, ngaySinhHS, diaChiHS, soDienThoaiPH, maLop);
+		return hs;
+	}
+
+	public void luuDuLieuHStuInput() {
+		// TODO Auto-generated method stub
+		String maHS = new String(this.textFieldMaHS.getText());
+		String hoTenHS = new String(this.textFieldHoTenHS.getText());
+		Date ngaySinhHS = new Date(this.textFieldNgaySinhHS.getText());
+		String diaChiHS = new String(this.textAreaDiaChiHS.getText().toString());
+		String soDienThoaiPH = new String(this.textFieldSDTPhuHuynh.getText());
+		String maLop = new String(this.textFieldMaLopHS.getText());
+		HocSinh hs = new HocSinh(maHS, hoTenHS, ngaySinhHS, diaChiHS, soDienThoaiPH, maLop);
+		this.themHS(hs);
+	}
+	
+	public void themHS(HocSinh hs) {
+		DefaultTableModel mode = (DefaultTableModel) tableHocSinh.getModel();
+		if (!this.hsModel.daTonTai(hs)) {
+//			Thêm hs vào bảng thông tin và CSDL nếu học sinh chưa được tạo
+			this.hsModel.insert(hs);
+			this.themHSvaoBangDL(hs);
+		} else {
+//			Chỉnh sửa dữ liệu giáo viên nếu giáo viên đã tồn tại
+			this.hsModel.update(hs);
+			int soLuongDong = mode.getRowCount();
+			for (int i = 0; i < soLuongDong; i++) {
+				String id = mode.getValueAt(i, 1).toString();
+				if (id.equals(hs.getMaHS())) {
+					mode.setValueAt(hs.getMaHS(), i, 1);
+					mode.setValueAt(hs.getHoTenHS(), i, 2);
+					mode.setValueAt(hs.getNgaySinhHS().getDate() + "/" + (hs.getNgaySinhHS().getMonth() + 1) + "/"
+							+ (hs.getNgaySinhHS().getYear() + 1900) + "", i, 3);
+					mode.setValueAt(hs.getDiaChiHS(), i, 4);
+					mode.setValueAt(hs.getSDTPhuHuynhHS(), i, 5);
+
+				}
+			}
+		}
+	}
+	
+	private void themHSvaoBangDL(HocSinh hs) {
+		DefaultTableModel mode = (DefaultTableModel) tableHocSinh.getModel();
+		// Them 1 hang co du lieu la "GiaoVien gv"
+		mode.addRow(new Object[] { this.hsModel.getDsHocSinh().lastIndexOf(hs) + 1, hs.getMaHS(), hs.getHoTenHS(),
+				hs.getNgaySinhHS().getDate() + "/" + (hs.getNgaySinhHS().getMonth() + 1) + "/"
+						+ (hs.getNgaySinhHS().getYear() + 1900),
+				hs.getDiaChiHS(), hs.getSDTPhuHuynhHS() });
+	}
+
+	public void hienThiThongTinHSDangChon() {
+		// TODO Auto-generated method stub
+		HocSinh hs = this.layThongTinHSDangChon();
+
+		this.textFieldMaGV.setText(hs.getMaHS());
+		this.textFieldHoTenGV.setText(hs.getHoTenHS());
+		String s_ngaySinh = hs.getNgaySinhHS().getDate() + "/" + hs.getNgaySinhHS().getMonth() + "/"
+				+ (hs.getNgaySinhHS().getYear() + 1900);
+		this.textFieldNgaySinhGV.setText(s_ngaySinh);
+		this.textAreaDiaChiGV.setText(hs.getDiaChiHS());
+		this.textFieldSoDienThoaiGV.setText(hs.getSDTPhuHuynhHS());
+		this.textFieldMaLopHS.setText(hs.getMaLop());
+	}
+
+	public void huytimHS() {
+		// Xoa hết kết quả tìm kiếm trong bảng
+		textFieldMaHSTimKiem.setText("");
+		textFieldHoTenHSTimKiem.setText("");
+		textFieldMaLopHSTimKiem.setText("");
+		DefaultTableModel mode = (DefaultTableModel) tableHocSinh.getModel();
+		int rowCount = mode.getRowCount();
+		for (int i = 0; i < rowCount; i++) {
+			mode.removeRow(i);
+		}
+	}
+
+	public void timHS() {
+		// TODO Auto-generated method stub
+		String maHS = new String(textFieldMaHSTimKiem.getText());
+		String hoTen = new String(textFieldHoTenHSTimKiem.getText());
+		String maLop = new String(textFieldMaLopHSTimKiem.getText());
+		if(maHS.isEmpty() && hoTen.isEmpty() && maLop.isEmpty()) {
+			JOptionPane.showMessageDialog(tableHocSinh, "Vui lòng nhập ít nhất 1 trường", "Lỗi",JOptionPane.ERROR_MESSAGE);
+		}else {
+			ArrayList<HocSinh> result = this.hsModel.findByInFor(maHS, hoTen, maLop);
+			for (HocSinh hocSinh : result) {
+				themHSvaoBangDL(hocSinh);
+			}
+		}	
+	}
+	
+	/*
+	 * CÁC PHƯƠNG THỨC LIÊN QUAN ĐẾN TAB HỌC SINH KẾT THỨC Ở ĐÂY
+	 * 
+	 * 
+	 */
+	
+	
 }

@@ -19,12 +19,30 @@ public class HocSinhTabListener implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		String actionCommand = e.getActionCommand();
+//		if(actionCommand.equals("Tạo mới")) {
+//			int luaChon = JOptionPane.showConfirmDialog(this.view, "Code đã chạy đúng");
+//			
+//			if(luaChon == JOptionPane.YES_OPTION) {
+//				
+//			}
+//		}
 		if(actionCommand.equals("Tạo mới")) {
-			int luaChon = JOptionPane.showConfirmDialog(this.view, "Code đã chạy đúng");
-			
-			if(luaChon == JOptionPane.YES_OPTION) {
-				
-			}
+			view.xoaTextFieldHS();
+		}
+		else if(actionCommand.equals("Xoá")) {
+			view.xoaHS();
+		}
+		else if(actionCommand.equals("Lưu")) {
+			view.luuDuLieuHStuInput();
+		}
+		else if(actionCommand.equals("Chọn")) {
+			view.hienThiThongTinHSDangChon();
+		}
+		else if(actionCommand.equals("Huỷ tìm")) {
+			view.huytimHS();
+		}
+		else if(actionCommand.equals("Tìm kiếm")) {
+			view.timHS();
 		}
 	}
 }

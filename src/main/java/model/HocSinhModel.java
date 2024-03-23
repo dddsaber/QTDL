@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import dao.HocSinhDAO;
 
@@ -61,5 +62,25 @@ public class HocSinhModel {
 		return false;
 	}
     
-
+	public ArrayList<HocSinh> findByInFor(String maHS, String hoTen, String maLop){
+		List<HocSinh> all = this.hocSinhDao.selectAll();
+		ArrayList<HocSinh> result =  new ArrayList<HocSinh>();
+		for (HocSinh hocSinh : all) {
+			System.out.println(hocSinh);
+			if(!maHS.isEmpty() && !hocSinh.getMaHS().equals(maHS)) {
+				continue;
+			}
+			if(!hoTen.isEmpty() && !hocSinh.getHoTenHS().equals(hoTen)) {
+				continue;
+			}
+			if(!maLop.isEmpty() && !hocSinh.getMaLop().equals(maLop)) {
+				continue;
+			}
+			System.out.println(hocSinh);
+			result.add(hocSinh);
+		}
+		return result;
+		
+	}
+		
 }
