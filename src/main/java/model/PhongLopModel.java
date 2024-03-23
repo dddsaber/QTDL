@@ -24,11 +24,11 @@ public class PhongLopModel {
 
 
 
-    public ArrayList<PhongLop> getDsPhong_Lop() {
+    public ArrayList<PhongLop> getDsPhongLop() {
         return dsPhongLop;
     }
-    public void setDsPhong_Lop(ArrayList<PhongLop> dsPhong_Lop) {
-        this.dsPhongLop = dsPhong_Lop;
+    public void setDsPhongLop(ArrayList<PhongLop> dsPhongLop) {
+        this.dsPhongLop = dsPhongLop;
     }
     public PhongLopDAO getPhonglopDao() {
         return phongLopDao;

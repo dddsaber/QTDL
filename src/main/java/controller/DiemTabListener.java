@@ -23,10 +23,10 @@ public class DiemTabListener implements ActionListener {
 			view.luuDSDiem();
 		}
 		else if(actionCommand.equals("Huỷ tìm")) {
-			view.huytimGV();
+			view.hienThiDSDiemHienTai();
 		}
 		else if(actionCommand.equals("Tìm kiếm")) {
-			
+			view.timKiemDiemHS();
 		}
 		else if(actionCommand.equals("About me")) {
 			view.aboutMe();

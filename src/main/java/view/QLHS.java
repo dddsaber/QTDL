@@ -104,7 +104,6 @@ public class QLHS extends JFrame {
 	private JTextArea textAreaDiaChiGV;
 	private JTextField textFieldTimDiemMaHS;
 	private JTextField textFieldTimDiemTenHS;
-	private JTextField textFieldTimDiemMaLop;
 	private JTextField textFieldNhapDiemMaLop;
 	private JComboBox comboBoxChonMonHoc;
 
@@ -383,7 +382,7 @@ public class QLHS extends JFrame {
 		panelStudent.add(lblSearchTeacherName_1);
 
 		JButton btnTimKiemHS = new JButton("Tìm kiếm");
-		btnTimKiemGV.addActionListener(hstl);
+		btnTimKiemHS.addActionListener(hstl);
 		btnTimKiemHS.setBounds(551, 135, 89, 23);
 		panelStudent.add(btnTimKiemHS);
 
@@ -504,10 +503,16 @@ public class QLHS extends JFrame {
 		panelScore.setLayout(null);
 
 		tableThongTinDiem = new JTable();
-		tableThongTinDiem.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "STT", "Mã học sinh",
-				"Tên Học Sinh", "Mã Môn", "Tên Môn", "Điểm miệng", "15 phút", "1 Tiết", "Học Kỳ" }) {
-			boolean[] columnEditables = new boolean[] { false, false, false, false, false, true, true, true, true };
-
+		tableThongTinDiem.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"STT", "M\u00E3 h\u1ECDc sinh", "T\u00EAn H\u1ECDc Sinh", "M\u00E3 M\u00F4n", "T\u00EAn M\u00F4n", "\u0110i\u1EC3m mi\u1EC7ng", "15 ph\u00FAt", "1 Ti\u1EBFt", "H\u1ECDc K\u1EF3"
+			}
+		) {
+			boolean[] columnEditables = new boolean[] {
+				false, false, false, false, false, true, true, true, true
+			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
 			}
@@ -562,15 +567,6 @@ public class QLHS extends JFrame {
 		lblSearchTeacherName_1_1.setBounds(558, 95, 60, 20);
 		panelScore.add(lblSearchTeacherName_1_1);
 
-		JLabel lblSearchTeacherAddress_1_1 = new JLabel("Mã lớp");
-		lblSearchTeacherAddress_1_1.setBounds(558, 126, 60, 20);
-		panelScore.add(lblSearchTeacherAddress_1_1);
-
-		textFieldTimDiemMaLop = new JTextField();
-		textFieldTimDiemMaLop.setColumns(10);
-		textFieldTimDiemMaLop.setBounds(658, 126, 86, 20);
-		panelScore.add(textFieldTimDiemMaLop);
-
 		JLabel lblTeacherName_1_1_1 = new JLabel("Mã Lớp");
 		lblTeacherName_1_1_1.setBounds(21, 38, 60, 20);
 		panelScore.add(lblTeacherName_1_1_1);
@@ -591,10 +587,12 @@ public class QLHS extends JFrame {
 		panelScore.add(comboBoxChonMonHoc);
 
 		JButton btnTimKiemDiemHS = new JButton("Tìm kiếm");
+		btnTimKiemDiemHS.addActionListener(diemltn);
 		btnTimKiemDiemHS.setBounds(558, 157, 89, 23);
 		panelScore.add(btnTimKiemDiemHS);
 
 		JButton btnHuyTimDiemHS = new JButton("Huỷ tìm");
+		btnHuyTimDiemHS.addActionListener(diemltn);
 		btnHuyTimDiemHS.setBounds(657, 157, 89, 23);
 		panelScore.add(btnHuyTimDiemHS);
 		
@@ -966,7 +964,7 @@ public class QLHS extends JFrame {
 			
 			ArrayList<PhongLop> dspl =  new ArrayList<PhongLop>();
 			dspl = (ArrayList<PhongLop>) this.plModel.getPhonglopDao().selectAll();
-			this.plModel.setDsPhong_Lop(dspl);;
+			this.plModel.setDsPhongLop(dspl);;
 			
 			System.out.println(ds);
 			huytimPH();
@@ -1345,7 +1343,10 @@ public class QLHS extends JFrame {
 
 	}
 	
-	public void timKiemHS() {
+	public void timKiemDiemHS() {
+		String maHS = this.textFieldTimDiemMaHS.getText();
+		String tenHS = this.textFieldTimDiemTenHS.getText();
+		
 		
 	}
 	
@@ -1447,4 +1448,87 @@ public class QLHS extends JFrame {
 			this.themPhongHocvaoBangDL(ph);
 		}
 	}
+	// Xoa Phong Lop
+			public void xoaTextFieldPL() {
+				this.textFieldMaLop.setText("");
+				this.textFieldMaPhong.setText("");
+				this.textFieldHocKyNamHoc.setText("");
+			}
+			// Luu du lieu phong lop
+			public void luuDuLieuPLtuInput() {
+				String MaLop = new String(this.textFieldMaLop.getText());
+				String MaPhong = new String(this.textFieldMaPhong.getText());
+				String HocKyNamHoc = new String(this.textFieldHocKyNamHoc.getText());
+				PhongLop pl = new PhongLop(MaLop, MaPhong, HocKyNamHoc);
+				this.themPL(pl);
+			}
+		
+		
+		public void themPL(PhongLop pl) {
+			DefaultTableModel mode = (DefaultTableModel) tableThongTinLop.getModel();
+			if (!this.plModel.daTonTai(pl)) {
+				// Them ph vao bang thong tin & csdl neu phong hoc chua ton tai
+				this.plModel.insert(pl);
+				this.themPhongLopvaoBangDL(pl);
+			} else {
+				// Chinh sua du lieu phong hoc neu phong hoc da ton tai
+				for (PhongLop PhongLop : this.plModel.getDsPhongLop())
+					if (pl.getMaPhong().equals(pl.getMaPhong()) && pl.getMaLop().equals(pl.getMaLop())) {
+						this.plModel.update(pl);
+					}
+			}
+		}
+		
+		private void themPhongLopvaoBangDL(PhongLop pl) {
+			DefaultTableModel mode = (DefaultTableModel) tableThongTinLop.getModel();
+			mode.addRow(new Object[] { pl.getMaPhong(), pl.getMaLop(), pl.getHocKyNamHoc() });
+		}
+		public void hienThiThongTinPhongLopDangChon() {
+			PhongLop pl = this.layThongTinPhongLopDangChon();
+			this.textFieldMaPhong_Lop.setText(pl.getMaPhong());
+			this.textFieldMaLop.setText(pl.getMaLop());
+			this.textFieldHocKyNamHoc.setText(pl.getHocKyNamHoc());
+		}
+		
+		public PhongLop layThongTinPhongLopDangChon() {
+			DefaultTableModel mode = (DefaultTableModel) this.tableThongTinLop.getModel();
+			int i_row = this.tableThongTinLop.getSelectedRow();
+			String maPhong = mode.getValueAt(i_row, 0).toString();
+			String maLop = mode.getValueAt(i_row, 1).toString();
+			String hocKyNamHoc = mode.getValueAt(i_row, 2).toString();
+
+			PhongLop ph = new PhongLop(maPhong, maLop, hocKyNamHoc);
+			return ph;
+		}
+		public void xoaPhongLop() {
+			DefaultTableModel mode = (DefaultTableModel) this.tableThongTinLop.getModel();
+			int i_row = this.tableThongTinLop.getSelectedRow();
+			int luaChon = JOptionPane.showConfirmDialog(this,
+					"Bạn có chắc muốn xoá Phòng Lớp này ra khỏi cơ sở dữ liệu không?");
+
+			if (luaChon == JOptionPane.YES_OPTION) {
+				PhongLop pl = layThongTinPhongLopDangChon();
+				this.plModel.delete(pl);
+				mode.removeRow(i_row);
+			}
+		}
+		public void huytimPL() {
+			while (true) {
+				DefaultTableModel mode = (DefaultTableModel) this.tableThongTinLop.getModel();
+				int soLuongDong = mode.getRowCount();
+				if (soLuongDong == 0)
+					break;
+				else {
+					try {
+						mode.removeRow(0);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+			for (PhongLop pl : this.plModel.getDsPhongLop()) {
+				this.themPhongLopvaoBangDL(pl);
+			}
+		}
 }

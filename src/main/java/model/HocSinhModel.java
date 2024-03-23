@@ -79,5 +79,15 @@ public class HocSinhModel {
 		return false;
 	}
     
+	public ArrayList<String> getMabyTen(String tenHS) {
+		ArrayList<String> ds = new ArrayList<String>();
+    	this.dsHocSinh = (ArrayList<HocSinh>) this.hocSinhDao.selectAll();
+    	for(HocSinh hs : this.dsHocSinh) {
+    		if(hs.getHoTenHS().contains(tenHS))
+    			ds.add(hs.getMaHS());
+    	}
+    	return ds;
+    }
+
 
 }
