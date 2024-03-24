@@ -20,6 +20,7 @@ import javax.swing.table.DefaultTableModel;
 import controller.DiemTabListener;
 import controller.GiaoVienTabListener;
 import controller.HocSinhTabListener;
+import controller.LopHocListener;
 import controller.LopListener;
 import controller.PhongListener;
 import dao.ChuNhiemDAO;
@@ -799,6 +800,7 @@ public class QLHS extends JFrame {
 		 * 
 		 * 
 		 */
+		ActionListener lhltn = new LopHocListener(this);
 		JPanel panelLopHoc = new JPanel();
 		tabbedPane.addTab("Lớp học", null, panelLopHoc, null);
 		panelLopHoc.setLayout(null);
@@ -843,18 +845,22 @@ public class QLHS extends JFrame {
 		panelLopHoc.add(lblNewLabel_1_1_1);
 		
 		JButton btnChonLopHoc = new JButton("Chọn");
+		btnChonLopHoc.addActionListener(lhltn);
 		btnChonLopHoc.setBounds(228, 34, 89, 23);
 		panelLopHoc.add(btnChonLopHoc);
 		
 		JButton btnLuuLopHoc = new JButton("Lưu");
+		btnLuuLopHoc.addActionListener(lhltn);
 		btnLuuLopHoc.setBounds(327, 34, 89, 23);
 		panelLopHoc.add(btnLuuLopHoc);
 		
 		JButton btnXoaLopHoc = new JButton("Xoá");
+		btnXoaLopHoc.addActionListener(lhltn);
 		btnXoaLopHoc.setBounds(228, 65, 89, 23);
 		panelLopHoc.add(btnXoaLopHoc);
 		
 		JButton btnTaoMoiLopHoc = new JButton("Tạo mới");
+		btnTaoMoiLopHoc.addActionListener(lhltn);
 		btnTaoMoiLopHoc.setBounds(327, 65, 89, 23);
 		panelLopHoc.add(btnTaoMoiLopHoc);
 		
@@ -891,6 +897,7 @@ public class QLHS extends JFrame {
 		panelLopHoc.add(lblSearchTeacherName_2);
 		
 		JButton btnTimKiemLopHoc = new JButton("Tìm kiếm");
+		btnTimKiemLopHoc.addActionListener(lhltn);
 		btnTimKiemLopHoc.setBounds(556, 124, 89, 23);
 		panelLopHoc.add(btnTimKiemLopHoc);
 		
@@ -904,12 +911,10 @@ public class QLHS extends JFrame {
 		panelLopHoc.add(textFieldTimKiemNienKhoaLopHoc);
 		
 		JButton btnHuyTimLopHoc = new JButton("Huỷ tìm");
+		btnHuyTimLopHoc.addActionListener(lhltn);
 		btnHuyTimLopHoc.setBounds(655, 124, 89, 23);
 		panelLopHoc.add(btnHuyTimLopHoc);
-		/*
-		 * Tab quản lý phòng học kết thúc ở đây CLASSROOM END
-		 */
-
+		
 		this.setVisible(true);
 	}
 
@@ -1818,6 +1823,43 @@ public class QLHS extends JFrame {
 	}
 
 	public void timKiemPhongLop() {
+		String maPhong = this.textFieldTimKiemMaPhong.getText();
+		String maLop = this.textFieldTimKiemMaLop.getText();
+		
+		ArrayList<PhongHoc> dsph = new ArrayList<PhongHoc>();
+		ArrayList<PhongLop> dspl = new ArrayList<PhongLop>();
 
+		if(maPhong.length() == 0 && maLop.length() == 0) {
+			huytimPH();
+			huytimPL();
+		}
+		else if(maPhong.length() != 0 && maLop.length() == 0) {
+			for(int i = 0; i < this.phModel.getDsPhongHoc().size(); i++) {
+				if(this.phModel.getDsPhongHoc().get(i).getMaPhong().equals(maPhong)) {
+					dsph.add(this.phModel.getDsPhongHoc().get(i));
+				}
+			}
+			this.hienthiPhongTheoDS(dsph);
+			this.hienthiLopTheoPhong(dsph);
+		}
+		else if(maPhong.length() == 0 && maLop.length() != 0) {
+			for(int i = 0; i < this.plModel.getDsPhongLop().size(); i++) {
+				if(this.plModel.getDsPhongLop().get(i).getMaLop().equals(maLop)) {
+					dspl.add(this.plModel.getDsPhongLop().get(i));
+				}
+			}
+			this.hienthiLopTheoDS(dspl);
+			this.hienthiPhongTheoLop(dspl);
+		}
+		else {
+			for(int i = 0; i < this.plModel.getDsPhongLop().size(); i++) {
+				if(this.plModel.getDsPhongLop().get(i).getMaLop().equals(maLop) && this.plModel.getDsPhongLop().get(i).getMaPhong().equals(maPhong)) {
+					dspl.add(this.plModel.getDsPhongLop().get(i));
+				}
+			}
+			this.hienthiLopTheoDS(dspl);
+			this.hienthiPhongTheoLop(dspl);
+		}
+		
 	}
 }
