@@ -98,6 +98,7 @@ public class LopModel {
             row.createCell(4).setCellValue("Sỉ số lớp");
            
             HocSinhModel hsmodel = new HocSinhModel();
+            hsmodel.setDsHocSinh((ArrayList<HocSinh>) hsmodel.getHocSinhDao().selectAll());
             // Ghi dữ liệu vào file Excel
             for(int i = 0; i < data.size(); i++) {
             	row = sheet.createRow(i+1);

@@ -34,5 +34,8 @@ public class LopHocListener implements ActionListener {
 		else if(actionCommand.equals("Tìm kiếm")) {
 			view.timKiemLopHoc();
 		}
+		else if(actionCommand.equals("Xuất File")) {
+			view.xuatFileLop();
+		}
 	}
 }

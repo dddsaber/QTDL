@@ -102,10 +102,10 @@ public class DiemModel {
                 row.createCell(2).setCellValue(hsmodel.getHocSinhDao().selectById(data.get(i).getMaHS()).getHoTenHS());
                 row.createCell(3).setCellValue(data.get(i).getMaMonHoc());
                 row.createCell(4).setCellValue(mhmodel.getMonHocDao().selectById(data.get(i).getMaMonHoc()).getTenMonHoc());
-                row.createCell(5).setCellValue(data.get(i).getDiemMieng());
-                row.createCell(6).setCellValue(data.get(i).getDiem15Phut());
-                row.createCell(7).setCellValue(data.get(i).getDiem1Tiet());
-                row.createCell(8).setCellValue(data.get(i).getDiemHocKy());
+                row.createCell(5).setCellValue(data.get(i).getDiemMieng() != null ? data.get(i).getDiemMieng() : 0.0);
+                row.createCell(6).setCellValue(data.get(i).getDiem15Phut() != null ? data.get(i).getDiem15Phut() : 0.0);
+                row.createCell(7).setCellValue(data.get(i).getDiem1Tiet() != null ? data.get(i).getDiem1Tiet() : 0.0);
+                row.createCell(8).setCellValue(data.get(i).getDiemHocKy() != null ? data.get(i).getDiemHocKy() : 0.0);
             }
 
             // Ghi workbook ra file

@@ -131,7 +131,7 @@ public class HocSinhModel {
                 row.createCell(3).setCellValue(s_ngaySinh);
                 row.createCell(4).setCellValue(data.get(i).getDiaChiHS());
                 row.createCell(5).setCellValue(data.get(i).getSDTPhuHuynhHS());
-                row.createCell(5).setCellValue(data.get(i).getMaLop());
+                row.createCell(6).setCellValue(data.get(i).getMaLop());
             }
 
             // Ghi workbook ra file

@@ -531,7 +531,7 @@ public class QLHS extends JFrame {
 		textFieldMaLopHS.setBounds(257, 125, 102, 20);
 		panelStudent.add(textFieldMaLopHS);
 		
-		JButton btnXuatFileHS = new JButton("Xuất File ");
+		JButton btnXuatFileHS = new JButton("Xuất File");
 		btnXuatFileHS.addActionListener(hstl);
 		btnXuatFileHS.setForeground(new Color(0, 0, 128));
 		btnXuatFileHS.setFont(new Font("Times New Roman", Font.BOLD, 11));
@@ -661,7 +661,7 @@ public class QLHS extends JFrame {
 		lblNewLabel_4_1.setBounds(10, 138, 234, 20);
 		panelScore.add(lblNewLabel_4_1);
 		
-		JButton btnXuatFileDiem = new JButton("Xuất File ");
+		JButton btnXuatFileDiem = new JButton("Xuất File");
 		btnXuatFileDiem.addActionListener(diemltn);
 		btnXuatFileDiem.setForeground(new Color(0, 0, 128));
 		btnXuatFileDiem.setFont(new Font("Times New Roman", Font.BOLD, 11));
@@ -974,7 +974,7 @@ public class QLHS extends JFrame {
 		btnHuyTimLopHoc.setBounds(655, 124, 89, 23);
 		panelLopHoc.add(btnHuyTimLopHoc);
 		
-		JButton btnXuatFileLop = new JButton("Xuất File ");
+		JButton btnXuatFileLop = new JButton("Xuất File");
 		btnXuatFileLop.addActionListener(lhltn);
 		btnXuatFileLop.setForeground(new Color(0, 0, 128));
 		btnXuatFileLop.setFont(new Font("Times New Roman", Font.BOLD, 11));
