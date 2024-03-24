@@ -34,5 +34,8 @@ private QLHS view;
 		else if(actionCommand.equals("Tìm kiếm")) {
 			view.timKiemPhongLop();
 		}
+		else if(actionCommand.equals("Xuất File")) {
+			view.xuatFileLop();
+		}
 	}
 }

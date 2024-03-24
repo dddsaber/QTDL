@@ -34,5 +34,5 @@ public class LopHocListener implements ActionListener {
 		else if(actionCommand.equals("Tìm kiếm")) {
 			view.timKiemLopHoc();
 		}
-
+	}
 }

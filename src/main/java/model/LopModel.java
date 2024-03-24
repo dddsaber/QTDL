@@ -1,6 +1,14 @@
 package model;
 
 import java.util.ArrayList;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import dao.LopDAO;
 
@@ -68,6 +76,49 @@ public class LopModel {
 		}
 		return "Chưa có Lớp";
 		
+	}
+	
+	public void xuatFileDSLH(String tenfile) {
+		// Tạo một workbook mới
+        try (Workbook workbook = new XSSFWorkbook()) {
+            // Tạo một trang tính mới
+            Sheet sheet = workbook.createSheet("Sheet1");
+
+            ArrayList<Lop> data = this.dsLop;
+            
+            int rowCount = 0;
+            Row row = sheet.createRow(0);
+
+            //Ghi tên cột
+            
+            row.createCell(0).setCellValue("STT");
+            row.createCell(1).setCellValue("Mã lớp");
+            row.createCell(2).setCellValue("Tên lớp học");
+            row.createCell(3).setCellValue("Niên khóa");
+            row.createCell(4).setCellValue("Sỉ số lớp");
+           
+            HocSinhModel hsmodel = new HocSinhModel();
+            // Ghi dữ liệu vào file Excel
+            for(int i = 0; i < data.size(); i++) {
+            	row = sheet.createRow(i+1);
+
+                // Ghi dữ liệu của đối tượng vào các Cell
+            	row.createCell(0).setCellValue(i+1);
+                row.createCell(1).setCellValue(data.get(i).getMaLop());
+                row.createCell(2).setCellValue(data.get(i).getTenLop());
+                row.createCell(3).setCellValue(data.get(i).getNienKhoa());
+                row.createCell(4).setCellValue(data.get(i).getSiSo(hsmodel.getDsHocSinh()));
+               
+            }
+
+            // Ghi workbook ra file
+            try (FileOutputStream outputStream = new FileOutputStream(tenfile+".xlsx")) {
+                workbook.write(outputStream);
+            }
+            System.out.println("File Excel đã được tạo thành công!");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 	}
     
 }

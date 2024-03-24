@@ -1,7 +1,13 @@
 package model;
 
+import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import dao.HocSinhDAO;
 
 public class HocSinhModel {
@@ -90,4 +96,51 @@ public class HocSinhModel {
     }
 
 
+	/*
+	 * XUẤT FILE HỌC SINH
+	 * */
+	public void xuatFileDSHS(String tenfile) {
+		// Tạo một workbook mới
+        try (Workbook workbook = new XSSFWorkbook()) {
+            // Tạo một trang tính mới
+            Sheet sheet = workbook.createSheet("Sheet1");
+
+            ArrayList<HocSinh> data = this.dsHocSinh;
+            int rowCount = 0;
+            Row row = sheet.createRow(0);
+
+            //Ghi tên cột
+            row.createCell(0).setCellValue("STT");
+            row.createCell(1).setCellValue("Mã học sinh");
+            row.createCell(2).setCellValue("Họ và Tên");
+            row.createCell(3).setCellValue("Ngày sinh");
+            row.createCell(4).setCellValue("Địa chỉ");
+            row.createCell(5).setCellValue("SDT phụ huynh");
+            row.createCell(6).setCellValue("Lớp");
+            
+            // Ghi dữ liệu vào file Excel
+            for(int i = 0; i < data.size(); i++) {
+            	row = sheet.createRow(i+1);
+
+                // Ghi dữ liệu của đối tượng vào các Cell
+                row.createCell(0).setCellValue(i+1);
+                row.createCell(1).setCellValue(data.get(i).getMaHS());
+                row.createCell(2).setCellValue(data.get(i).getHoTenHS());
+                String s_ngaySinh = data.get(i).getNgaySinhHS().getDate() + "/" + data.get(i).getNgaySinhHS().getMonth() + "/"
+        				+ (data.get(i).getNgaySinhHS().getYear() + 1900);
+                row.createCell(3).setCellValue(s_ngaySinh);
+                row.createCell(4).setCellValue(data.get(i).getDiaChiHS());
+                row.createCell(5).setCellValue(data.get(i).getSDTPhuHuynhHS());
+                row.createCell(5).setCellValue(data.get(i).getMaLop());
+            }
+
+            // Ghi workbook ra file
+            try (FileOutputStream outputStream = new FileOutputStream(tenfile+".xlsx")) {
+                workbook.write(outputStream);
+            }
+            System.out.println("File Excel đã được tạo thành công!");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+	}
 }

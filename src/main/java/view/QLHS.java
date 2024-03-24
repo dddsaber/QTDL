@@ -3,6 +3,9 @@ package view;
 import java.awt.EventQueue;
 import java.util.ArrayList;
 import java.util.Date;
+import java.io.FileOutputStream;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -33,6 +36,7 @@ import model.GiaoVien;
 import model.GiaoVienModel;
 import model.HocSinh;
 import model.HocSinhModel;
+import model.Lop;
 import model.LopModel;
 import model.MonHoc;
 import model.MonHocModel;
@@ -42,6 +46,7 @@ import model.PhongLop;
 import model.PhongLopModel;
 import model.ThiSinh;
 import model.Tinh;
+import model.XuatFileExcel;
 import net.bytebuddy.asm.Advice.This;
 
 import javax.swing.JLabel;
@@ -56,6 +61,8 @@ import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
+import java.awt.Color;
+import java.awt.SystemColor;
 
 public class QLHS extends JFrame {
 
@@ -118,6 +125,10 @@ public class QLHS extends JFrame {
 	private JTextField textFieldTimKiemMaLopHoc;
 	private JTextField textFieldTImKiemTenLopHoc;
 	private JTextField textFieldTimKiemNienKhoaLopHoc;
+	private JTextField textNhapTenFileGV;
+	private JTextField textNhapTenFileHS;
+	private JTextField textNhapTenFileDiem;
+	private JTextField textNhapTenFileLopHoc;
 
 	/**
 	 * Launch the application.
@@ -151,13 +162,14 @@ public class QLHS extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 885, 538);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(224, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
 		JMenuBar menuBar = new JMenuBar();
-		menuBar.setBounds(0, 0, 865, 32);
+		menuBar.setBounds(0, 0, 869, 32);
 		contentPane.add(menuBar);
 
 		JMenu JMenuAccount = new JMenu("Tài khoản");
@@ -170,7 +182,8 @@ public class QLHS extends JFrame {
 		 * 
 		 */
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
-		tabbedPane.setBounds(0, 30, 865, 469);
+		tabbedPane.setBackground(new Color(224, 255, 255));
+		tabbedPane.setBounds(0, 30, 869, 469);
 		contentPane.add(tabbedPane);
 
 		/*
@@ -180,6 +193,7 @@ public class QLHS extends JFrame {
 		GiaoVienTabListener gvtl = new GiaoVienTabListener(this);
 
 		JPanel panelTeacher = new JPanel();
+		panelTeacher.setBackground(new Color(224, 255, 255));
 		tabbedPane.addTab("Giáo viên", null, panelTeacher, null);
 		panelTeacher.setLayout(null);
 
@@ -195,7 +209,7 @@ public class QLHS extends JFrame {
 		scrollPaneThongTinGiaoVien.setViewportView(tableThongTinGV);
 
 		JScrollPane scrollPaneThongTinGiaoVienClass = new JScrollPane();
-		scrollPaneThongTinGiaoVienClass.setBounds(525, 204, 219, 218);
+		scrollPaneThongTinGiaoVienClass.setBounds(525, 201, 219, 218);
 		panelTeacher.add(scrollPaneThongTinGiaoVienClass);
 
 		JLabel lblNewLabel_2 = new JLabel("Chủ nhiệm");
@@ -209,13 +223,13 @@ public class QLHS extends JFrame {
 		JLabel lblNewLabel_3 = new JLabel("Chủ nhiệm");
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_3.setAlignmentX(Component.CENTER_ALIGNMENT);
-		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lblNewLabel_3.setBounds(525, 169, 219, 29);
+		lblNewLabel_3.setFont(new Font("Tahoma", Font.ITALIC, 15));
+		lblNewLabel_3.setBounds(525, 164, 219, 29);
 		panelTeacher.add(lblNewLabel_3);
 
 		JLabel lblNewLabel_3_1 = new JLabel("Tìm kiếm");
 		lblNewLabel_3_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_3_1.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblNewLabel_3_1.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblNewLabel_3_1.setAlignmentX(0.5f);
 		lblNewLabel_3_1.setBounds(520, 3, 219, 20);
 		panelTeacher.add(lblNewLabel_3_1);
@@ -258,7 +272,7 @@ public class QLHS extends JFrame {
 		panelTeacher.add(btnHuyTimGV);
 
 		JLabel lblNewLabel = new JLabel("Danh sách giáo viên");
-		lblNewLabel.setFont(new Font("Tahoma", Font.ITALIC, 18));
+		lblNewLabel.setFont(new Font("Tahoma", Font.ITALIC, 16));
 		lblNewLabel.setBounds(10, 156, 234, 20);
 		panelTeacher.add(lblNewLabel);
 
@@ -342,6 +356,21 @@ public class QLHS extends JFrame {
 		btnCapNhatChuNhiem.addActionListener(gvtl);
 		btnCapNhatChuNhiem.setBounds(592, 430, 89, 23);
 		panelTeacher.add(btnCapNhatChuNhiem);
+		
+		JButton btnXuatFileGV = new JButton("Xuất File");
+		btnXuatFileGV.addActionListener(gvtl);
+		btnXuatFileGV.setBackground(SystemColor.activeCaption);
+		btnXuatFileGV.setForeground(new Color(0, 0, 128));
+		btnXuatFileGV.setFont(new Font("Times New Roman", Font.BOLD, 11));
+		btnXuatFileGV.setBounds(174, 153, 89, 23);
+		panelTeacher.add(btnXuatFileGV);
+		
+		textNhapTenFileGV = new JTextField();
+		textNhapTenFileGV.setText("Nhập tên file");
+		textNhapTenFileGV.setToolTipText("Nhập tên file");
+		textNhapTenFileGV.setBounds(273, 156, 86, 20);
+		panelTeacher.add(textNhapTenFileGV);
+		textNhapTenFileGV.setColumns(10);
 
 		/*
 		 * Tab giáo viên kết thúc ở đây TEACHER END
@@ -353,6 +382,7 @@ public class QLHS extends JFrame {
 		ActionListener hstl = new HocSinhTabListener(this);
 
 		JPanel panelStudent = new JPanel();
+		panelStudent.setBackground(new Color(224, 255, 255));
 		tabbedPane.addTab("Học sinh", null, panelStudent, null);
 		panelStudent.setLayout(null);
 
@@ -500,6 +530,21 @@ public class QLHS extends JFrame {
 		textFieldMaLopHS.setColumns(10);
 		textFieldMaLopHS.setBounds(257, 125, 102, 20);
 		panelStudent.add(textFieldMaLopHS);
+		
+		JButton btnXuatFileHS = new JButton("Xuất File ");
+		btnXuatFileHS.addActionListener(hstl);
+		btnXuatFileHS.setForeground(new Color(0, 0, 128));
+		btnXuatFileHS.setFont(new Font("Times New Roman", Font.BOLD, 11));
+		btnXuatFileHS.setBackground(SystemColor.activeCaption);
+		btnXuatFileHS.setBounds(198, 153, 89, 23);
+		panelStudent.add(btnXuatFileHS);
+		
+		textNhapTenFileHS = new JTextField();
+		textNhapTenFileHS.setToolTipText("Nhập tên file");
+		textNhapTenFileHS.setText("Nhập tên file");
+		textNhapTenFileHS.setColumns(10);
+		textNhapTenFileHS.setBounds(297, 156, 86, 20);
+		panelStudent.add(textNhapTenFileHS);
 
 		/*
 		 * Tab học sinh kết thúc ở đây STUDENT END
@@ -512,6 +557,7 @@ public class QLHS extends JFrame {
 		ActionListener diemltn = new DiemTabListener(this);
 
 		JPanel panelScore = new JPanel();
+		panelScore.setBackground(new Color(224, 255, 255));
 		tabbedPane.addTab("Quản lý điểm", null, panelScore, null);
 		panelScore.setLayout(null);
 
@@ -614,6 +660,21 @@ public class QLHS extends JFrame {
 		lblNewLabel_4_1.setFont(new Font("Tahoma", Font.ITALIC, 18));
 		lblNewLabel_4_1.setBounds(10, 138, 234, 20);
 		panelScore.add(lblNewLabel_4_1);
+		
+		JButton btnXuatFileDiem = new JButton("Xuất File ");
+		btnXuatFileDiem.addActionListener(diemltn);
+		btnXuatFileDiem.setForeground(new Color(0, 0, 128));
+		btnXuatFileDiem.setFont(new Font("Times New Roman", Font.BOLD, 11));
+		btnXuatFileDiem.setBackground(SystemColor.activeCaption);
+		btnXuatFileDiem.setBounds(195, 138, 89, 23);
+		panelScore.add(btnXuatFileDiem);
+		
+		textNhapTenFileDiem = new JTextField();
+		textNhapTenFileDiem.setToolTipText("Nhập tên file");
+		textNhapTenFileDiem.setText("Nhập tên file");
+		textNhapTenFileDiem.setColumns(10);
+		textNhapTenFileDiem.setBounds(304, 141, 86, 20);
+		panelScore.add(textNhapTenFileDiem);
 
 		/*
 		 * Tab quản lý điểm kết thúc ở đây SCORE END
@@ -627,6 +688,7 @@ public class QLHS extends JFrame {
 		ActionListener plltn = new LopListener(this);
 
 		JPanel panelClassroom = new JPanel();
+		panelClassroom.setBackground(new Color(224, 255, 255));
 		tabbedPane.addTab("Quản lý phòng học", null, panelClassroom, null);
 		panelClassroom.setLayout(null);
 
@@ -784,137 +846,154 @@ public class QLHS extends JFrame {
 		lblNewLabel_1_2.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblNewLabel_1_2.setBounds(507, 7, 156, 23);
 		panelClassroom.add(lblNewLabel_1_2);
-		
+
 		JLabel lblDanhSchPhng = new JLabel("Danh sách phòng");
 		lblDanhSchPhng.setFont(new Font("Tahoma", Font.ITALIC, 18));
 		lblDanhSchPhng.setBounds(10, 185, 234, 20);
 		panelClassroom.add(lblDanhSchPhng);
-		
+
 		JLabel lblDanhSchPhongg = new JLabel("Danh sách phòng-lớp");
 		lblDanhSchPhongg.setFont(new Font("Tahoma", Font.ITALIC, 18));
 		lblDanhSchPhongg.setBounds(395, 185, 234, 20);
 		panelClassroom.add(lblDanhSchPhongg);
-		
+
 		/*
-		 * TAB LỚP HỌC BẮT ĐẦU 
+		 * TAB LỚP HỌC BẮT ĐẦU
 		 * 
 		 * 
 		 */
 		ActionListener lhltn = new LopHocListener(this);
 		JPanel panelLopHoc = new JPanel();
+		panelLopHoc.setBackground(new Color(224, 255, 255));
 		tabbedPane.addTab("Lớp học", null, panelLopHoc, null);
+		tabbedPane.setForegroundAt(4, new Color(0, 0, 0));
 		panelLopHoc.setLayout(null);
-		
+
 		JLabel lblNewLabel_3_1_3 = new JLabel("Tìm kiếm");
 		lblNewLabel_3_1_3.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_3_1_3.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblNewLabel_3_1_3.setAlignmentX(0.5f);
 		lblNewLabel_3_1_3.setBounds(525, 13, 219, 17);
 		panelLopHoc.add(lblNewLabel_3_1_3);
-		
+
 		JLabel lblMLp_2 = new JLabel("Mã lớp");
 		lblMLp_2.setBounds(10, 34, 60, 20);
 		panelLopHoc.add(lblMLp_2);
-		
+
 		JLabel lblTnlp = new JLabel("Tên lớp");
 		lblTnlp.setBounds(10, 65, 60, 20);
 		panelLopHoc.add(lblTnlp);
-		
+
 		JLabel lblNinKho = new JLabel("Niên khoá");
 		lblNinKho.setBounds(10, 96, 89, 20);
 		panelLopHoc.add(lblNinKho);
-		
+
 		textFieldMaLopHoc = new JTextField();
 		textFieldMaLopHoc.setColumns(10);
 		textFieldMaLopHoc.setBounds(112, 34, 86, 20);
 		panelLopHoc.add(textFieldMaLopHoc);
-		
+
 		textFieldNienKhoaLopHoc = new JTextField();
 		textFieldNienKhoaLopHoc.setColumns(10);
 		textFieldNienKhoaLopHoc.setBounds(112, 96, 86, 20);
 		panelLopHoc.add(textFieldNienKhoaLopHoc);
-		
+
 		textFieldTenLopHoc = new JTextField();
 		textFieldTenLopHoc.setColumns(10);
 		textFieldTenLopHoc.setBounds(112, 65, 86, 20);
 		panelLopHoc.add(textFieldTenLopHoc);
-		
+
 		JLabel lblNewLabel_1_1_1 = new JLabel("Thông tin lớp học");
 		lblNewLabel_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblNewLabel_1_1_1.setBounds(19, 11, 156, 21);
 		panelLopHoc.add(lblNewLabel_1_1_1);
-		
+
 		JButton btnChonLopHoc = new JButton("Chọn");
 		btnChonLopHoc.addActionListener(lhltn);
 		btnChonLopHoc.setBounds(228, 34, 89, 23);
 		panelLopHoc.add(btnChonLopHoc);
-		
+
 		JButton btnLuuLopHoc = new JButton("Lưu");
 		btnLuuLopHoc.addActionListener(lhltn);
 		btnLuuLopHoc.setBounds(327, 34, 89, 23);
 		panelLopHoc.add(btnLuuLopHoc);
-		
+
 		JButton btnXoaLopHoc = new JButton("Xoá");
 		btnXoaLopHoc.addActionListener(lhltn);
 		btnXoaLopHoc.setBounds(228, 65, 89, 23);
 		panelLopHoc.add(btnXoaLopHoc);
-		
+
 		JButton btnTaoMoiLopHoc = new JButton("Tạo mới");
 		btnTaoMoiLopHoc.addActionListener(lhltn);
 		btnTaoMoiLopHoc.setBounds(327, 65, 89, 23);
 		panelLopHoc.add(btnTaoMoiLopHoc);
-		
+
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 177, 734, 276);
 		panelLopHoc.add(scrollPane);
-		
+
 		tableLopHoc = new JTable();
-		tableLopHoc.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"STT", "Mã Lớp", "Tên Lớp", "Sỉ số"
-			}
-		));
+		tableLopHoc.setModel(new DefaultTableModel(new Object[][] {},
+				new String[] { "STT", "Mã Lớp", "Tên Lớp", "Niên khoá", "Sỉ số" }));
 		scrollPane.setViewportView(tableLopHoc);
-		
+
 		textFieldTimKiemMaLopHoc = new JTextField();
 		textFieldTimKiemMaLopHoc.setColumns(10);
 		textFieldTimKiemMaLopHoc.setBounds(623, 31, 86, 20);
 		panelLopHoc.add(textFieldTimKiemMaLopHoc);
-		
+
 		textFieldTImKiemTenLopHoc = new JTextField();
 		textFieldTImKiemTenLopHoc.setColumns(10);
 		textFieldTImKiemTenLopHoc.setBounds(623, 62, 86, 20);
 		panelLopHoc.add(textFieldTImKiemTenLopHoc);
-		
+
 		JLabel lblSearchTeacherCode_2 = new JLabel("Mã lớp");
 		lblSearchTeacherCode_2.setBounds(523, 31, 60, 20);
 		panelLopHoc.add(lblSearchTeacherCode_2);
-		
+
 		JLabel lblSearchTeacherName_2 = new JLabel("Tên lớp");
 		lblSearchTeacherName_2.setBounds(523, 62, 60, 20);
 		panelLopHoc.add(lblSearchTeacherName_2);
-		
+
 		JButton btnTimKiemLopHoc = new JButton("Tìm kiếm");
 		btnTimKiemLopHoc.addActionListener(lhltn);
 		btnTimKiemLopHoc.setBounds(556, 124, 89, 23);
 		panelLopHoc.add(btnTimKiemLopHoc);
-		
+
 		JLabel lblSearchTeacherAddress_2 = new JLabel("Niên khoá");
 		lblSearchTeacherAddress_2.setBounds(523, 93, 60, 20);
 		panelLopHoc.add(lblSearchTeacherAddress_2);
-		
+
 		textFieldTimKiemNienKhoaLopHoc = new JTextField();
 		textFieldTimKiemNienKhoaLopHoc.setColumns(10);
 		textFieldTimKiemNienKhoaLopHoc.setBounds(623, 93, 86, 20);
 		panelLopHoc.add(textFieldTimKiemNienKhoaLopHoc);
-		
+
 		JButton btnHuyTimLopHoc = new JButton("Huỷ tìm");
 		btnHuyTimLopHoc.addActionListener(lhltn);
 		btnHuyTimLopHoc.setBounds(655, 124, 89, 23);
 		panelLopHoc.add(btnHuyTimLopHoc);
 		
+		JButton btnXuatFileLop = new JButton("Xuất File ");
+		btnXuatFileLop.addActionListener(lhltn);
+		btnXuatFileLop.setForeground(new Color(0, 0, 128));
+		btnXuatFileLop.setFont(new Font("Times New Roman", Font.BOLD, 11));
+		btnXuatFileLop.setBackground(SystemColor.activeCaption);
+		btnXuatFileLop.setBounds(201, 143, 89, 23);
+		panelLopHoc.add(btnXuatFileLop);
+		
+		JLabel lblDanhSchLp = new JLabel("Danh sách lớp học");
+		lblDanhSchLp.setFont(new Font("Tahoma", Font.ITALIC, 18));
+		lblDanhSchLp.setBounds(10, 147, 234, 20);
+		panelLopHoc.add(lblDanhSchLp);
+		
+		textNhapTenFileLopHoc = new JTextField();
+		textNhapTenFileLopHoc.setToolTipText("Nhập tên file");
+		textNhapTenFileLopHoc.setText("Nhập tên file");
+		textNhapTenFileLopHoc.setColumns(10);
+		textNhapTenFileLopHoc.setBounds(312, 144, 86, 20);
+		panelLopHoc.add(textNhapTenFileLopHoc);
+
 		this.setVisible(true);
 	}
 
@@ -1085,6 +1164,14 @@ public class QLHS extends JFrame {
 		hienthiChuNhiemtheodsGV(this.gvModel.getDsGiaoVien());
 	}
 
+	public void xuatFileGV() {
+		String tenfile = this.textNhapTenFileGV.getText();
+		if(tenfile.equals("Nhập tên file")) {
+			tenfile = "NewExcel";
+		}
+		this.gvModel.xuatFileDSGV(tenfile);
+	}
+	
 	public void aboutMe() {
 		JOptionPane.showMessageDialog(this, "Phan mem quan ly thi sinh 1.1");
 	}
@@ -1116,11 +1203,15 @@ public class QLHS extends JFrame {
 			ArrayList<PhongLop> dspl = new ArrayList<PhongLop>();
 			dspl = (ArrayList<PhongLop>) this.plModel.getPhonglopDao().selectAll();
 			this.plModel.setDsPhongLop(dspl);
-			;
+
+			ArrayList<Lop> dslh = new ArrayList<Lop>();
+			dslh = (ArrayList<Lop>) this.lopModel.getLopDao().selectAll();
+			this.lopModel.setDsLop(dslh);
 
 			System.out.println(ds);
 			this.layDSDiem();
 			this.hienthiDSChuNhiemHienTai();
+			huytimLH();
 			huytimPH();
 			huytimPL();
 			huytimGV();
@@ -1409,6 +1500,14 @@ public class QLHS extends JFrame {
 
 	}
 
+	public void xuatFileHS() {
+		String tenfile = this.textNhapTenFileHS.getText();
+		if(tenfile.equals("Nhập tên file")) {
+			tenfile = "NewExcel";
+		}
+		this.hsModel.xuatFileDSHS(tenfile);
+	}
+	
 	/*
 	 * CÁC PHƯƠNG THỨC LIÊN QUAN ĐẾN TAB HỌC SINH KẾT THỨC Ở ĐÂY
 	 * 
@@ -1430,7 +1529,7 @@ public class QLHS extends JFrame {
 		int soDong = mode.getRowCount();
 
 		ArrayList<Diem> dsDiem = new ArrayList<Diem>();
-
+		
 		for (int i = 0; i < soDong; i++) {
 			String maHS = mode.getValueAt(i, 1).toString();
 			String maMonHoc = mode.getValueAt(i, 3).toString();
@@ -1562,6 +1661,14 @@ public class QLHS extends JFrame {
 		}
 	}
 
+	public void xuatFileDiem() {
+		String tenfile = this.textNhapTenFileDiem.getText();
+		if(tenfile.equals("Nhập tên file")) {
+			tenfile = "NewExcel";
+		}
+		this.diemModel.xuatFileDSDiem(tenfile);
+	}
+	
 	/*
 	 * 
 	 * TAB Phòng học
@@ -1825,41 +1932,188 @@ public class QLHS extends JFrame {
 	public void timKiemPhongLop() {
 		String maPhong = this.textFieldTimKiemMaPhong.getText();
 		String maLop = this.textFieldTimKiemMaLop.getText();
-		
+
 		ArrayList<PhongHoc> dsph = new ArrayList<PhongHoc>();
 		ArrayList<PhongLop> dspl = new ArrayList<PhongLop>();
 
-		if(maPhong.length() == 0 && maLop.length() == 0) {
+		if (maPhong.length() == 0 && maLop.length() == 0) {
 			huytimPH();
 			huytimPL();
-		}
-		else if(maPhong.length() != 0 && maLop.length() == 0) {
-			for(int i = 0; i < this.phModel.getDsPhongHoc().size(); i++) {
-				if(this.phModel.getDsPhongHoc().get(i).getMaPhong().equals(maPhong)) {
+		} else if (maPhong.length() != 0 && maLop.length() == 0) {
+			for (int i = 0; i < this.phModel.getDsPhongHoc().size(); i++) {
+				if (this.phModel.getDsPhongHoc().get(i).getMaPhong().equals(maPhong)) {
 					dsph.add(this.phModel.getDsPhongHoc().get(i));
 				}
 			}
 			this.hienthiPhongTheoDS(dsph);
 			this.hienthiLopTheoPhong(dsph);
-		}
-		else if(maPhong.length() == 0 && maLop.length() != 0) {
-			for(int i = 0; i < this.plModel.getDsPhongLop().size(); i++) {
-				if(this.plModel.getDsPhongLop().get(i).getMaLop().equals(maLop)) {
+		} else if (maPhong.length() == 0 && maLop.length() != 0) {
+			for (int i = 0; i < this.plModel.getDsPhongLop().size(); i++) {
+				if (this.plModel.getDsPhongLop().get(i).getMaLop().equals(maLop)) {
+					dspl.add(this.plModel.getDsPhongLop().get(i));
+				}
+			}
+			this.hienthiLopTheoDS(dspl);
+			this.hienthiPhongTheoLop(dspl);
+		} else {
+			for (int i = 0; i < this.plModel.getDsPhongLop().size(); i++) {
+				if (this.plModel.getDsPhongLop().get(i).getMaLop().equals(maLop)
+						&& this.plModel.getDsPhongLop().get(i).getMaPhong().equals(maPhong)) {
 					dspl.add(this.plModel.getDsPhongLop().get(i));
 				}
 			}
 			this.hienthiLopTheoDS(dspl);
 			this.hienthiPhongTheoLop(dspl);
 		}
-		else {
-			for(int i = 0; i < this.plModel.getDsPhongLop().size(); i++) {
-				if(this.plModel.getDsPhongLop().get(i).getMaLop().equals(maLop) && this.plModel.getDsPhongLop().get(i).getMaPhong().equals(maPhong)) {
-					dspl.add(this.plModel.getDsPhongLop().get(i));
+
+	}
+
+	/*
+	 * 
+	 * TAB Lớp học
+	 */
+	/*
+	 * 
+	 * Các Phương thức liên quna đên TAB LOPHOC
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
+	public void xoaTextFieldLH() {
+		this.textFieldMaLopHoc.setText("");
+		this.textFieldTenLopHoc.setText("");
+		this.textFieldNienKhoaLopHoc.setText("");
+	}
+
+	public Lop layThongTinLopDangChon() {
+		DefaultTableModel mode = (DefaultTableModel) this.tableLopHoc.getModel();
+		int i_row = this.tableLopHoc.getSelectedRow();
+		String maLopHoc = mode.getValueAt(i_row, 1).toString();
+		String tenLopHoc = mode.getValueAt(i_row, 2).toString();
+		String nienKhoa = mode.getValueAt(i_row, 3).toString();
+
+		Lop lop = new Lop(maLopHoc, tenLopHoc, nienKhoa);
+		return lop;
+	}
+
+	public void xoaLopHoc() {
+		DefaultTableModel mode = (DefaultTableModel) this.tableLopHoc.getModel();
+		int i_row = this.tableLopHoc.getSelectedRow();
+		int luaChon = JOptionPane.showConfirmDialog(this,
+				"Bạn có chắc muốn xoá  Lớp Học này ra khỏi cơ sở dữ liệu không?");
+
+		if (luaChon == JOptionPane.YES_OPTION) {
+			Lop pl = layThongTinLopDangChon();
+			this.lopModel.delete(pl);
+			mode.removeRow(i_row);
+		}
+	}
+
+	public void themL(Lop lop) {
+		DefaultTableModel mode = (DefaultTableModel) tableLopHoc.getModel();
+		if (!this.lopModel.daTonTai(lop)) {
+			// Them ph vao bang thong tin & csdl neu phong hoc chua ton tai
+			this.lopModel.insert(lop);
+		} else {
+			// Chinh sua du lieu phong hoc neu phong hoc da ton tai
+			for (Lop Lop : this.lopModel.getDsLop())
+				if (lop.getMaLop().equals(lop.getMaLop())) {
+					this.lopModel.update(lop);
+				}
+		}
+		huytimLH();
+	}
+
+	public void luuDuLieuLHtuInput() {
+		String MaLopHoc = new String(this.textFieldMaLopHoc.getText());
+		String TenLopHoc = new String(this.textFieldTenLopHoc.getText());
+		String NienKhoaLopHoc = new String(this.textFieldNienKhoaLopHoc.getText());
+		Lop lop = new Lop(MaLopHoc, TenLopHoc, NienKhoaLopHoc);
+		this.themL(lop);
+	}
+
+	public void hienThiThongTinLopHocDangChon() {
+		Lop lop = this.layThongTinLopDangChon();
+		this.textFieldMaLopHoc.setText(lop.getMaLop());
+		this.textFieldTenLopHoc.setText(lop.getTenLop());
+		this.textFieldNienKhoaLopHoc.setText(lop.getNienKhoa());
+		/*
+		 * ArrayList<Lop> dslop = new ArrayList<Lop>(); dslop.add(lop);
+		 * this.hienthiLopTheoDS(dspl); this.hienthiPhongTheoLop(dspl);
+		 */
+	}
+
+	public void huytimLH() {
+		while (true) {
+			DefaultTableModel mode = (DefaultTableModel) this.tableLopHoc.getModel();
+			int soLuongDong = mode.getRowCount();
+			if (soLuongDong == 0)
+				break;
+			else {
+				try {
+					mode.removeRow(0);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
-			this.hienthiLopTheoDS(dspl);
-			this.hienthiPhongTheoLop(dspl);
 		}
-		
+		for (Lop lop : this.lopModel.getDsLop()) {
+			this.themLopvaoBangDL(lop);
+		}
+	}
+
+	private void themLopvaoBangDL(Lop lop) {
+		DefaultTableModel mode = (DefaultTableModel) tableLopHoc.getModel();
+		mode.addRow(new Object[] { mode.getRowCount()+1, lop.getMaLop(), lop.getTenLop(), lop.getNienKhoa(), lop.getSiSo(this.hsModel.getDsHocSinh()) });
+	}
+
+	public void timKiemLopHoc() {
+		String maLopHoc = this.textFieldTimKiemMaLopHoc.getText();
+		String tenLopHoc = this.textFieldTImKiemTenLopHoc.getText();
+		String nienKhoaLopHoc = this.textFieldTimKiemNienKhoaLopHoc.getText();
+
+		ArrayList<Lop> ds = new ArrayList<Lop>();
+
+		for (int i = 0; i < this.lopModel.getDsLop().size(); i++) {
+			if (this.lopModel.getDsLop().get(i).getMaLop().equals(maLopHoc)) {
+				ds.add(this.lopModel.getDsLop().get(i));
+				break;
+			} else if (this.lopModel.getDsLop().get(i).getTenLop().contains(tenLopHoc)
+					&& this.lopModel.getDsLop().get(i).getNienKhoa().contains(nienKhoaLopHoc) && maLopHoc.equals("")) {
+				ds.add(this.lopModel.getDsLop().get(i));
+
+			}
+		}
+
+		hienthiLoptheods(ds);
+	}
+
+	public void hienthiLoptheods(ArrayList<Lop> ds) {
+		while (true) {
+			DefaultTableModel mode = (DefaultTableModel) this.tableLopHoc.getModel();
+			int soLuongDong = mode.getRowCount();
+			if (soLuongDong == 0)
+				break;
+			else {
+				try {
+					mode.removeRow(0);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		for (Lop lop : ds) {
+			this.themLopvaoBangDL(lop);
+		}
+	}
+	public void xuatFileLop() {
+		String tenfile = this.textNhapTenFileLopHoc.getText();
+		if(tenfile.equals("Nhập tên file")) {
+			tenfile = "NewExcel";
+		}
+		this.lopModel.xuatFileDSLH(tenfile);
 	}
 }

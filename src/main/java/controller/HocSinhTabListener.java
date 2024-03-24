@@ -37,5 +37,8 @@ public class HocSinhTabListener implements ActionListener{
 		else if(actionCommand.equals("Tìm kiếm")) {
 			view.timHS();
 		}
+		else if(actionCommand.equals("Xuất File")) {
+			view.xuatFileHS();;
+		}
 	}
 }

@@ -34,5 +34,8 @@ public class DiemTabListener implements ActionListener {
 		else if(actionCommand.equals("Exit")) {
 			view.exit();
 		}
+		else if(actionCommand.equals("Xuất File")) {
+			view.xuatFileDiem();
+		}
 	}
 }

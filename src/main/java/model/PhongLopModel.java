@@ -53,10 +53,7 @@ public class PhongLopModel {
   	
   	public boolean daTonTai(PhongLop pl) {
   		for(PhongLop PhongLop : dsPhongLop) {
-  			if(PhongLop.getMaLop().equals(pl.getMaLop())) {
-  				return true;
-  			}
-  			if(PhongLop.getMaPhong().equals(pl.getMaPhong())) {
+  			if(PhongLop.getMaLop().equals(pl.getMaLop()) && PhongLop.getMaPhong().equals(pl.getMaPhong())) {
   				return true;
   			}
   		}

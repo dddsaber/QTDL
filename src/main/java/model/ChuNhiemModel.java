@@ -54,10 +54,7 @@ public class ChuNhiemModel {
 
 	public boolean daTonTai(ChuNhiem cn) {
 		for(ChuNhiem ChuNhiem : dsChuNhiem) {
-			if(ChuNhiem.getMaGV().equals(cn.getMaGV()) ) {
-				return true;
-			}
-			if(ChuNhiem.getMaLop().equals(cn.getMaLop()) ) {
+			if(ChuNhiem.getMaGV().equals(cn.getMaGV()) && ChuNhiem.getMaLop().equals(cn.getMaLop())) {
 				return true;
 			}
 		}
