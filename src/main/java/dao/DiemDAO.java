@@ -141,21 +141,17 @@ public class DiemDAO implements DAOInterface<Diem>{
 				((SQLQuery) query).addEntity(Diem.class);		
 				query.executeUpdate();
 				System.out.println(maLop+" "+maMon);
+				
 				if(maMon.equals("All")) {
-					String sql = "SELECT * FROM diem";
-					SQLQuery query2 = session.createSQLQuery(sql);
-					query2.addEntity(Diem.class);
-					resultList = query2.list();
-					System.out.println("CHECK");
+					maMon = "";
 				}
-				else {
-					Query query2 = session.createSQLQuery("call LayDiemTheoMonLop(:maMon, :maLop);");
-					((SQLQuery) query2).addEntity(Diem.class);		
-					query2.setParameter("maLop", maLop);
-					query2.setParameter("maMon", maMon);
-//					System.out.println(query2);
-					resultList = query2.list();
-				}
+				
+				Query query2 = session.createSQLQuery("call LayDiemTheoMonLop(:maMon, :maLop);");
+				((SQLQuery) query2).addEntity(Diem.class);		
+				query2.setParameter("maLop", maLop);
+				query2.setParameter("maMon", maMon);
+				resultList = query2.list();
+				
 				
 //				String hql = "from GiaoVien";
 //				Query query = session.createQuery(hql);

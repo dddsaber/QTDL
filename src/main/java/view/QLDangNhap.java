@@ -162,17 +162,27 @@ public class QLDangNhap extends JFrame {
 	public void dangNhap() {
 		String tenTK = this.textFieldTenTKDN.getText();
 		String matKhauTK = this.passwordFieldDN.getText();
-//		TaiKhoan tk = new TaiKhoan(tenTK, matKhauTK);
 
 		TaiKhoanDAO tkdao = new TaiKhoanDAO();
-		TaiKhoan tkCanXacThuc = tkdao.selectById(tenTK);
-
-		// tkdao.saveOrUpdate(tk);
-
-//		if (tkCanXacThuc.xacthuc(tenTK, matKhauTK)) {
+		if(tenTK.length() == 0 || matKhauTK.length() == 0) {
 			this.setVisible(false);
 			QLHS mainView = new QLHS();
 			mainView.openDL();
+//			JOptionPane.showMessageDialog(contentPane, "Vui lòng nhập đầy đủ tài khoản và mật khẩu");
+		}
+		
+//		TaiKhoan tkCanXacThuc = tkdao.selectById(tenTK);
+//		if(tkCanXacThuc == null) {
+//			JOptionPane.showMessageDialog(contentPane, "Tài Khoản không tồn tại");
+//			//Sửa lại sau
+//			this.setVisible(false);
+//			QLHS mainView = new QLHS();
+//			mainView.openDL();
+//		}
+//		else if (tkCanXacThuc.xacthuc(tenTK, matKhauTK)) {
+//			this.setVisible(false);
+//			QLHS mainView = new QLHS();
+//			mainView.openDL();
 //		} else {
 //			JOptionPane.showMessageDialog(contentPane, "Tài khoản hoặc mật khẩu sai, vui lòng nhập lại");
 //			this.xoaDLNhap();

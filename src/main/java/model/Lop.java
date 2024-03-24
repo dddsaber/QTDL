@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import javax.persistence.Entity;
@@ -35,6 +36,16 @@ public class Lop {
 	}
 	public void setNienKhoa(String nienKhoa) {
 		NienKhoa = nienKhoa;
+	}
+	// Truyền vào hsModel.getdshs()
+	public int getSiSo(ArrayList<HocSinh> dshs) {
+		int count = 0;
+		for (int i = 0; i < dshs.size(); i++) {
+			if(dshs.get(i).getMaLop().equals(this.MaLop)) {
+				count++;
+			}
+		}
+		return count;
 	}
 	@Override
 	public String toString() {

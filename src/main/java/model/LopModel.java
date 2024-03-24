@@ -60,5 +60,14 @@ public class LopModel {
 		}
 		return false;
 	}
+	public String getTenByMa(String maLop) {
+		ArrayList<Lop> dslop = (ArrayList<Lop>) this.lopDao.selectAll();
+		for(int i = 0; i < dslop.size(); i++) {
+			if(dslop.get(i).getMaLop().equals(maLop))
+				return dslop.get(i).getTenLop();
+		}
+		return "Chưa có Lớp";
+		
+	}
     
 }
