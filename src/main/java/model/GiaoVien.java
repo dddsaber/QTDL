@@ -26,7 +26,7 @@ public class GiaoVien {
 		this.diaChiGV = diaChiGV;
 		this.soDienThoaiGV = soDienThoaiGV;
 	}
-	
+
 	@Id
 	public String getMaGV() {
 		return maGV;

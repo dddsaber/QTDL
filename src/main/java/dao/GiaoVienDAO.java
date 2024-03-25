@@ -53,10 +53,10 @@ public class GiaoVienDAO implements DAOInterface<GiaoVien> {
 				Session session = sessionFactory.openSession();
 				Transaction transaction = session.beginTransaction();
 				
-				String sql = "SELECT * FROM GiaoVien ts WHERE ts.id = :id";
+				String sql = "SELECT * FROM GiaoVien ts WHERE ts.maGV = :maGV";
 				SQLQuery query = session.createSQLQuery(sql);
 				query.addEntity(GiaoVien.class);		
-				query.setParameter("id", id);
+				query.setParameter("maGV", id);
 				resultList = query.list();
 				
 				transaction.commit();

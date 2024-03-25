@@ -113,9 +113,11 @@ public class GiaoVienModel {
 	}
 
 	public boolean deleteAnyway(GiaoVien gv) {
-		this.dsGiaoVien.remove(gv);
-		return this.gvDAO.deleteAnyway(gv);
-		
+		if(this.gvDAO.deleteAnyway(gv)) {
+			System.out.println(this.dsGiaoVien.remove(gv)); 
+			return true;
+		};
+		return false;
 	}
 	
 }

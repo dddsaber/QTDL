@@ -1063,7 +1063,8 @@ public class QLHS extends JFrame {
 
 		String maGV = mode.getValueAt(i_row, 1).toString();
 		String hoTenGV = mode.getValueAt(i_row, 2).toString();
-		Date ngaySinhGV = new Date(mode.getValueAt(i_row, 3).toString());
+		Date nsgv = new Date(mode.getValueAt(i_row, 3).toString());
+		Date ngaySinhGV = new Date(nsgv.getDate()+"/"+(nsgv.getMonth()+1)+"/"+(nsgv.getYear()+1900));
 		String diaChiGV = mode.getValueAt(i_row, 4).toString();
 		String soDienThoaiGV = mode.getValueAt(i_row, 5).toString();
 
@@ -1095,14 +1096,15 @@ public class QLHS extends JFrame {
 				"Bạn có chắc muốn xoá giáo viên này ra khỏi cơ sở dữ liệu không?");
 
 		if (luaChon == JOptionPane.YES_OPTION) {
-			GiaoVien gv = layThongTinGVDangChon();
+			GiaoVien gv = this.gvModel.getGiaoVienDAO().selectById(layThongTinGVDangChon().getMaGV());
+			System.out.println(this.gvModel.getDsGiaoVien());
+			System.out.println(gv);
 			if(this.gvModel.delete(gv)) {
 				JOptionPane.showMessageDialog(this, "Xoá thành công");
 			}else{
-				int pn = JOptionPane.showConfirmDialog(this, "Có thể hiện dữ liệu khác tham chiếu tới dữ liệu bạn muốn xoá!, bạn muốn xoá hết các dữ liệu liên quan không?");
-				System.out.println(pn);
+				int pn = JOptionPane.showConfirmDialog(this, "Có thể hiện dữ liệu khác tham chiếu tới dữ liệu bạn muốn xoá!\nBạn muốn xoá hết các dữ liệu liên quan không?");
 				if(pn == JOptionPane.YES_OPTION) {
-					System.out.println(this.gvModel.deleteAnyway(gv));
+					this.gvModel.deleteAnyway(gv);
 				}
 			}
 			this.huytimGV();
