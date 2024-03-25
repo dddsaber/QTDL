@@ -140,7 +140,6 @@ public class DiemDAO implements DAOInterface<Diem>{
 				Query query = session.createSQLQuery("call Bang_Nhap_Diem;");
 				((SQLQuery) query).addEntity(Diem.class);		
 				query.executeUpdate();
-				System.out.println(maLop+" "+maMon);
 				
 				if(maMon.equals("All")) {
 					maMon = "";

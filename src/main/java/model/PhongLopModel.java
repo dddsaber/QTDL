@@ -41,9 +41,12 @@ public class PhongLopModel {
   		this.phongLopDao.saveOrUpdate(PhongLop);
   	}
   	
-  	public void delete(PhongLop PhongLop) {
-  		this.dsPhongLop.remove(PhongLop);
-  		this.phongLopDao.delete(PhongLop);
+  	public boolean delete(PhongLop PhongLop) {
+  		if(this.phongLopDao.delete(PhongLop)) {
+  			this.dsPhongLop.remove(PhongLop);
+  			return true;
+  		};
+  		return false;
   	}
   	
   	public void update(PhongLop PhongLop) {

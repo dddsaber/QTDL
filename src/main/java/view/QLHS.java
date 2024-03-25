@@ -1096,8 +1096,16 @@ public class QLHS extends JFrame {
 
 		if (luaChon == JOptionPane.YES_OPTION) {
 			GiaoVien gv = layThongTinGVDangChon();
-			this.gvModel.delete(gv);
-			mode.removeRow(i_row);
+			if(this.gvModel.delete(gv)) {
+				JOptionPane.showMessageDialog(this, "Xoá thành công");
+			}else{
+				int pn = JOptionPane.showConfirmDialog(this, "Có thể hiện dữ liệu khác tham chiếu tới dữ liệu bạn muốn xoá!, bạn muốn xoá hết các dữ liệu liên quan không?");
+				System.out.println(pn);
+				if(pn == JOptionPane.YES_OPTION) {
+					System.out.println(this.gvModel.deleteAnyway(gv));
+				}
+			}
+			this.huytimGV();
 		}
 
 	}
@@ -1363,8 +1371,12 @@ public class QLHS extends JFrame {
 
 		if (luaChon == JOptionPane.YES_OPTION) {
 			HocSinh hs = layThongTinHSDangChon();
-			this.hsModel.delete(hs);
-			mode.removeRow(i_row);
+			if(this.hsModel.delete(hs)) {
+				JOptionPane.showMessageDialog(this, "Xoá thành công");
+			}else{
+				JOptionPane.showMessageDialog(this, "Có thể hiện dữ liệu khác tham chiếu tới dữ liệu bạn muốn xoá!\n Xoá không thành công");
+			}
+			this.huytimHS();
 		}
 	}
 
@@ -1733,8 +1745,12 @@ public class QLHS extends JFrame {
 
 		if (luaChon == JOptionPane.YES_OPTION) {
 			PhongHoc ph = layThongTinPhongHocDangChon();
-			this.phModel.delete(ph);
-			mode.removeRow(i_row);
+			if(this.phModel.delete(ph)) {
+				JOptionPane.showMessageDialog(this, "Xoá thành công");
+			}else{
+				JOptionPane.showMessageDialog(this, "Có thể hiện dữ liệu khác tham chiếu tới dữ liệu bạn muốn xoá!\n Xoá không thành công");
+			}
+			this.huytimPH();
 		}
 	}
 
@@ -1838,8 +1854,13 @@ public class QLHS extends JFrame {
 
 		if (luaChon == JOptionPane.YES_OPTION) {
 			PhongLop pl = layThongTinPhongLopDangChon();
-			this.plModel.delete(pl);
-			mode.removeRow(i_row);
+			if(this.plModel.delete(pl)) {
+				JOptionPane.showMessageDialog(this, "Xoá thành công");
+			}else
+			{
+				JOptionPane.showMessageDialog(this, "Có thể hiện dữ liệu khác tham chiếu tới dữ liệu bạn muốn xoá!");
+			}
+			this.huytimPL();
 		}
 	}
 
@@ -2000,13 +2021,17 @@ public class QLHS extends JFrame {
 	public void xoaLopHoc() {
 		DefaultTableModel mode = (DefaultTableModel) this.tableLopHoc.getModel();
 		int i_row = this.tableLopHoc.getSelectedRow();
-		int luaChon = JOptionPane.showConfirmDialog(this,
-				"Bạn có chắc muốn xoá  Lớp Học này ra khỏi cơ sở dữ liệu không?");
+		int luaChon = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xoá  Lớp Học này ra khỏi cơ sở dữ liệu không?");
 
 		if (luaChon == JOptionPane.YES_OPTION) {
-			Lop pl = layThongTinLopDangChon();
-			this.lopModel.delete(pl);
-			mode.removeRow(i_row);
+			Lop lop = layThongTinLopDangChon();
+			if(this.lopModel.delete(lop)) {
+				JOptionPane.showMessageDialog(this, "Xoá thành công");
+			}else
+			{
+				JOptionPane.showMessageDialog(this, "Có thể hiện dữ liệu khác tham chiếu tới dữ liệu bạn muốn xoá!");
+			}
+			huytimLH();
 		}
 	}
 

@@ -3,11 +3,13 @@ package dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
+import model.Diem;
 import model.GiaoVien;
 import model.GiaoVien;
 import util.HibernateUtil;
@@ -107,6 +109,27 @@ public class GiaoVienDAO implements DAOInterface<GiaoVien> {
 				Transaction transaction = session.beginTransaction();
 				
 				session.delete(element);
+				
+				transaction.commit();
+				session.close();
+			}
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public boolean deleteAnyway(GiaoVien element) {
+		try {
+			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+			if(sessionFactory != null) {
+				Session session = sessionFactory.openSession();
+				Transaction transaction = session.beginTransaction();
+				
+				Query query = session.createSQLQuery("call Xoa_Giao_Vien(:maGV);");
+				query.setParameter("maGV", element.getMaGV());
+				query.executeUpdate();
 				
 				transaction.commit();
 				session.close();

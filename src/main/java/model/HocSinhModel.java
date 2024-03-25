@@ -47,9 +47,12 @@ public class HocSinhModel {
 		this.hocSinhDao.saveOrUpdate(HocSinh);
 	}
 	
-	public void delete(HocSinh HocSinh) {
-		this.dsHocSinh.remove(HocSinh);
-		this.hocSinhDao.delete(HocSinh);
+	public boolean delete(HocSinh HocSinh) {
+		if(this.hocSinhDao.delete(HocSinh)) {;
+			this.dsHocSinh.remove(HocSinh);
+			return true;
+		}	
+		return false;
 	}
 	
 	public void update(HocSinh HocSinh) {

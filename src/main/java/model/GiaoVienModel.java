@@ -47,9 +47,12 @@ public class GiaoVienModel {
 		this.gvDAO.saveOrUpdate(GiaoVien);
 	}
 	
-	public void delete(GiaoVien GiaoVien) {
-		this.dsGiaoVien.remove(GiaoVien);
-		this.gvDAO.delete(GiaoVien);
+	public boolean delete(GiaoVien GiaoVien) {
+		if(this.gvDAO.delete(GiaoVien)) {
+			this.dsGiaoVien.remove(GiaoVien);
+			return true;
+		}
+		return false;
 	}
 	
 	public void update(GiaoVien GiaoVien) {
@@ -107,6 +110,12 @@ public class GiaoVienModel {
 
 		}
 		return false;
+	}
+
+	public boolean deleteAnyway(GiaoVien gv) {
+		this.dsGiaoVien.remove(gv);
+		return this.gvDAO.deleteAnyway(gv);
+		
 	}
 	
 }

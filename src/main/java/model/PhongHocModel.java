@@ -39,9 +39,12 @@ public class PhongHocModel {
   		this.phongHocDAO.saveOrUpdate(PhongHoc);
   	}
   	
-  	public void delete(PhongHoc PhongHoc) {
-  		this.dsPhongHoc.remove(PhongHoc);
-  		this.phongHocDAO.delete(PhongHoc);
+  	public boolean delete(PhongHoc PhongHoc) {
+  		if(this.phongHocDAO.delete(PhongHoc)) {
+  			this.dsPhongHoc.remove(PhongHoc);
+  			return true;
+  		}
+  		return false;
   	}
   	
   	public void update(PhongHoc PhongHoc ) {

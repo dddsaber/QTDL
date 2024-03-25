@@ -42,9 +42,9 @@ public class ChuNhiemModel {
 		this.chuNhiemDao.saveOrUpdate(ChuNhiem);
 	}
 	
-	public void delete(ChuNhiem ChuNhiem) {
+	public boolean delete(ChuNhiem ChuNhiem) {
 		this.dsChuNhiem.remove(ChuNhiem);
-		this.chuNhiemDao.delete(ChuNhiem);
+		return this.chuNhiemDao.delete(ChuNhiem);
 	}
 	
 	public void update(ChuNhiem ChuNhiem) {
