@@ -22,6 +22,9 @@ public class GiaoVienTabListener implements ActionListener {
 		else if(actionCommand.equals("Xoá")) {
 			view.xoaGV();
 		}
+		else if(actionCommand.equals("Xoá ")) {
+			view.xoaCN();
+		}
 		else if(actionCommand.equals("Lưu")) {
 			view.luuDuLieuGVtuInput();
 		}

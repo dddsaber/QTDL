@@ -146,4 +146,12 @@ public class HocSinhModel {
             e.printStackTrace();
         }
 	}
+	
+	public boolean deleteAnyway(HocSinh hs) {
+		if(this.hocSinhDao.deleteAnyway(hs)) {
+			System.out.println(this.dsHocSinh.remove(hs)); 
+			return true;
+		};
+		return false;
+	}
 }

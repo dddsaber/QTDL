@@ -127,5 +127,13 @@ public class LopModel {
 			e.printStackTrace();
 		}
 	}
+	
+	public boolean deleteAnyway(Lop lop) {
+		if(this.lopDao.deleteAnyway(lop)) {
+			System.out.println(this.dsLop.remove(lop)); 
+			return true;
+		};
+		return false;
+	}
 
 }

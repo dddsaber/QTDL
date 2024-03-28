@@ -47,8 +47,8 @@ public class DiemDAO implements DAOInterface<Diem> {
 		return resultList;
 	}
 
-	@Override
-	public Diem selectById(String id) {
+	
+	public List<Diem> selectByMaHS(String id) {
 		List<Diem> resultList = new ArrayList<Diem>();
 		try {
 			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
@@ -56,10 +56,10 @@ public class DiemDAO implements DAOInterface<Diem> {
 				Session session = sessionFactory.openSession();
 				Transaction transaction = session.beginTransaction();
 
-				String sql = "SELECT * FROM Diem ts WHERE ts.id = :id";
+				String sql = "SELECT * FROM Diem ts WHERE ts.maHS = :maHS";
 				SQLQuery query = session.createSQLQuery(sql);
 				query.addEntity(Diem.class);
-				query.setParameter("id", id);
+				query.setParameter("maHS", id);
 				resultList = query.list();
 
 				transaction.commit();
@@ -68,7 +68,7 @@ public class DiemDAO implements DAOInterface<Diem> {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return resultList.size() > 0 ? resultList.get(0) : null;
+		return resultList;
 	}
 
 	@Override
@@ -220,5 +220,12 @@ public class DiemDAO implements DAOInterface<Diem> {
 			e.printStackTrace();
 		}
 		return resultList;
+	}
+
+
+	@Override
+	public Diem selectById(String id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

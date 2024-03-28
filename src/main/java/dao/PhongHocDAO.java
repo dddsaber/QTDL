@@ -3,12 +3,13 @@ package dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-
+import model.GiaoVien;
 import model.PhongHoc;
 import util.HibernateUtil;
 
@@ -114,4 +115,24 @@ public class PhongHocDAO implements DAOInterface<PhongHoc>{
 		}
 	}
 
+	public boolean deleteAnyway(PhongHoc element) {
+		try {
+			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+			if(sessionFactory != null) {
+				Session session = sessionFactory.openSession();
+				Transaction transaction = session.beginTransaction();
+				
+				Query query = session.createSQLQuery("call Xoa_Phong_Hoc(:maPH);");
+				query.setParameter("maPH", element.getMaPhong());
+				query.executeUpdate();
+				
+				transaction.commit();
+				session.close();
+			}
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 }

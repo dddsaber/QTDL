@@ -170,4 +170,52 @@ public class GiaoVienDAO implements DAOInterface<GiaoVien> {
 		}
 		return resultList;
 	}
+	
+	public List<GiaoVien> selectAllAcs() {
+		List<GiaoVien> resultList = new ArrayList<GiaoVien>();
+		try {
+			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+			if(sessionFactory != null) {
+				Session session = sessionFactory.openSession();
+				Transaction transaction = session.beginTransaction();
+				
+				
+				String sql = "SELECT * FROM giaovien ORDER BY maGV ASC;";
+				SQLQuery query = session.createSQLQuery(sql);
+				query.addEntity(GiaoVien.class);		
+				resultList = query.list();
+				
+				
+				transaction.commit();
+				session.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resultList;
+	}
+	
+	public List<GiaoVien> selectAllDesc() {
+		List<GiaoVien> resultList = new ArrayList<GiaoVien>();
+		try {
+			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+			if(sessionFactory != null) {
+				Session session = sessionFactory.openSession();
+				Transaction transaction = session.beginTransaction();
+				
+				
+				String sql = "SELECT * FROM giaovien ORDER BY maGV DESC;";
+				SQLQuery query = session.createSQLQuery(sql);
+				query.addEntity(GiaoVien.class);		
+				resultList = query.list();
+				
+				
+				transaction.commit();
+				session.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resultList;
+	}
 }

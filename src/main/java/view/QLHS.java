@@ -148,6 +148,7 @@ public class QLHS extends JFrame {
 	public JComboBox comboBoxChonMonHocThongKe;
 	public JLabel lblNewLabel_XepHang;
 	public JComboBox comboBoxChonLopThongKe;
+	private JTextField textFieldXuatFileTK;
 
 	/**
 	 * Create the frame.
@@ -383,8 +384,29 @@ public class QLHS extends JFrame {
 		textNhapTenFileGV.setColumns(10);
 
 		JButton btnXoaChuNhiem = new JButton("Xoá ");
+		btnXoaChuNhiem.addActionListener(gvtl);
 		btnXoaChuNhiem.setBounds(832, 492, 89, 23);
 		panelTeacher.add(btnXoaChuNhiem);
+		
+		JComboBox comboBoxSortGV = new JComboBox();
+		comboBoxSortGV.setModel(new DefaultComboBoxModel(new String[] {"A->Z", "Z->A"}));
+		comboBoxSortGV.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+                JComboBox<String> combo = (JComboBox<String>) e.getSource();
+                String selectedOption = (String) combo.getSelectedItem();
+                System.out.println("Selected option: " + selectedOption);
+                if(selectedOption.equals("A->Z")) {
+                	hienthiGVtheods((ArrayList<GiaoVien>) gvModel.getGiaoVienDAO().selectAllAcs());
+                }
+                else {
+                	hienthiGVtheods((ArrayList<GiaoVien>) gvModel.getGiaoVienDAO().selectAllDesc());
+                }
+            }
+		});
+		comboBoxSortGV.setBounds(611, 157, 60, 22);
+		panelTeacher.add(comboBoxSortGV);
 
 		/*
 		 * Tab giáo viên kết thúc ở đây TEACHER END
@@ -1024,11 +1046,11 @@ public class QLHS extends JFrame {
 
 		lblNewLabel_XepHang = new JLabel("Bảng xếp hạng");
 		lblNewLabel_XepHang.setFont(new Font("Tahoma", Font.ITALIC, 18));
-		lblNewLabel_XepHang.setBounds(10, 85, 236, 20);
+		lblNewLabel_XepHang.setBounds(10, 85, 131, 20);
 		panelStatistic.add(lblNewLabel_XepHang);
 
 		tableThongKe = new JTable();
-		tableThongKe.setModel(new DefaultTableModel(new Object[][] {}, new String[] {}));
+		tableThongKe.setModel(new DefaultTableModel(new Object[][] {}, new String[] {"STT", "Mã Học Sinh", "Tên Học Sinh", "Điểm TB toán", "Điểm TB văn", "Điểm TB ngoại ngữ", "Điểm trung bình", "Xếp hạng", "Xếp hạng"}));
 		scrollPaneThongKe.setViewportView(tableThongKe);
 
 		JLabel lblNewLabel_3_1_2_1_1 = new JLabel("Thống kê");
@@ -1040,7 +1062,7 @@ public class QLHS extends JFrame {
 
 		JButton btnLocDiemThongKe = new JButton("Lọc");
 		btnLocDiemThongKe.addActionListener(tktl);
-		btnLocDiemThongKe.setBounds(322, 41, 89, 23);
+		btnLocDiemThongKe.setBounds(547, 43, 89, 23);
 		panelStatistic.add(btnLocDiemThongKe);
 
 		JLabel lblTeacherName_1_1_1_1_1 = new JLabel("Môn:");
@@ -1062,6 +1084,30 @@ public class QLHS extends JFrame {
 		comboBoxChonLopThongKe.setToolTipText("Môn Học");
 		comboBoxChonLopThongKe.setBounds(107, 41, 80, 22);
 		panelStatistic.add(comboBoxChonLopThongKe);
+		
+		String[] xephang = new String[] { "Tăng hạng", "Giảm hạng" };
+		JComboBox comboBoxSapXepThongKe = new JComboBox(xephang);
+		comboBoxSapXepThongKe.setToolTipText("Sắp xếp");
+		comboBoxSapXepThongKe.setBounds(399, 43, 80, 22);
+		panelStatistic.add(comboBoxSapXepThongKe);
+		
+		JLabel lblNewLabel_5 = new JLabel("Sắp xếp");
+		lblNewLabel_5.setBounds(343, 47, 46, 14);
+		panelStatistic.add(lblNewLabel_5);
+		
+		JButton btnXuatFileTK = new JButton("Xuất File");
+		btnXuatFileTK.setForeground(new Color(0, 0, 128));
+		btnXuatFileTK.setFont(new Font("Times New Roman", Font.BOLD, 11));
+		btnXuatFileTK.setBackground(SystemColor.activeCaption);
+		btnXuatFileTK.setBounds(141, 82, 89, 23);
+		panelStatistic.add(btnXuatFileTK);
+		
+		textFieldXuatFileTK = new JTextField();
+		textFieldXuatFileTK.setToolTipText("Nhập tên file");
+		textFieldXuatFileTK.setText("Nhập tên file");
+		textFieldXuatFileTK.setColumns(10);
+		textFieldXuatFileTK.setBounds(240, 85, 86, 20);
+		panelStatistic.add(textFieldXuatFileTK);
 
 		/*
 		 * Tab thống kê kết thúc ở đây STATISTIC END
@@ -1182,9 +1228,11 @@ public class QLHS extends JFrame {
 				JOptionPane.showMessageDialog(this, "Xoá thành công");
 			} else {
 				int pn = JOptionPane.showConfirmDialog(this,
-						"Có thể hiện dữ liệu khác tham chiếu tới dữ liệu bạn muốn xoá!\nBạn muốn xoá hết các dữ liệu liên quan không?");
+						"Có khoá chính của dữ liệu khác tham chiếu tới dữ liệu bạn muốn xoá!\nBạn muốn xoá hết các dữ liệu liên quan không?");
 				if (pn == JOptionPane.YES_OPTION) {
-					this.gvModel.deleteAnyway(gv);
+					if(this.gvModel.deleteAnyway(gv)) {;
+						JOptionPane.showMessageDialog(this, "Xoá thành công");
+					}
 				}
 			}
 			this.huytimGV();
@@ -1427,6 +1475,35 @@ public class QLHS extends JFrame {
 			mode.addRow(new Object[] { "_", "_", "_" });
 		}
 	}
+	
+	public void xoaCN() {
+		// TODO Auto-generated method stub
+		DefaultTableModel mode = (DefaultTableModel) this.tableChuNhiem.getModel();
+		int i_row = this.tableChuNhiem.getSelectedRow();
+		int luaChon = JOptionPane.showConfirmDialog(this,
+				"Bạn có chắc muốn xoá Chủ nhiệm này ra khỏi cơ sở dữ liệu không?");
+
+		if (luaChon == JOptionPane.YES_OPTION) {
+			ChuNhiem cn = layThongTinCNDangChon();
+			if(this.cnModel.delete(cn)) {
+				JOptionPane.showMessageDialog(this, "Xoá thành công");
+			}else{
+				JOptionPane.showMessageDialog(this, "Có thể hiện dữ liệu khác tham chiếu tới dữ liệu bạn muốn xoá!\n Xoá không thành công");
+			}
+			this.huytimGV();
+		}
+	}
+
+	private ChuNhiem layThongTinCNDangChon() {
+		DefaultTableModel mode = (DefaultTableModel) this.tableChuNhiem.getModel();
+		int i_row = this.tableChuNhiem.getSelectedRow();
+
+		String MaGV = mode.getValueAt(i_row, 0).toString();
+		String MaLop = mode.getValueAt(i_row, 1).toString();
+		String NamHoc = mode.getValueAt(i_row, 2).toString();
+		ChuNhiem cn = new ChuNhiem(MaGV, MaLop,NamHoc);
+		return cn;
+	}
 
 	/*
 	 * CÁC PHƯƠNG THỨC LIÊN QUAN ĐẾN TAB HỌC SINH BẮT ĐẦU Ở ĐÂY
@@ -1455,8 +1532,13 @@ public class QLHS extends JFrame {
 			if (this.hsModel.delete(hs)) {
 				JOptionPane.showMessageDialog(this, "Xoá thành công");
 			} else {
-				JOptionPane.showMessageDialog(this,
-						"Có thể hiện dữ liệu khác tham chiếu tới dữ liệu bạn muốn xoá!\n Xoá không thành công");
+				int pn = JOptionPane.showConfirmDialog(this,
+						"Có khoá chính của dữ liệu khác tham chiếu tới dữ liệu bạn muốn xoá!\nBạn muốn xoá hết các dữ liệu liên quan không?");
+				if (pn == JOptionPane.YES_OPTION) {
+					if(this.hsModel.deleteAnyway(hs)) {
+						JOptionPane.showMessageDialog(this, "Xoá thành công");
+					}
+				}
 			}
 			this.huytimHS();
 		}
@@ -1830,8 +1912,13 @@ public class QLHS extends JFrame {
 			if (this.phModel.delete(ph)) {
 				JOptionPane.showMessageDialog(this, "Xoá thành công");
 			} else {
-				JOptionPane.showMessageDialog(this,
-						"Có thể hiện dữ liệu khác tham chiếu tới dữ liệu bạn muốn xoá!\n Xoá không thành công");
+				int pn = JOptionPane.showConfirmDialog(this,
+						"Có khoá chính của dữ liệu khác tham chiếu tới dữ liệu bạn muốn xoá!\nBạn muốn xoá hết các dữ liệu liên quan không?");
+				if (pn == JOptionPane.YES_OPTION) {
+					if(this.phModel.deleteAnyway(ph)) {;
+						JOptionPane.showMessageDialog(this, "Xoá thành công");
+					}
+				}
 			}
 			this.huytimPH();
 		}
@@ -2111,7 +2198,13 @@ public class QLHS extends JFrame {
 			if (this.lopModel.delete(lop)) {
 				JOptionPane.showMessageDialog(this, "Xoá thành công");
 			} else {
-				JOptionPane.showMessageDialog(this, "Có thể hiện dữ liệu khác tham chiếu tới dữ liệu bạn muốn xoá!");
+				int pn = JOptionPane.showConfirmDialog(this,
+						"Có khoá chính và khoá ngoại của dữ liệu khác tham chiếu tới dữ liệu bạn muốn xoá!\nBạn muốn xoá hết các dữ liệu liên quan và đặt các khoá ngoại là null không?");
+				if (pn == JOptionPane.YES_OPTION) {
+					if(this.lopModel.deleteAnyway(lop)) {;
+						JOptionPane.showMessageDialog(this, "Xoá thành công");
+					}
+				}
 			}
 			huytimLH();
 		}
@@ -2231,7 +2324,7 @@ public class QLHS extends JFrame {
 	 * 
 	 * START
 	 */
-
+	
 	public void hienThiDSXepHangTheoHocLuc(String lop) {
 		this.tableThongKe.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Hạng", "Tên học sinh",
 				"Điểm tb văn", "Điểm tb Toán", "Điểm tb anh văn", "Điểm tb các môn", "Học lực" }));
@@ -2337,10 +2430,4 @@ public class QLHS extends JFrame {
 					diem.getDiem1Tiet(), diem.getDiemHocKy(), diemtb });
 		}
 	}
-
-	/*
-	 * CÁC PHƯƠNG THỨC LIÊN QUAN TAB THỐNG KÊ
-	 * 
-	 * END
-	 */
 }

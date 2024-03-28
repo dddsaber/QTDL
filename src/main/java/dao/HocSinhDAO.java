@@ -3,6 +3,7 @@ package dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -104,6 +105,27 @@ public class HocSinhDAO implements DAOInterface<HocSinh>{
 				Transaction transaction = session.beginTransaction();
 				
 				session.delete(element);
+				
+				transaction.commit();
+				session.close();
+			}
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public boolean deleteAnyway(HocSinh element) {
+		try {
+			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+			if(sessionFactory != null) {
+				Session session = sessionFactory.openSession();
+				Transaction transaction = session.beginTransaction();
+				
+				Query query = session.createSQLQuery("call Xoa_Hoc_Sinh(:maHS);");
+				query.setParameter("maHS", element.getMaHS());
+				query.executeUpdate();
 				
 				transaction.commit();
 				session.close();

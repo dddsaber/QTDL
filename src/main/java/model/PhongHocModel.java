@@ -61,5 +61,11 @@ public class PhongHocModel {
   		return false;
   	}
 
-    
+  	public boolean deleteAnyway(PhongHoc ph) {
+		if(this.phongHocDAO.deleteAnyway(ph)) {
+			System.out.println(this.dsPhongHoc.remove(ph)); 
+			return true;
+		};
+		return false;
+	}
 }
