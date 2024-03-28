@@ -1,5 +1,6 @@
 package QTDL.QLSV;
 
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import view.QLDangNhap;
@@ -20,7 +21,10 @@ public class App
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-        QLDangNhap app = new QLDangNhap();
+    	SwingUtilities.invokeLater(() -> {
+    		QLDangNhap app = new QLDangNhap();
+    	});
+        
         
     }
 }

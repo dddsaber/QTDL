@@ -18,6 +18,7 @@ import javax.swing.JSlider;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.JPasswordField;
 
 public class QLDangNhap extends JFrame {
@@ -165,28 +166,28 @@ public class QLDangNhap extends JFrame {
 
 		TaiKhoanDAO tkdao = new TaiKhoanDAO();
 		if(tenTK.length() == 0 || matKhauTK.length() == 0) {
-			this.setVisible(false);
-			QLHS mainView = new QLHS();
-			mainView.openDL();
-//			JOptionPane.showMessageDialog(contentPane, "Vui lòng nhập đầy đủ tài khoản và mật khẩu");
+//			this.setVisible(false);
+//			QLHS mainView = new QLHS();
+//			mainView.openDL();
+			JOptionPane.showMessageDialog(contentPane, "Vui lòng nhập đầy đủ tài khoản và mật khẩu");
 		}
-		
-//		TaiKhoan tkCanXacThuc = tkdao.selectById(tenTK);
-//		if(tkCanXacThuc == null) {
-//			JOptionPane.showMessageDialog(contentPane, "Tài Khoản không tồn tại");
-//			//Sửa lại sau
-//			this.setVisible(false);
-//			QLHS mainView = new QLHS();
-//			mainView.openDL();
-//		}
-//		else if (tkCanXacThuc.xacthuc(tenTK, matKhauTK)) {
-//			this.setVisible(false);
-//			QLHS mainView = new QLHS();
-//			mainView.openDL();
-//		} else {
-//			JOptionPane.showMessageDialog(contentPane, "Tài khoản hoặc mật khẩu sai, vui lòng nhập lại");
-//			this.xoaDLNhap();
-//		}
+		else {
+			TaiKhoan tkCanXacThuc = tkdao.selectById(tenTK);
+			if(tkCanXacThuc == null) {
+				JOptionPane.showMessageDialog(contentPane, "Tài Khoản không tồn tại");
+				//Sửa lại sau
+//				this.setVisible(false);
+//				QLHS mainView = new QLHS();
+//				mainView.openDL();
+			}
+			else if (tkCanXacThuc.xacthuc(tenTK, matKhauTK)) {
+				this.setVisible(false);
+				this.openQLHS();
+			} else {
+				JOptionPane.showMessageDialog(contentPane, "Tài khoản hoặc mật khẩu sai, vui lòng nhập lại");
+				this.xoaDLNhap();
+			}
+		}
 	}
 
 	public void dangKy() {
@@ -197,11 +198,25 @@ public class QLDangNhap extends JFrame {
 		TaiKhoan tk = new TaiKhoan(tenTKDK,matKhauTKDK);
 		if(matKhauTKDK.equals(matKhauTKDKNL)) {
 			TaiKhoanDAO tkDAO = new TaiKhoanDAO();
-			tkDAO.saveOrUpdate(tk);
+			if(tkDAO.selectById(tenTKDK) == null) {
+				tkDAO.saveOrUpdate(tk);
+				JOptionPane.showMessageDialog(contentPane, "Tạo tài khoản thành công!");
+				this.xoaDLNhap();
+			}
+			else {
+				JOptionPane.showMessageDialog(contentPane, "Tài khoản đã tồn tại!");
+			}
 		}else {
-			JOptionPane.showMessageDialog(contentPane, "Tài khoản hoặc mật khẩu sai, vui lòng nhập lại");
-			this.xoaDLNhap();
+			JOptionPane.showMessageDialog(contentPane, "Mật khẩu nhập lại bị sai!");
 		}
 
+	}
+	
+	public void openQLHS(){
+		SwingUtilities.invokeLater(() -> {
+			QLHS mainView = new QLHS();
+            mainView.setVisible(true);
+            mainView.openDL();
+        });
 	}
 }

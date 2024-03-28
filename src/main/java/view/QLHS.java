@@ -26,6 +26,7 @@ import controller.HocSinhTabListener;
 import controller.LopHocListener;
 import controller.LopListener;
 import controller.PhongListener;
+import controller.ThongKeTabListener;
 import dao.ChuNhiemDAO;
 import dao.HocSinhDAO;
 import model.ChuNhiem;
@@ -57,12 +58,21 @@ import javax.swing.JComboBox;
 
 import java.awt.Font;
 import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.Color;
 import java.awt.SystemColor;
+import javax.swing.UIManager;
+import javax.swing.JLayeredPane;
 
 public class QLHS extends JFrame {
 
@@ -75,6 +85,10 @@ public class QLHS extends JFrame {
 	private HocSinhModel hsModel;
 	private MonHocModel mhModel;
 	private LopModel lopModel;
+
+	// Resize attributes
+	private double widthRatio = 900;
+	private double heightRatio = 550;
 
 	// View Object Attributes
 	private static final long serialVersionUID = 1L;
@@ -130,21 +144,10 @@ public class QLHS extends JFrame {
 	private JTextField textNhapTenFileDiem;
 	private JTextField textNhapTenFileLopHoc;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					QLHS frame = new QLHS();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	public JTable tableThongKe;
+	public JComboBox comboBoxChonMonHocThongKe;
+	public JLabel lblNewLabel_XepHang;
+	public JComboBox comboBoxChonLopThongKe;
 
 	/**
 	 * Create the frame.
@@ -160,22 +163,28 @@ public class QLHS extends JFrame {
 		this.lopModel = new LopModel();
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 885, 538);
+
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(224, 255, 255));
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setContentPane(contentPane);
+		getContentPane().add(contentPane);
 		contentPane.setLayout(null);
+		setBounds(140, 70, 1100, 600);
 
 		JMenuBar menuBar = new JMenuBar();
-		menuBar.setBounds(0, 0, 869, 32);
+		menuBar.setBorder(UIManager.getBorder("MenuBar.border"));
+		menuBar.setBackground(new Color(100, 149, 237));
+		menuBar.setBounds(0, 0, 1084, 31);
 		contentPane.add(menuBar);
 
 		JMenu JMenuAccount = new JMenu("Tài khoản");
+		JMenuAccount.setBackground(new Color(128, 128, 128));
+		JMenuAccount.setForeground(new Color(0, 0, 128));
 		menuBar.add(JMenuAccount);
 
 		JMenu JMenuData = new JMenu("New menu");
+		JMenuData.setBackground(new Color(128, 128, 128));
+		JMenuData.setForeground(new Color(0, 0, 128));
 		menuBar.add(JMenuData);
 //		Các tab bắt đầu từ đây
 		/*
@@ -183,7 +192,7 @@ public class QLHS extends JFrame {
 		 */
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
 		tabbedPane.setBackground(new Color(224, 255, 255));
-		tabbedPane.setBounds(0, 30, 869, 469);
+		tabbedPane.setBounds(0, 30, 1084, 531);
 		contentPane.add(tabbedPane);
 
 		/*
@@ -198,7 +207,7 @@ public class QLHS extends JFrame {
 		panelTeacher.setLayout(null);
 
 		JScrollPane scrollPaneThongTinGiaoVien = new JScrollPane();
-		scrollPaneThongTinGiaoVien.setBounds(10, 187, 505, 266);
+		scrollPaneThongTinGiaoVien.setBounds(10, 187, 661, 328);
 		panelTeacher.add(scrollPaneThongTinGiaoVien);
 
 		tableThongTinGV = new JTable();
@@ -209,7 +218,7 @@ public class QLHS extends JFrame {
 		scrollPaneThongTinGiaoVien.setViewportView(tableThongTinGV);
 
 		JScrollPane scrollPaneThongTinGiaoVienClass = new JScrollPane();
-		scrollPaneThongTinGiaoVienClass.setBounds(525, 201, 219, 218);
+		scrollPaneThongTinGiaoVienClass.setBounds(702, 224, 219, 257);
 		panelTeacher.add(scrollPaneThongTinGiaoVienClass);
 
 		JLabel lblNewLabel_2 = new JLabel("Chủ nhiệm");
@@ -224,51 +233,51 @@ public class QLHS extends JFrame {
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_3.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblNewLabel_3.setFont(new Font("Tahoma", Font.ITALIC, 15));
-		lblNewLabel_3.setBounds(525, 164, 219, 29);
+		lblNewLabel_3.setBounds(702, 187, 219, 29);
 		panelTeacher.add(lblNewLabel_3);
 
 		JLabel lblNewLabel_3_1 = new JLabel("Tìm kiếm");
 		lblNewLabel_3_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_3_1.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblNewLabel_3_1.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblNewLabel_3_1.setAlignmentX(0.5f);
-		lblNewLabel_3_1.setBounds(520, 3, 219, 20);
+		lblNewLabel_3_1.setBounds(702, 3, 219, 20);
 		panelTeacher.add(lblNewLabel_3_1);
 
 		textFieldMaGVTimKiem = new JTextField();
-		textFieldMaGVTimKiem.setBounds(618, 42, 86, 20);
+		textFieldMaGVTimKiem.setBounds(800, 42, 86, 20);
 		panelTeacher.add(textFieldMaGVTimKiem);
 		textFieldMaGVTimKiem.setColumns(10);
 
 		textFieldTimKiemHoTenGV = new JTextField();
-		textFieldTimKiemHoTenGV.setBounds(618, 73, 86, 20);
+		textFieldTimKiemHoTenGV.setBounds(800, 73, 86, 20);
 		panelTeacher.add(textFieldTimKiemHoTenGV);
 		textFieldTimKiemHoTenGV.setColumns(10);
 
 		JLabel lblSearchTeacherCode = new JLabel("Mã giáo viên");
-		lblSearchTeacherCode.setBounds(518, 42, 60, 20);
+		lblSearchTeacherCode.setBounds(700, 42, 60, 20);
 		panelTeacher.add(lblSearchTeacherCode);
 
 		JLabel lblSearchTeacherName = new JLabel("Họ tên");
-		lblSearchTeacherName.setBounds(518, 73, 60, 20);
+		lblSearchTeacherName.setBounds(700, 73, 60, 20);
 		panelTeacher.add(lblSearchTeacherName);
 
 		JButton btnTimKiemGV = new JButton("Tìm kiếm");
 		btnTimKiemGV.addActionListener(gvtl);
-		btnTimKiemGV.setBounds(551, 135, 89, 23);
+		btnTimKiemGV.setBounds(733, 135, 89, 23);
 		panelTeacher.add(btnTimKiemGV);
 
 		JLabel lblSearchTeacherAddress = new JLabel("Địa chỉ");
-		lblSearchTeacherAddress.setBounds(518, 104, 60, 20);
+		lblSearchTeacherAddress.setBounds(700, 104, 60, 20);
 		panelTeacher.add(lblSearchTeacherAddress);
 
 		textFieldTimKiemDiaChiGV = new JTextField();
 		textFieldTimKiemDiaChiGV.setColumns(10);
-		textFieldTimKiemDiaChiGV.setBounds(618, 104, 86, 20);
+		textFieldTimKiemDiaChiGV.setBounds(800, 104, 86, 20);
 		panelTeacher.add(textFieldTimKiemDiaChiGV);
 
 		JButton btnHuyTimGV = new JButton("Huỷ tìm");
 		btnHuyTimGV.addActionListener(gvtl);
-		btnHuyTimGV.setBounds(650, 135, 89, 23);
+		btnHuyTimGV.setBounds(832, 135, 89, 23);
 		panelTeacher.add(btnHuyTimGV);
 
 		JLabel lblNewLabel = new JLabel("Danh sách giáo viên");
@@ -277,86 +286,87 @@ public class QLHS extends JFrame {
 		panelTeacher.add(lblNewLabel);
 
 		JLabel lblTeacherCode = new JLabel("Mã giáo viên");
-		lblTeacherCode.setBounds(10, 31, 60, 20);
+		lblTeacherCode.setBounds(80, 31, 60, 20);
 		panelTeacher.add(lblTeacherCode);
 
 		JLabel lblTeacherName = new JLabel("Họ tên");
-		lblTeacherName.setBounds(10, 62, 60, 20);
+		lblTeacherName.setBounds(80, 62, 60, 20);
 		panelTeacher.add(lblTeacherName);
 
 		JLabel lblTeacherDate = new JLabel("Ngày sinh");
-		lblTeacherDate.setBounds(10, 93, 60, 20);
+		lblTeacherDate.setBounds(80, 93, 60, 20);
 		panelTeacher.add(lblTeacherDate);
 
 		JLabel lblTeacherPhone = new JLabel("Số điện thoại");
-		lblTeacherPhone.setBounds(10, 124, 84, 20);
+		lblTeacherPhone.setBounds(80, 124, 84, 20);
 		panelTeacher.add(lblTeacherPhone);
 
 		textFieldMaGV = new JTextField();
 		textFieldMaGV.setColumns(10);
-		textFieldMaGV.setBounds(84, 31, 86, 20);
+		textFieldMaGV.setBounds(154, 31, 86, 20);
 		panelTeacher.add(textFieldMaGV);
 
 		textFieldNgaySinhGV = new JTextField();
 		textFieldNgaySinhGV.setColumns(10);
-		textFieldNgaySinhGV.setBounds(84, 93, 86, 20);
+		textFieldNgaySinhGV.setBounds(154, 93, 86, 20);
 		panelTeacher.add(textFieldNgaySinhGV);
 
 		textFieldHoTenGV = new JTextField();
 		textFieldHoTenGV.setColumns(10);
-		textFieldHoTenGV.setBounds(84, 62, 86, 20);
+		textFieldHoTenGV.setBounds(154, 62, 86, 20);
 		panelTeacher.add(textFieldHoTenGV);
 
 		textFieldSoDienThoaiGV = new JTextField();
 		textFieldSoDienThoaiGV.setColumns(10);
-		textFieldSoDienThoaiGV.setBounds(84, 124, 86, 20);
+		textFieldSoDienThoaiGV.setBounds(154, 124, 86, 20);
 		panelTeacher.add(textFieldSoDienThoaiGV);
 
 		JLabel lblTeacherAddress = new JLabel("Địa chỉ");
-		lblTeacherAddress.setBounds(223, 34, 95, 14);
+		lblTeacherAddress.setBounds(293, 34, 95, 14);
 		panelTeacher.add(lblTeacherAddress);
 
 		JButton btnChonGV = new JButton("Chọn");
 		btnChonGV.addActionListener(gvtl);
-		btnChonGV.setBounds(369, 30, 89, 23);
+		btnChonGV.setBounds(439, 30, 89, 23);
 		panelTeacher.add(btnChonGV);
 
 		JButton btnLuuGV = new JButton("Lưu");
 		btnLuuGV.addActionListener(gvtl);
-		btnLuuGV.setBounds(369, 61, 89, 23);
+		btnLuuGV.setBounds(439, 61, 89, 23);
 		panelTeacher.add(btnLuuGV);
 
 		JButton btnXoaGV = new JButton("Xoá");
 		btnXoaGV.addActionListener(gvtl);
-		btnXoaGV.setBounds(369, 92, 89, 23);
+		btnXoaGV.setBounds(439, 92, 89, 23);
 		panelTeacher.add(btnXoaGV);
 
 		JButton btnTaoMoiGV = new JButton("Tạo mới");
 		btnTaoMoiGV.addActionListener(gvtl);
-		btnTaoMoiGV.setBounds(369, 123, 89, 23);
+		btnTaoMoiGV.setBounds(439, 123, 89, 23);
 		panelTeacher.add(btnTaoMoiGV);
 
 		JLabel lblNewLabel_3_1_1 = new JLabel("Thông tin giáo viên");
 		lblNewLabel_3_1_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_3_1_1.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblNewLabel_3_1_1.setAlignmentX(0.5f);
-		lblNewLabel_3_1_1.setBounds(140, 3, 219, 20);
+		lblNewLabel_3_1_1.setBounds(210, 3, 219, 20);
 		panelTeacher.add(lblNewLabel_3_1_1);
 
 		textFieldsoDienThoaiGV = new JTextField();
 		textFieldsoDienThoaiGV.setColumns(10);
-		textFieldsoDienThoaiGV.setBounds(84, 124, 86, 20);
+		textFieldsoDienThoaiGV.setBounds(154, 124, 86, 20);
 		panelTeacher.add(textFieldsoDienThoaiGV);
 
 		textAreaDiaChiGV = new JTextArea();
-		textAreaDiaChiGV.setBounds(208, 60, 130, 76);
+		textAreaDiaChiGV.setBounds(278, 60, 130, 76);
 		panelTeacher.add(textAreaDiaChiGV);
 
 		JButton btnCapNhatChuNhiem = new JButton("Cập nhật");
 		btnCapNhatChuNhiem.addActionListener(gvtl);
-		btnCapNhatChuNhiem.setBounds(592, 430, 89, 23);
+		btnCapNhatChuNhiem.addActionListener(gvtl);
+		btnCapNhatChuNhiem.setBounds(702, 492, 89, 23);
 		panelTeacher.add(btnCapNhatChuNhiem);
-		
+
 		JButton btnXuatFileGV = new JButton("Xuất File");
 		btnXuatFileGV.addActionListener(gvtl);
 		btnXuatFileGV.setBackground(SystemColor.activeCaption);
@@ -364,13 +374,17 @@ public class QLHS extends JFrame {
 		btnXuatFileGV.setFont(new Font("Times New Roman", Font.BOLD, 11));
 		btnXuatFileGV.setBounds(174, 153, 89, 23);
 		panelTeacher.add(btnXuatFileGV);
-		
+
 		textNhapTenFileGV = new JTextField();
 		textNhapTenFileGV.setText("Nhập tên file");
 		textNhapTenFileGV.setToolTipText("Nhập tên file");
 		textNhapTenFileGV.setBounds(273, 156, 86, 20);
 		panelTeacher.add(textNhapTenFileGV);
 		textNhapTenFileGV.setColumns(10);
+
+		JButton btnXoaChuNhiem = new JButton("Xoá ");
+		btnXoaChuNhiem.setBounds(832, 492, 89, 23);
+		panelTeacher.add(btnXoaChuNhiem);
 
 		/*
 		 * Tab giáo viên kết thúc ở đây TEACHER END
@@ -396,51 +410,51 @@ public class QLHS extends JFrame {
 				"Ngày sinh", "Địa chỉ", "SDT Phụ huynh", "Mã lớp", "Tên lớp" }));
 
 		JScrollPane scrollPaneThongTinHocSinh = new JScrollPane(tableHocSinh);
-		scrollPaneThongTinHocSinh.setBounds(10, 187, 729, 266);
+		scrollPaneThongTinHocSinh.setBounds(10, 187, 953, 328);
 		panelStudent.add(scrollPaneThongTinHocSinh);
 
 		JLabel lblNewLabel_3_1_2 = new JLabel("Tìm kiếm");
 		lblNewLabel_3_1_2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_3_1_2.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblNewLabel_3_1_2.setAlignmentX(0.5f);
-		lblNewLabel_3_1_2.setBounds(520, 3, 219, 20);
+		lblNewLabel_3_1_2.setBounds(702, 3, 219, 20);
 		panelStudent.add(lblNewLabel_3_1_2);
 
 		textFieldMaHSTimKiem = new JTextField();
 		textFieldMaHSTimKiem.setColumns(10);
-		textFieldMaHSTimKiem.setBounds(618, 42, 86, 20);
+		textFieldMaHSTimKiem.setBounds(800, 42, 86, 20);
 		panelStudent.add(textFieldMaHSTimKiem);
 
 		textFieldHoTenHSTimKiem = new JTextField();
 		textFieldHoTenHSTimKiem.setColumns(10);
-		textFieldHoTenHSTimKiem.setBounds(618, 73, 86, 20);
+		textFieldHoTenHSTimKiem.setBounds(800, 73, 86, 20);
 		panelStudent.add(textFieldHoTenHSTimKiem);
 
 		JLabel lblSearchTeacherCode_1 = new JLabel("Mã học sinh");
-		lblSearchTeacherCode_1.setBounds(518, 42, 60, 20);
+		lblSearchTeacherCode_1.setBounds(700, 42, 60, 20);
 		panelStudent.add(lblSearchTeacherCode_1);
 
 		JLabel lblSearchTeacherName_1 = new JLabel("Họ tên");
-		lblSearchTeacherName_1.setBounds(518, 73, 60, 20);
+		lblSearchTeacherName_1.setBounds(700, 73, 60, 20);
 		panelStudent.add(lblSearchTeacherName_1);
 
 		JButton btnTimKiemHS = new JButton("Tìm kiếm");
 		btnTimKiemHS.addActionListener(hstl);
-		btnTimKiemHS.setBounds(551, 135, 89, 23);
+		btnTimKiemHS.setBounds(733, 135, 89, 23);
 		panelStudent.add(btnTimKiemHS);
 
 		JLabel lblSearchTeacherAddress_1 = new JLabel("Mã lớp");
-		lblSearchTeacherAddress_1.setBounds(518, 104, 60, 20);
+		lblSearchTeacherAddress_1.setBounds(700, 104, 60, 20);
 		panelStudent.add(lblSearchTeacherAddress_1);
 
 		textFieldMaLopHSTimKiem = new JTextField();
 		textFieldMaLopHSTimKiem.setColumns(10);
-		textFieldMaLopHSTimKiem.setBounds(618, 104, 86, 20);
+		textFieldMaLopHSTimKiem.setBounds(800, 104, 86, 20);
 		panelStudent.add(textFieldMaLopHSTimKiem);
 
 		JButton btnHuyTimHS = new JButton("Huỷ tìm");
 		btnHuyTimHS.addActionListener(hstl);
-		btnHuyTimHS.setBounds(650, 135, 89, 23);
+		btnHuyTimHS.setBounds(832, 135, 89, 23);
 		panelStudent.add(btnHuyTimHS);
 
 		JLabel lblNewLabel_4 = new JLabel("Danh sách học sinh");
@@ -449,88 +463,88 @@ public class QLHS extends JFrame {
 		panelStudent.add(lblNewLabel_4);
 
 		JLabel lblMSinhVin = new JLabel("Mã học sinh");
-		lblMSinhVin.setBounds(10, 31, 60, 20);
+		lblMSinhVin.setBounds(80, 31, 60, 20);
 		panelStudent.add(lblMSinhVin);
 
 		JLabel lblTeacherName_1 = new JLabel("Họ tên");
-		lblTeacherName_1.setBounds(10, 62, 60, 20);
+		lblTeacherName_1.setBounds(80, 62, 60, 20);
 		panelStudent.add(lblTeacherName_1);
 
 		JLabel lblTeacherDate_1 = new JLabel("Ngày sinh");
-		lblTeacherDate_1.setBounds(10, 93, 60, 20);
+		lblTeacherDate_1.setBounds(80, 93, 60, 20);
 		panelStudent.add(lblTeacherDate_1);
 
 		JLabel lblTeacherPhone_1 = new JLabel("Số điện thoại");
-		lblTeacherPhone_1.setBounds(10, 124, 84, 20);
+		lblTeacherPhone_1.setBounds(80, 124, 84, 20);
 		panelStudent.add(lblTeacherPhone_1);
 
 		textFieldMaHS = new JTextField();
 		textFieldMaHS.setColumns(10);
-		textFieldMaHS.setBounds(84, 31, 86, 20);
+		textFieldMaHS.setBounds(154, 31, 86, 20);
 		panelStudent.add(textFieldMaHS);
 
 		textFieldNgaySinhHS = new JTextField();
 		textFieldNgaySinhHS.setColumns(10);
-		textFieldNgaySinhHS.setBounds(84, 93, 86, 20);
+		textFieldNgaySinhHS.setBounds(154, 93, 86, 20);
 		panelStudent.add(textFieldNgaySinhHS);
 
 		textFieldHoTenHS = new JTextField();
 		textFieldHoTenHS.setColumns(10);
-		textFieldHoTenHS.setBounds(84, 62, 86, 20);
+		textFieldHoTenHS.setBounds(154, 62, 86, 20);
 		panelStudent.add(textFieldHoTenHS);
 
 		textFieldSDTPhuHuynh = new JTextField();
 		textFieldSDTPhuHuynh.setColumns(10);
-		textFieldSDTPhuHuynh.setBounds(84, 124, 86, 20);
+		textFieldSDTPhuHuynh.setBounds(154, 124, 86, 20);
 		panelStudent.add(textFieldSDTPhuHuynh);
 
 		JLabel lblTeacherAddress_1 = new JLabel("Địa chỉ");
-		lblTeacherAddress_1.setBounds(223, 34, 95, 14);
+		lblTeacherAddress_1.setBounds(293, 34, 95, 14);
 		panelStudent.add(lblTeacherAddress_1);
 
 		JButton btnChonHS = new JButton("Chọn");
 		btnChonHS.addActionListener(hstl);
-		btnChonHS.setBounds(369, 30, 89, 23);
+		btnChonHS.setBounds(439, 30, 89, 23);
 		panelStudent.add(btnChonHS);
 
 		JButton btnLuuHS = new JButton("Lưu");
 		btnLuuHS.addActionListener(hstl);
-		btnLuuHS.setBounds(369, 61, 89, 23);
+		btnLuuHS.setBounds(439, 61, 89, 23);
 		panelStudent.add(btnLuuHS);
 
 		JButton btnXoaHS = new JButton("Xoá");
 		btnXoaHS.addActionListener(hstl);
-		btnXoaHS.setBounds(369, 92, 89, 23);
+		btnXoaHS.setBounds(439, 92, 89, 23);
 		panelStudent.add(btnXoaHS);
 
 		JButton btnTaoMoiHS = new JButton("Tạo mới");
 		btnTaoMoiHS.addActionListener(hstl);
-		btnTaoMoiHS.setBounds(369, 123, 89, 23);
+		btnTaoMoiHS.setBounds(439, 123, 89, 23);
 		panelStudent.add(btnTaoMoiHS);
 
 		JLabel lblNewLabel_3_1_1_1 = new JLabel("Thông tin học sinh");
 		lblNewLabel_3_1_1_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_3_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblNewLabel_3_1_1_1.setAlignmentX(0.5f);
-		lblNewLabel_3_1_1_1.setBounds(140, 3, 219, 20);
+		lblNewLabel_3_1_1_1.setBounds(210, 3, 219, 20);
 		panelStudent.add(lblNewLabel_3_1_1_1);
 
 		JScrollPane scrollPaneDiaChiHS = new JScrollPane();
-		scrollPaneDiaChiHS.setBounds(198, 60, 161, 53);
+		scrollPaneDiaChiHS.setBounds(268, 60, 161, 53);
 		panelStudent.add(scrollPaneDiaChiHS);
 
 		textAreaDiaChiHS = new JTextArea();
 		scrollPaneDiaChiHS.setViewportView(textAreaDiaChiHS);
 
 		JLabel lblMLp_1 = new JLabel("Mã lớp");
-		lblMLp_1.setBounds(198, 124, 60, 20);
+		lblMLp_1.setBounds(268, 124, 60, 20);
 		panelStudent.add(lblMLp_1);
 
 		textFieldMaLopHS = new JTextField();
 		textFieldMaLopHS.setColumns(10);
-		textFieldMaLopHS.setBounds(257, 125, 102, 20);
+		textFieldMaLopHS.setBounds(327, 125, 102, 20);
 		panelStudent.add(textFieldMaLopHS);
-		
+
 		JButton btnXuatFileHS = new JButton("Xuất File");
 		btnXuatFileHS.addActionListener(hstl);
 		btnXuatFileHS.setForeground(new Color(0, 0, 128));
@@ -538,7 +552,7 @@ public class QLHS extends JFrame {
 		btnXuatFileHS.setBackground(SystemColor.activeCaption);
 		btnXuatFileHS.setBounds(198, 153, 89, 23);
 		panelStudent.add(btnXuatFileHS);
-		
+
 		textNhapTenFileHS = new JTextField();
 		textNhapTenFileHS.setToolTipText("Nhập tên file");
 		textNhapTenFileHS.setText("Nhập tên file");
@@ -575,7 +589,7 @@ public class QLHS extends JFrame {
 		tableThongTinDiem.getColumnModel().getColumn(0).setPreferredWidth(52);
 
 		JScrollPane scrollPaneThongTinDiemHocSinh = new JScrollPane(tableThongTinDiem);
-		scrollPaneThongTinDiemHocSinh.setBounds(21, 169, 723, 284);
+		scrollPaneThongTinDiemHocSinh.setBounds(10, 134, 953, 381);
 		panelScore.add(scrollPaneThongTinDiemHocSinh);
 
 		String[] cacMonHoc = new String[] { "Toán", "Ngữ văn", "Anh văn" };
@@ -583,11 +597,11 @@ public class QLHS extends JFrame {
 		String[] thuTuLocDiem = new String[] { "tb >= 8.0", "tb >= 6.5", "b >= 5.0", "tb >= 3.0" };
 
 		JLabel lblTeacherName_1_1_1 = new JLabel("Mã Lớp");
-		lblTeacherName_1_1_1.setBounds(21, 38, 60, 20);
+		lblTeacherName_1_1_1.setBounds(80, 51, 60, 20);
 		panelScore.add(lblTeacherName_1_1_1);
 
 		JLabel lblTeacherName_1_1_1_1 = new JLabel("Môn học");
-		lblTeacherName_1_1_1_1.setBounds(195, 38, 60, 20);
+		lblTeacherName_1_1_1_1.setBounds(254, 51, 60, 20);
 		panelScore.add(lblTeacherName_1_1_1_1);
 
 		comboBoxChonMonHoc = new JComboBox();
@@ -596,84 +610,84 @@ public class QLHS extends JFrame {
 		comboBoxChonMonHoc.addItem("Ngoại Ngữ");
 		comboBoxChonMonHoc.addItem("Ngữ Văn");
 		comboBoxChonMonHoc.setToolTipText("Môn Học");
-		comboBoxChonMonHoc.setBounds(258, 37, 80, 22);
+		comboBoxChonMonHoc.setBounds(317, 50, 80, 22);
 		panelScore.add(comboBoxChonMonHoc);
 
 		textFieldNhapDiemMaLop = new JTextField();
 		textFieldNhapDiemMaLop.setColumns(10);
-		textFieldNhapDiemMaLop.setBounds(82, 38, 86, 20);
+		textFieldNhapDiemMaLop.setBounds(141, 51, 86, 20);
 		panelScore.add(textFieldNhapDiemMaLop);
 
 		JLabel lblNewLabel_3_1_1_1_1 = new JLabel("Nhập điểm theo danh sách");
 		lblNewLabel_3_1_1_1_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_3_1_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblNewLabel_3_1_1_1_1.setAlignmentX(0.5f);
-		lblNewLabel_3_1_1_1_1.setBounds(44, 7, 280, 20);
+		lblNewLabel_3_1_1_1_1.setBounds(103, 20, 280, 20);
 		panelScore.add(lblNewLabel_3_1_1_1_1);
 
 		JButton btnlaydsDiem = new JButton("Lấy danh sách");
 		btnlaydsDiem.addActionListener(diemltn);
-		btnlaydsDiem.setBounds(81, 79, 124, 23);
+		btnlaydsDiem.setBounds(418, 51, 124, 23);
 		panelScore.add(btnlaydsDiem);
 
 		JButton btnLuuDiem = new JButton("Lưu");
 		btnLuuDiem.addActionListener(diemltn);
-		btnLuuDiem.setBounds(235, 79, 89, 23);
+		btnLuuDiem.setBounds(572, 51, 89, 23);
 		panelScore.add(btnLuuDiem);
 
 		JLabel lblNewLabel_3_1_2_1 = new JLabel("Tìm kiếm");
 		lblNewLabel_3_1_2_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_3_1_2_1.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblNewLabel_3_1_2_1.setAlignmentX(0.5f);
-		lblNewLabel_3_1_2_1.setBounds(525, 7, 219, 20);
+		lblNewLabel_3_1_2_1.setBounds(700, 7, 219, 20);
 		panelScore.add(lblNewLabel_3_1_2_1);
 
 		textFieldTimDiemMaHS = new JTextField();
 		textFieldTimDiemMaHS.setColumns(10);
-		textFieldTimDiemMaHS.setBounds(658, 49, 86, 20);
+		textFieldTimDiemMaHS.setBounds(835, 38, 86, 20);
 		panelScore.add(textFieldTimDiemMaHS);
 
 		textFieldTimDiemTenHS = new JTextField();
 		textFieldTimDiemTenHS.setColumns(10);
-		textFieldTimDiemTenHS.setBounds(658, 80, 86, 20);
+		textFieldTimDiemTenHS.setBounds(835, 69, 86, 20);
 		panelScore.add(textFieldTimDiemTenHS);
 
 		JLabel lblSearchTeacherCode_1_1 = new JLabel("Mã học sinh");
-		lblSearchTeacherCode_1_1.setBounds(558, 49, 60, 20);
+		lblSearchTeacherCode_1_1.setBounds(735, 38, 60, 20);
 		panelScore.add(lblSearchTeacherCode_1_1);
 
 		JLabel lblSearchTeacherName_1_1 = new JLabel("Họ tên");
-		lblSearchTeacherName_1_1.setBounds(558, 80, 60, 20);
+		lblSearchTeacherName_1_1.setBounds(735, 69, 60, 20);
 		panelScore.add(lblSearchTeacherName_1_1);
 
 		JButton btnTimKiemDiemHS = new JButton("Tìm kiếm");
 		btnTimKiemDiemHS.addActionListener(diemltn);
-		btnTimKiemDiemHS.setBounds(558, 111, 89, 23);
+		btnTimKiemDiemHS.setBounds(735, 100, 89, 23);
 		panelScore.add(btnTimKiemDiemHS);
 
 		JButton btnHuyTimDiemHS = new JButton("Huỷ tìm");
 		btnHuyTimDiemHS.addActionListener(diemltn);
-		btnHuyTimDiemHS.setBounds(657, 111, 89, 23);
+		btnHuyTimDiemHS.setBounds(834, 100, 89, 23);
 		panelScore.add(btnHuyTimDiemHS);
 
 		JLabel lblNewLabel_4_1 = new JLabel("Danh sách học sinh");
 		lblNewLabel_4_1.setFont(new Font("Tahoma", Font.ITALIC, 18));
-		lblNewLabel_4_1.setBounds(10, 138, 234, 20);
+		lblNewLabel_4_1.setBounds(10, 100, 234, 20);
 		panelScore.add(lblNewLabel_4_1);
-		
+
 		JButton btnXuatFileDiem = new JButton("Xuất File");
 		btnXuatFileDiem.addActionListener(diemltn);
 		btnXuatFileDiem.setForeground(new Color(0, 0, 128));
 		btnXuatFileDiem.setFont(new Font("Times New Roman", Font.BOLD, 11));
 		btnXuatFileDiem.setBackground(SystemColor.activeCaption);
-		btnXuatFileDiem.setBounds(195, 138, 89, 23);
+		btnXuatFileDiem.setBounds(195, 100, 89, 23);
 		panelScore.add(btnXuatFileDiem);
-		
+
 		textNhapTenFileDiem = new JTextField();
 		textNhapTenFileDiem.setToolTipText("Nhập tên file");
 		textNhapTenFileDiem.setText("Nhập tên file");
 		textNhapTenFileDiem.setColumns(10);
-		textNhapTenFileDiem.setBounds(304, 141, 86, 20);
+		textNhapTenFileDiem.setBounds(304, 103, 86, 20);
 		panelScore.add(textNhapTenFileDiem);
 
 		/*
@@ -693,7 +707,7 @@ public class QLHS extends JFrame {
 		panelClassroom.setLayout(null);
 
 		JScrollPane scrollPaneClassroom = new JScrollPane();
-		scrollPaneClassroom.setBounds(10, 216, 375, 237);
+		scrollPaneClassroom.setBounds(10, 216, 457, 237);
 		panelClassroom.add(scrollPaneClassroom);
 
 		tableThongTinPhong = new JTable();
@@ -702,7 +716,7 @@ public class QLHS extends JFrame {
 		scrollPaneClassroom.setViewportView(tableThongTinPhong);
 
 		JScrollPane scrollPaneClass = new JScrollPane();
-		scrollPaneClass.setBounds(395, 216, 344, 237);
+		scrollPaneClass.setBounds(526, 216, 437, 237);
 		panelClassroom.add(scrollPaneClass);
 
 		tableThongTinLop = new JTable();
@@ -712,139 +726,139 @@ public class QLHS extends JFrame {
 
 		JButton btnChonPhong = new JButton("Chọn");
 		btnChonPhong.addActionListener(phltn);
-		btnChonPhong.setBounds(10, 126, 89, 23);
+		btnChonPhong.setBounds(80, 127, 89, 23);
 		panelClassroom.add(btnChonPhong);
 
 		JButton btnLuuPhong = new JButton("Lưu");
 		btnLuuPhong.addActionListener(phltn);
-		btnLuuPhong.setBounds(109, 126, 89, 23);
+		btnLuuPhong.setBounds(179, 127, 89, 23);
 		panelClassroom.add(btnLuuPhong);
 
 		JButton btnXoaPhong = new JButton("Xoá");
 		btnXoaPhong.addActionListener(phltn);
-		btnXoaPhong.setBounds(10, 157, 89, 23);
+		btnXoaPhong.setBounds(80, 157, 89, 23);
 		panelClassroom.add(btnXoaPhong);
 
 		JButton btnChonMoiPhong = new JButton("Tạo mới");
 		btnChonMoiPhong.addActionListener(phltn);
-		btnChonMoiPhong.setBounds(109, 157, 89, 23);
+		btnChonMoiPhong.setBounds(179, 157, 89, 23);
 		panelClassroom.add(btnChonMoiPhong);
 
 		JLabel lblClassroomCode = new JLabel("Mã phòng");
-		lblClassroomCode.setBounds(10, 32, 60, 20);
+		lblClassroomCode.setBounds(80, 33, 60, 20);
 		panelClassroom.add(lblClassroomCode);
 
 		JLabel lblClassroomNumber = new JLabel("Số phòng");
-		lblClassroomNumber.setBounds(10, 63, 60, 20);
+		lblClassroomNumber.setBounds(80, 64, 60, 20);
 		panelClassroom.add(lblClassroomNumber);
 
 		JLabel lblClassroomSlots = new JLabel("Số chỗ tối đa");
-		lblClassroomSlots.setBounds(10, 94, 64, 20);
+		lblClassroomSlots.setBounds(80, 95, 64, 20);
 		panelClassroom.add(lblClassroomSlots);
 
 		textFieldMaPhong = new JTextField();
 		textFieldMaPhong.setColumns(10);
-		textFieldMaPhong.setBounds(80, 32, 86, 20);
+		textFieldMaPhong.setBounds(150, 33, 86, 20);
 		panelClassroom.add(textFieldMaPhong);
 
 		textFieldSoCho = new JTextField();
 		textFieldSoCho.setColumns(10);
-		textFieldSoCho.setBounds(80, 94, 86, 20);
+		textFieldSoCho.setBounds(150, 95, 86, 20);
 		panelClassroom.add(textFieldSoCho);
 
 		textFieldSoPhong = new JTextField();
 		textFieldSoPhong.setColumns(10);
-		textFieldSoPhong.setBounds(80, 63, 86, 20);
+		textFieldSoPhong.setBounds(150, 64, 86, 20);
 		panelClassroom.add(textFieldSoPhong);
 
 		JButton btnChonLop = new JButton("Chọn");
 		btnChonLop.addActionListener(plltn);
-		btnChonLop.setBounds(246, 126, 89, 23);
+		btnChonLop.setBounds(700, 126, 89, 23);
 		panelClassroom.add(btnChonLop);
 
 		JButton btnLuuLop = new JButton("Lưu");
 		btnLuuLop.addActionListener(plltn);
-		btnLuuLop.setBounds(345, 126, 89, 23);
+		btnLuuLop.setBounds(799, 126, 89, 23);
 		panelClassroom.add(btnLuuLop);
 
 		JButton btnXoaLop = new JButton("Xoá");
 		btnXoaLop.addActionListener(plltn);
-		btnXoaLop.setBounds(246, 157, 89, 23);
+		btnXoaLop.setBounds(700, 157, 89, 23);
 		panelClassroom.add(btnXoaLop);
 
 		JButton btnChonMoiLop = new JButton("Tạo mới");
 		btnChonMoiLop.addActionListener(plltn);
-		btnChonMoiLop.setBounds(345, 157, 89, 23);
+		btnChonMoiLop.setBounds(799, 157, 89, 23);
 		panelClassroom.add(btnChonMoiLop);
 
 		JLabel lblClassRoomCode = new JLabel("Mã phòng");
-		lblClassRoomCode.setBounds(246, 32, 60, 20);
+		lblClassRoomCode.setBounds(700, 32, 60, 20);
 		panelClassroom.add(lblClassRoomCode);
 
 		JLabel lblClassClassCode = new JLabel("Mã lớp");
-		lblClassClassCode.setBounds(246, 63, 60, 20);
+		lblClassClassCode.setBounds(700, 63, 60, 20);
 		panelClassroom.add(lblClassClassCode);
 
 		JLabel lblClassYear = new JLabel("Học kỳ - năm học");
-		lblClassYear.setBounds(246, 94, 89, 20);
+		lblClassYear.setBounds(700, 94, 89, 20);
 		panelClassroom.add(lblClassYear);
 
 		textFieldMaPhongLop = new JTextField();
 		textFieldMaPhongLop.setColumns(10);
-		textFieldMaPhongLop.setBounds(348, 32, 86, 20);
+		textFieldMaPhongLop.setBounds(802, 32, 86, 20);
 		panelClassroom.add(textFieldMaPhongLop);
 
 		textFieldHocKyNamHoc = new JTextField();
 		textFieldHocKyNamHoc.setColumns(10);
-		textFieldHocKyNamHoc.setBounds(348, 94, 86, 20);
+		textFieldHocKyNamHoc.setBounds(802, 94, 86, 20);
 		panelClassroom.add(textFieldHocKyNamHoc);
 
 		textFieldMaLop = new JTextField();
 		textFieldMaLop.setColumns(10);
-		textFieldMaLop.setBounds(348, 63, 86, 20);
+		textFieldMaLop.setBounds(802, 63, 86, 20);
 		panelClassroom.add(textFieldMaLop);
 
 		JButton btnTimKiemLop = new JButton("Tìm kiếm");
 		btnTimKiemLop.addActionListener(plltn);
-		btnTimKiemLop.setBounds(497, 126, 89, 23);
+		btnTimKiemLop.setBounds(379, 126, 89, 23);
 		panelClassroom.add(btnTimKiemLop);
 
 		JButton btnHuyTimLop = new JButton("Huỷ tìm");
 		btnHuyTimLop.addActionListener(plltn);
-		btnHuyTimLop.setBounds(596, 126, 89, 23);
+		btnHuyTimLop.setBounds(478, 126, 89, 23);
 		panelClassroom.add(btnHuyTimLop);
 
 		JLabel lblClassroomCode_2 = new JLabel("Mã phòng");
-		lblClassroomCode_2.setBounds(497, 32, 60, 20);
+		lblClassroomCode_2.setBounds(379, 32, 60, 20);
 		panelClassroom.add(lblClassroomCode_2);
 
 		JLabel lblMLp = new JLabel("Mã lớp");
-		lblMLp.setBounds(497, 63, 60, 20);
+		lblMLp.setBounds(379, 63, 60, 20);
 		panelClassroom.add(lblMLp);
 
 		textFieldTimKiemMaPhong = new JTextField();
 		textFieldTimKiemMaPhong.setColumns(10);
-		textFieldTimKiemMaPhong.setBounds(567, 32, 86, 20);
+		textFieldTimKiemMaPhong.setBounds(449, 32, 86, 20);
 		panelClassroom.add(textFieldTimKiemMaPhong);
 
 		textFieldTimKiemMaLop = new JTextField();
 		textFieldTimKiemMaLop.setColumns(10);
-		textFieldTimKiemMaLop.setBounds(567, 63, 86, 20);
+		textFieldTimKiemMaLop.setBounds(449, 63, 86, 20);
 		panelClassroom.add(textFieldTimKiemMaLop);
 
-		JLabel lblNewLabel_1 = new JLabel("Thông tin phòng");
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblNewLabel_1.setBounds(22, 7, 156, 23);
+		JLabel lblNewLabel_1 = new JLabel("Thông tin phòng học");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblNewLabel_1.setBounds(80, 7, 186, 23);
 		panelClassroom.add(lblNewLabel_1);
 
 		JLabel lblNewLabel_1_1 = new JLabel("Thông tin phòng-lớp");
-		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblNewLabel_1_1.setBounds(255, 9, 156, 21);
+		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblNewLabel_1_1.setBounds(700, 7, 203, 21);
 		panelClassroom.add(lblNewLabel_1_1);
 
 		JLabel lblNewLabel_1_2 = new JLabel("Tìm kiếm");
-		lblNewLabel_1_2.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblNewLabel_1_2.setBounds(507, 7, 156, 23);
+		lblNewLabel_1_2.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblNewLabel_1_2.setBounds(431, 7, 104, 23);
 		panelClassroom.add(lblNewLabel_1_2);
 
 		JLabel lblDanhSchPhng = new JLabel("Danh sách phòng");
@@ -854,7 +868,7 @@ public class QLHS extends JFrame {
 
 		JLabel lblDanhSchPhongg = new JLabel("Danh sách phòng-lớp");
 		lblDanhSchPhongg.setFont(new Font("Tahoma", Font.ITALIC, 18));
-		lblDanhSchPhongg.setBounds(395, 185, 234, 20);
+		lblDanhSchPhongg.setBounds(526, 185, 234, 20);
 		panelClassroom.add(lblDanhSchPhongg);
 
 		/*
@@ -871,65 +885,65 @@ public class QLHS extends JFrame {
 
 		JLabel lblNewLabel_3_1_3 = new JLabel("Tìm kiếm");
 		lblNewLabel_3_1_3.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_3_1_3.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblNewLabel_3_1_3.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblNewLabel_3_1_3.setAlignmentX(0.5f);
-		lblNewLabel_3_1_3.setBounds(525, 13, 219, 17);
+		lblNewLabel_3_1_3.setBounds(700, 8, 219, 17);
 		panelLopHoc.add(lblNewLabel_3_1_3);
 
 		JLabel lblMLp_2 = new JLabel("Mã lớp");
-		lblMLp_2.setBounds(10, 34, 60, 20);
+		lblMLp_2.setBounds(80, 29, 60, 20);
 		panelLopHoc.add(lblMLp_2);
 
 		JLabel lblTnlp = new JLabel("Tên lớp");
-		lblTnlp.setBounds(10, 65, 60, 20);
+		lblTnlp.setBounds(80, 60, 60, 20);
 		panelLopHoc.add(lblTnlp);
 
 		JLabel lblNinKho = new JLabel("Niên khoá");
-		lblNinKho.setBounds(10, 96, 89, 20);
+		lblNinKho.setBounds(80, 91, 89, 20);
 		panelLopHoc.add(lblNinKho);
 
 		textFieldMaLopHoc = new JTextField();
 		textFieldMaLopHoc.setColumns(10);
-		textFieldMaLopHoc.setBounds(112, 34, 86, 20);
+		textFieldMaLopHoc.setBounds(182, 29, 86, 20);
 		panelLopHoc.add(textFieldMaLopHoc);
 
 		textFieldNienKhoaLopHoc = new JTextField();
 		textFieldNienKhoaLopHoc.setColumns(10);
-		textFieldNienKhoaLopHoc.setBounds(112, 96, 86, 20);
+		textFieldNienKhoaLopHoc.setBounds(182, 91, 86, 20);
 		panelLopHoc.add(textFieldNienKhoaLopHoc);
 
 		textFieldTenLopHoc = new JTextField();
 		textFieldTenLopHoc.setColumns(10);
-		textFieldTenLopHoc.setBounds(112, 65, 86, 20);
+		textFieldTenLopHoc.setBounds(182, 60, 86, 20);
 		panelLopHoc.add(textFieldTenLopHoc);
 
 		JLabel lblNewLabel_1_1_1 = new JLabel("Thông tin lớp học");
-		lblNewLabel_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblNewLabel_1_1_1.setBounds(19, 11, 156, 21);
+		lblNewLabel_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblNewLabel_1_1_1.setBounds(89, 6, 179, 21);
 		panelLopHoc.add(lblNewLabel_1_1_1);
 
 		JButton btnChonLopHoc = new JButton("Chọn");
 		btnChonLopHoc.addActionListener(lhltn);
-		btnChonLopHoc.setBounds(228, 34, 89, 23);
+		btnChonLopHoc.setBounds(298, 29, 89, 23);
 		panelLopHoc.add(btnChonLopHoc);
 
 		JButton btnLuuLopHoc = new JButton("Lưu");
 		btnLuuLopHoc.addActionListener(lhltn);
-		btnLuuLopHoc.setBounds(327, 34, 89, 23);
+		btnLuuLopHoc.setBounds(397, 29, 89, 23);
 		panelLopHoc.add(btnLuuLopHoc);
 
 		JButton btnXoaLopHoc = new JButton("Xoá");
 		btnXoaLopHoc.addActionListener(lhltn);
-		btnXoaLopHoc.setBounds(228, 65, 89, 23);
+		btnXoaLopHoc.setBounds(298, 60, 89, 23);
 		panelLopHoc.add(btnXoaLopHoc);
 
 		JButton btnTaoMoiLopHoc = new JButton("Tạo mới");
 		btnTaoMoiLopHoc.addActionListener(lhltn);
-		btnTaoMoiLopHoc.setBounds(327, 65, 89, 23);
+		btnTaoMoiLopHoc.setBounds(397, 60, 89, 23);
 		panelLopHoc.add(btnTaoMoiLopHoc);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 177, 734, 276);
+		scrollPane.setBounds(10, 177, 953, 338);
 		panelLopHoc.add(scrollPane);
 
 		tableLopHoc = new JTable();
@@ -939,41 +953,41 @@ public class QLHS extends JFrame {
 
 		textFieldTimKiemMaLopHoc = new JTextField();
 		textFieldTimKiemMaLopHoc.setColumns(10);
-		textFieldTimKiemMaLopHoc.setBounds(623, 31, 86, 20);
+		textFieldTimKiemMaLopHoc.setBounds(800, 29, 86, 20);
 		panelLopHoc.add(textFieldTimKiemMaLopHoc);
 
 		textFieldTImKiemTenLopHoc = new JTextField();
 		textFieldTImKiemTenLopHoc.setColumns(10);
-		textFieldTImKiemTenLopHoc.setBounds(623, 62, 86, 20);
+		textFieldTImKiemTenLopHoc.setBounds(800, 60, 86, 20);
 		panelLopHoc.add(textFieldTImKiemTenLopHoc);
 
 		JLabel lblSearchTeacherCode_2 = new JLabel("Mã lớp");
-		lblSearchTeacherCode_2.setBounds(523, 31, 60, 20);
+		lblSearchTeacherCode_2.setBounds(700, 29, 60, 20);
 		panelLopHoc.add(lblSearchTeacherCode_2);
 
 		JLabel lblSearchTeacherName_2 = new JLabel("Tên lớp");
-		lblSearchTeacherName_2.setBounds(523, 62, 60, 20);
+		lblSearchTeacherName_2.setBounds(700, 60, 60, 20);
 		panelLopHoc.add(lblSearchTeacherName_2);
 
 		JButton btnTimKiemLopHoc = new JButton("Tìm kiếm");
 		btnTimKiemLopHoc.addActionListener(lhltn);
-		btnTimKiemLopHoc.setBounds(556, 124, 89, 23);
+		btnTimKiemLopHoc.setBounds(733, 122, 89, 23);
 		panelLopHoc.add(btnTimKiemLopHoc);
 
 		JLabel lblSearchTeacherAddress_2 = new JLabel("Niên khoá");
-		lblSearchTeacherAddress_2.setBounds(523, 93, 60, 20);
+		lblSearchTeacherAddress_2.setBounds(700, 91, 60, 20);
 		panelLopHoc.add(lblSearchTeacherAddress_2);
 
 		textFieldTimKiemNienKhoaLopHoc = new JTextField();
 		textFieldTimKiemNienKhoaLopHoc.setColumns(10);
-		textFieldTimKiemNienKhoaLopHoc.setBounds(623, 93, 86, 20);
+		textFieldTimKiemNienKhoaLopHoc.setBounds(800, 91, 86, 20);
 		panelLopHoc.add(textFieldTimKiemNienKhoaLopHoc);
 
 		JButton btnHuyTimLopHoc = new JButton("Huỷ tìm");
 		btnHuyTimLopHoc.addActionListener(lhltn);
-		btnHuyTimLopHoc.setBounds(655, 124, 89, 23);
+		btnHuyTimLopHoc.setBounds(832, 122, 89, 23);
 		panelLopHoc.add(btnHuyTimLopHoc);
-		
+
 		JButton btnXuatFileLop = new JButton("Xuất File");
 		btnXuatFileLop.addActionListener(lhltn);
 		btnXuatFileLop.setForeground(new Color(0, 0, 128));
@@ -981,12 +995,12 @@ public class QLHS extends JFrame {
 		btnXuatFileLop.setBackground(SystemColor.activeCaption);
 		btnXuatFileLop.setBounds(201, 143, 89, 23);
 		panelLopHoc.add(btnXuatFileLop);
-		
+
 		JLabel lblDanhSchLp = new JLabel("Danh sách lớp học");
 		lblDanhSchLp.setFont(new Font("Tahoma", Font.ITALIC, 18));
 		lblDanhSchLp.setBounds(10, 147, 234, 20);
 		panelLopHoc.add(lblDanhSchLp);
-		
+
 		textNhapTenFileLopHoc = new JTextField();
 		textNhapTenFileLopHoc.setToolTipText("Nhập tên file");
 		textNhapTenFileLopHoc.setText("Nhập tên file");
@@ -994,7 +1008,65 @@ public class QLHS extends JFrame {
 		textNhapTenFileLopHoc.setBounds(312, 144, 86, 20);
 		panelLopHoc.add(textNhapTenFileLopHoc);
 
-		this.setVisible(true);
+		/*
+		 * Tab thống kê bắt đầu ở đây STATISTIC START
+		 */
+		ThongKeTabListener tktl = new ThongKeTabListener(this);
+
+		JPanel panelStatistic = new JPanel();
+		panelStatistic.setBackground(new Color(224, 255, 255));
+		tabbedPane.addTab("Thống kê", null, panelStatistic, null);
+		panelStatistic.setLayout(null);
+
+		JScrollPane scrollPaneThongKe = new JScrollPane((Component) null);
+		scrollPaneThongKe.setBounds(10, 116, 953, 399);
+		panelStatistic.add(scrollPaneThongKe);
+
+		lblNewLabel_XepHang = new JLabel("Bảng xếp hạng");
+		lblNewLabel_XepHang.setFont(new Font("Tahoma", Font.ITALIC, 18));
+		lblNewLabel_XepHang.setBounds(10, 85, 236, 20);
+		panelStatistic.add(lblNewLabel_XepHang);
+
+		tableThongKe = new JTable();
+		tableThongKe.setModel(new DefaultTableModel(new Object[][] {}, new String[] {}));
+		scrollPaneThongKe.setViewportView(tableThongKe);
+
+		JLabel lblNewLabel_3_1_2_1_1 = new JLabel("Thống kê");
+		lblNewLabel_3_1_2_1_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_3_1_2_1_1.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblNewLabel_3_1_2_1_1.setAlignmentX(0.5f);
+		lblNewLabel_3_1_2_1_1.setBounds(107, 10, 219, 20);
+		panelStatistic.add(lblNewLabel_3_1_2_1_1);
+
+		JButton btnLocDiemThongKe = new JButton("Lọc");
+		btnLocDiemThongKe.addActionListener(tktl);
+		btnLocDiemThongKe.setBounds(322, 41, 89, 23);
+		panelStatistic.add(btnLocDiemThongKe);
+
+		JLabel lblTeacherName_1_1_1_1_1 = new JLabel("Môn:");
+		lblTeacherName_1_1_1_1_1.setBounds(203, 44, 30, 20);
+		panelStatistic.add(lblTeacherName_1_1_1_1_1);
+
+		String[] mon = new String[] { "Toan", "Van", "AV", "All" };
+		comboBoxChonMonHocThongKe = new JComboBox(mon);
+		comboBoxChonMonHocThongKe.setToolTipText("Môn Học");
+		comboBoxChonMonHocThongKe.setBounds(230, 41, 80, 22);
+		panelStatistic.add(comboBoxChonMonHocThongKe);
+
+		JLabel lblTeacherName_1_1_1_1_1_1 = new JLabel("Lớp");
+		lblTeacherName_1_1_1_1_1_1.setBounds(80, 44, 30, 20);
+		panelStatistic.add(lblTeacherName_1_1_1_1_1_1);
+
+		String[] lop = new String[] { "10", "11", "12" };
+		comboBoxChonLopThongKe = new JComboBox(lop);
+		comboBoxChonLopThongKe.setToolTipText("Môn Học");
+		comboBoxChonLopThongKe.setBounds(107, 41, 80, 22);
+		panelStatistic.add(comboBoxChonLopThongKe);
+
+		/*
+		 * Tab thống kê kết thúc ở đây STATISTIC END
+		 */
+
 	}
 
 	/*
@@ -1002,6 +1074,13 @@ public class QLHS extends JFrame {
 	 * 
 	 * START
 	 */
+
+	public static void main(String[] args) {
+		SwingUtilities.invokeLater(() -> {
+			QLHS frame = new QLHS();
+			frame.setVisible(true);
+		});
+	}
 
 	public void xoaTextFieldGV() {
 		this.textFieldMaGV.setText("");
@@ -1064,7 +1143,7 @@ public class QLHS extends JFrame {
 		String maGV = mode.getValueAt(i_row, 1).toString();
 		String hoTenGV = mode.getValueAt(i_row, 2).toString();
 		Date nsgv = new Date(mode.getValueAt(i_row, 3).toString());
-		Date ngaySinhGV = new Date(nsgv.getDate()+"/"+(nsgv.getMonth()+1)+"/"+(nsgv.getYear()+1900));
+		Date ngaySinhGV = new Date(nsgv.getDate() + "/" + (nsgv.getMonth() + 1) + "/" + (nsgv.getYear() + 1900));
 		String diaChiGV = mode.getValueAt(i_row, 4).toString();
 		String soDienThoaiGV = mode.getValueAt(i_row, 5).toString();
 
@@ -1099,11 +1178,12 @@ public class QLHS extends JFrame {
 			GiaoVien gv = this.gvModel.getGiaoVienDAO().selectById(layThongTinGVDangChon().getMaGV());
 			System.out.println(this.gvModel.getDsGiaoVien());
 			System.out.println(gv);
-			if(this.gvModel.delete(gv)) {
+			if (this.gvModel.delete(gv)) {
 				JOptionPane.showMessageDialog(this, "Xoá thành công");
-			}else{
-				int pn = JOptionPane.showConfirmDialog(this, "Có thể hiện dữ liệu khác tham chiếu tới dữ liệu bạn muốn xoá!\nBạn muốn xoá hết các dữ liệu liên quan không?");
-				if(pn == JOptionPane.YES_OPTION) {
+			} else {
+				int pn = JOptionPane.showConfirmDialog(this,
+						"Có thể hiện dữ liệu khác tham chiếu tới dữ liệu bạn muốn xoá!\nBạn muốn xoá hết các dữ liệu liên quan không?");
+				if (pn == JOptionPane.YES_OPTION) {
 					this.gvModel.deleteAnyway(gv);
 				}
 			}
@@ -1176,12 +1256,12 @@ public class QLHS extends JFrame {
 
 	public void xuatFileGV() {
 		String tenfile = this.textNhapTenFileGV.getText();
-		if(tenfile.equals("Nhập tên file")) {
+		if (tenfile.equals("Nhập tên file")) {
 			tenfile = "NewExcel";
 		}
 		this.gvModel.xuatFileDSGV(tenfile);
 	}
-	
+
 	public void aboutMe() {
 		JOptionPane.showMessageDialog(this, "Phan mem quan ly thi sinh 1.1");
 	}
@@ -1219,7 +1299,6 @@ public class QLHS extends JFrame {
 			this.lopModel.setDsLop(dslh);
 
 			System.out.println(ds);
-			this.layDSDiem();
 			this.hienthiDSChuNhiemHienTai();
 			huytimLH();
 			huytimPH();
@@ -1373,10 +1452,11 @@ public class QLHS extends JFrame {
 
 		if (luaChon == JOptionPane.YES_OPTION) {
 			HocSinh hs = layThongTinHSDangChon();
-			if(this.hsModel.delete(hs)) {
+			if (this.hsModel.delete(hs)) {
 				JOptionPane.showMessageDialog(this, "Xoá thành công");
-			}else{
-				JOptionPane.showMessageDialog(this, "Có thể hiện dữ liệu khác tham chiếu tới dữ liệu bạn muốn xoá!\n Xoá không thành công");
+			} else {
+				JOptionPane.showMessageDialog(this,
+						"Có thể hiện dữ liệu khác tham chiếu tới dữ liệu bạn muốn xoá!\n Xoá không thành công");
 			}
 			this.huytimHS();
 		}
@@ -1516,12 +1596,12 @@ public class QLHS extends JFrame {
 
 	public void xuatFileHS() {
 		String tenfile = this.textNhapTenFileHS.getText();
-		if(tenfile.equals("Nhập tên file")) {
+		if (tenfile.equals("Nhập tên file")) {
 			tenfile = "NewExcel";
 		}
 		this.hsModel.xuatFileDSHS(tenfile);
 	}
-	
+
 	/*
 	 * CÁC PHƯƠNG THỨC LIÊN QUAN ĐẾN TAB HỌC SINH KẾT THỨC Ở ĐÂY
 	 * 
@@ -1543,7 +1623,7 @@ public class QLHS extends JFrame {
 		int soDong = mode.getRowCount();
 
 		ArrayList<Diem> dsDiem = new ArrayList<Diem>();
-		
+
 		for (int i = 0; i < soDong; i++) {
 			String maHS = mode.getValueAt(i, 1).toString();
 			String maMonHoc = mode.getValueAt(i, 3).toString();
@@ -1677,12 +1757,12 @@ public class QLHS extends JFrame {
 
 	public void xuatFileDiem() {
 		String tenfile = this.textNhapTenFileDiem.getText();
-		if(tenfile.equals("Nhập tên file")) {
+		if (tenfile.equals("Nhập tên file")) {
 			tenfile = "NewExcel";
 		}
 		this.diemModel.xuatFileDSDiem(tenfile);
 	}
-	
+
 	/*
 	 * 
 	 * TAB Phòng học
@@ -1747,10 +1827,11 @@ public class QLHS extends JFrame {
 
 		if (luaChon == JOptionPane.YES_OPTION) {
 			PhongHoc ph = layThongTinPhongHocDangChon();
-			if(this.phModel.delete(ph)) {
+			if (this.phModel.delete(ph)) {
 				JOptionPane.showMessageDialog(this, "Xoá thành công");
-			}else{
-				JOptionPane.showMessageDialog(this, "Có thể hiện dữ liệu khác tham chiếu tới dữ liệu bạn muốn xoá!\n Xoá không thành công");
+			} else {
+				JOptionPane.showMessageDialog(this,
+						"Có thể hiện dữ liệu khác tham chiếu tới dữ liệu bạn muốn xoá!\n Xoá không thành công");
 			}
 			this.huytimPH();
 		}
@@ -1856,10 +1937,9 @@ public class QLHS extends JFrame {
 
 		if (luaChon == JOptionPane.YES_OPTION) {
 			PhongLop pl = layThongTinPhongLopDangChon();
-			if(this.plModel.delete(pl)) {
+			if (this.plModel.delete(pl)) {
 				JOptionPane.showMessageDialog(this, "Xoá thành công");
-			}else
-			{
+			} else {
 				JOptionPane.showMessageDialog(this, "Có thể hiện dữ liệu khác tham chiếu tới dữ liệu bạn muốn xoá!");
 			}
 			this.huytimPL();
@@ -2023,14 +2103,14 @@ public class QLHS extends JFrame {
 	public void xoaLopHoc() {
 		DefaultTableModel mode = (DefaultTableModel) this.tableLopHoc.getModel();
 		int i_row = this.tableLopHoc.getSelectedRow();
-		int luaChon = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xoá  Lớp Học này ra khỏi cơ sở dữ liệu không?");
+		int luaChon = JOptionPane.showConfirmDialog(this,
+				"Bạn có chắc muốn xoá  Lớp Học này ra khỏi cơ sở dữ liệu không?");
 
 		if (luaChon == JOptionPane.YES_OPTION) {
 			Lop lop = layThongTinLopDangChon();
-			if(this.lopModel.delete(lop)) {
+			if (this.lopModel.delete(lop)) {
 				JOptionPane.showMessageDialog(this, "Xoá thành công");
-			}else
-			{
+			} else {
 				JOptionPane.showMessageDialog(this, "Có thể hiện dữ liệu khác tham chiếu tới dữ liệu bạn muốn xoá!");
 			}
 			huytimLH();
@@ -2093,7 +2173,8 @@ public class QLHS extends JFrame {
 
 	private void themLopvaoBangDL(Lop lop) {
 		DefaultTableModel mode = (DefaultTableModel) tableLopHoc.getModel();
-		mode.addRow(new Object[] { mode.getRowCount()+1, lop.getMaLop(), lop.getTenLop(), lop.getNienKhoa(), lop.getSiSo(this.hsModel.getDsHocSinh()) });
+		mode.addRow(new Object[] { mode.getRowCount() + 1, lop.getMaLop(), lop.getTenLop(), lop.getNienKhoa(),
+				lop.getSiSo(this.hsModel.getDsHocSinh()) });
 	}
 
 	public void timKiemLopHoc() {
@@ -2136,11 +2217,130 @@ public class QLHS extends JFrame {
 			this.themLopvaoBangDL(lop);
 		}
 	}
+
 	public void xuatFileLop() {
 		String tenfile = this.textNhapTenFileLopHoc.getText();
-		if(tenfile.equals("Nhập tên file")) {
+		if (tenfile.equals("Nhập tên file")) {
 			tenfile = "NewExcel";
 		}
 		this.lopModel.xuatFileDSLH(tenfile);
 	}
+
+	/*
+	 * CÁC PHƯƠNG THỨC LIÊN QUAN TAB THỐNG KÊ
+	 * 
+	 * START
+	 */
+
+	public void hienThiDSXepHangTheoHocLuc(String lop) {
+		this.tableThongKe.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Hạng", "Tên học sinh",
+				"Điểm tb văn", "Điểm tb Toán", "Điểm tb anh văn", "Điểm tb các môn", "Học lực" }));
+		lblNewLabel_XepHang.setText("Bảng xếp hạng khối " + lop);
+//		Xóa hết dữ liệu trong bảng cũ
+		DefaultTableModel mode = (DefaultTableModel) this.tableThongKe.getModel();
+		while (true) {
+
+			int soLuongDong = mode.getRowCount();
+			if (soLuongDong == 0)
+				break;
+			else {
+				try {
+					mode.removeRow(0);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+//		Lấy ra học sinh đủ điều kiện để sét học lực: đủ điểm tất cả các cột của 3 môn
+		ArrayList<HocSinh> result = (ArrayList<HocSinh>) hsModel.getHocSinhDao().getDSHSDuDienKienXetHocLuc(lop);
+
+		double DiemTBMon1 = (float) 0.0;
+		double DiemTBMon2 = (float) 0.0;
+		double DiemTBMon3 = (float) 0.0;
+		double DiemTBTatCa = (float) 0.0;
+		String hocLuc = new String("");
+		for (int i = 0; i < result.size(); i++) {
+			HocSinh hs = result.get(i);
+//			Lấy điểm 3 môn của học sinh thứ i
+			ArrayList<Diem> diemMon1List = (ArrayList<Diem>) diemModel.getdiemDAO().TimDSDiem("VAN", hs.getMaHS());
+			ArrayList<Diem> diemMon2List = (ArrayList<Diem>) diemModel.getdiemDAO().TimDSDiem("TOAN", hs.getMaHS());
+			ArrayList<Diem> diemMon3List = (ArrayList<Diem>) diemModel.getdiemDAO().TimDSDiem("AV", hs.getMaHS());
+			System.out.println(diemMon1List);
+			Diem Mon1 = diemMon1List.get(0);
+			Diem Mon2 = diemMon2List.get(0);
+			Diem Mon3 = diemMon3List.get(0);
+//			
+
+			DiemTBMon1 = Math.ceil(
+					((Mon1.getDiemMieng() + Mon1.getDiem15Phut() + Mon1.getDiem1Tiet() * 2 + Mon1.getDiemHocKy() * 3)
+							/ 7) * 100)
+					/ 100;
+			DiemTBMon2 = Math.ceil(
+					((Mon2.getDiemMieng() + Mon2.getDiem15Phut() + Mon2.getDiem1Tiet() * 2 + Mon2.getDiemHocKy() * 3)
+							/ 7) * 100)
+					/ 100;
+			DiemTBMon3 = Math.ceil(
+					((Mon3.getDiemMieng() + Mon3.getDiem15Phut() + Mon3.getDiem1Tiet() * 2 + Mon3.getDiemHocKy() * 3)
+							/ 7) * 100)
+					/ 100;
+			DiemTBTatCa = Math.ceil(((DiemTBMon1 + DiemTBMon2 + DiemTBMon3) / 3) * 100) / 100;
+
+			if (DiemTBTatCa >= 8.0) {
+				hocLuc = new String("Giỏi");
+			} else if (DiemTBTatCa < 8.0 && DiemTBTatCa >= 7.0) {
+				hocLuc = new String("Khá");
+			} else if (DiemTBTatCa < 7.0 && DiemTBTatCa >= 4.0) {
+				hocLuc = new String("Trung bình");
+			} else if (DiemTBTatCa < 4.0 && DiemTBTatCa >= 2.0) {
+				hocLuc = new String("Yếu");
+			} else if (DiemTBTatCa < 2.0) {
+				hocLuc = new String("Kém");
+			}
+			mode.addRow(
+					new Object[] { i + 1, hs.getHoTenHS(), DiemTBMon1, DiemTBMon2, DiemTBMon3, DiemTBTatCa, hocLuc, });
+		}
+	}
+
+	public void hienThiDSXepHangTheoMon(String monLuaChon, String lop) {
+		this.tableThongKe.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Hạng", "Tên học sinh",
+				"Điểm miệng", "Điểm 15 phút", "Điểm 1 tiết", "Điểm học kỳ", "Điểm tb môn" }));
+//		Thay đổi nhãn
+		lblNewLabel_XepHang.setText("Bảng xếp hạng " + monLuaChon + " Lop " + lop);
+//		Xóa dữ liệu trong bảng
+		DefaultTableModel mode = (DefaultTableModel) this.tableThongKe.getModel();
+		while (true) {
+
+			int soLuongDong = mode.getRowCount();
+			if (soLuongDong == 0)
+				break;
+			else {
+				try {
+					mode.removeRow(0);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+//		Lấy danh sách học sinh và điểm của họ
+		ArrayList<HocSinh> hsResult = (ArrayList<HocSinh>) hsModel.getHocSinhDao()
+				.getDSXepHangTheoMon(monLuaChon.toUpperCase(), lop);
+		ArrayList<Diem> diemReusult = (ArrayList<Diem>) diemModel.getdiemDAO()
+				.getDSXepHangTheoMon(monLuaChon.toUpperCase(), lop);
+
+		for (int i = 0; i < diemReusult.size(); i++) {
+			Diem diem = diemReusult.get(i);
+			double diemtb = Math.ceil(
+					(((diem.getDiemMieng() != null ? diem.getDiemMieng() : 0.0) +( diem.getDiem15Phut() != null ? diem.getDiem15Phut() : 0.0) + (diem.getDiem1Tiet() != null ? diem.getDiem1Tiet() : 0.0) * 2 + (diem.getDiemHocKy()!= null ? diem.getDiemHocKy() : 0.0) * 3)
+							/ 7) * 100) / 100;
+			mode.addRow(new Object[] { i + 1, hsResult.get(i).getHoTenHS(), diem.getDiemMieng(), diem.getDiem15Phut(),
+					diem.getDiem1Tiet(), diem.getDiemHocKy(), diemtb });
+		}
+	}
+
+	/*
+	 * CÁC PHƯƠNG THỨC LIÊN QUAN TAB THỐNG KÊ
+	 * 
+	 * END
+	 */
 }

@@ -12,32 +12,32 @@ import org.hibernate.query.NativeQuery;
 
 import model.Diem;
 import model.GiaoVien;
+import model.HocSinh;
+import model.MonHoc;
 import util.HibernateUtil;
 
-public class DiemDAO implements DAOInterface<Diem>{
+public class DiemDAO implements DAOInterface<Diem> {
 	@Override
 	public List<Diem> selectAll() {
 		List<Diem> resultList = new ArrayList<Diem>();
 		try {
 			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-			if(sessionFactory != null) {
+			if (sessionFactory != null) {
 				Session session = sessionFactory.openSession();
 				Transaction transaction = session.beginTransaction();
-				
-				
+
 				String sql = "SELECT * FROM diem";
 				SQLQuery query = session.createSQLQuery(sql);
-				query.addEntity(Diem.class);	
-				
-				
+				query.addEntity(Diem.class);
+
 //				Query query = session.createSQLQuery("call Bang_Diem_TB('AV10');");
 //				((SQLQuery) query).addEntity(Diem.class);		
 				resultList = query.list();
-				
+
 //				String hql = "from GiaoVien";
 //				Query query = session.createQuery(hql);
 //				resultList = query.getResultList();
-				
+
 				transaction.commit();
 				session.close();
 			}
@@ -52,16 +52,16 @@ public class DiemDAO implements DAOInterface<Diem>{
 		List<Diem> resultList = new ArrayList<Diem>();
 		try {
 			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-			if(sessionFactory != null) {
+			if (sessionFactory != null) {
 				Session session = sessionFactory.openSession();
 				Transaction transaction = session.beginTransaction();
-				
+
 				String sql = "SELECT * FROM Diem ts WHERE ts.id = :id";
 				SQLQuery query = session.createSQLQuery(sql);
-				query.addEntity(Diem.class);		
+				query.addEntity(Diem.class);
 				query.setParameter("id", id);
 				resultList = query.list();
-				
+
 				transaction.commit();
 				session.close();
 			}
@@ -75,12 +75,12 @@ public class DiemDAO implements DAOInterface<Diem>{
 	public boolean saveOrUpdate(Diem element) {
 		try {
 			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-			if(sessionFactory != null) {
+			if (sessionFactory != null) {
 				Session session = sessionFactory.openSession();
 				Transaction transaction = session.beginTransaction();
-				
+
 				session.saveOrUpdate(element);
-				
+
 				transaction.commit();
 				session.close();
 			}
@@ -107,12 +107,12 @@ public class DiemDAO implements DAOInterface<Diem>{
 	public boolean delete(Diem element) {
 		try {
 			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-			if(sessionFactory != null) {
+			if (sessionFactory != null) {
 				Session session = sessionFactory.openSession();
 				Transaction transaction = session.beginTransaction();
-				
+
 				session.delete(element);
-				
+
 				transaction.commit();
 				session.close();
 			}
@@ -122,8 +122,78 @@ public class DiemDAO implements DAOInterface<Diem>{
 			return false;
 		}
 	}
-	
+
 	public List<Diem> selectOnConditions(String maLop, String maMon) {
+		List<Diem> resultList = new ArrayList<Diem>();
+		try {
+			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+			if (sessionFactory != null) {
+				Session session = sessionFactory.openSession();
+				Transaction transaction = session.beginTransaction();
+
+//				String sql = "SELECT * FROM diem";
+//				SQLQuery query = session.createSQLQuery(sql);
+//				query.addEntity(Diem.class);	
+
+				Query query = session.createSQLQuery("call Bang_Nhap_Diem;");
+				((SQLQuery) query).addEntity(Diem.class);
+				query.executeUpdate();
+
+				if (maMon.equals("All")) {
+					maMon = "";
+				}
+
+				Query query2 = session.createSQLQuery("call LayDiemTheoMonLop(:maMon, :maLop);");
+				((SQLQuery) query2).addEntity(Diem.class);
+				query2.setParameter("maLop", maLop);
+				query2.setParameter("maMon", maMon);
+				resultList = query2.list();
+
+//				String hql = "from GiaoVien";
+//				Query query = session.createQuery(hql);
+//				resultList = query.getResultList();
+
+				transaction.commit();
+				session.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resultList;
+	}
+
+	
+
+	public List TimDSDiem(String maMon, String MaHS) {
+		List<Diem> resultList = new ArrayList<Diem>();
+		try {
+			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+			if (sessionFactory != null) {
+				Session session = sessionFactory.openSession();
+				Transaction transaction = session.beginTransaction();
+				
+				if (maMon.equals("All")) {
+					maMon = "";
+				}
+				
+				String sql = "SELECT * FROM diem \r\n"
+						+ "WHERE (MaMonHoc like concat('%', :MaMonHoc, '%')) and (MaHS like concat('%', :MaHS, '%'));	";
+				SQLQuery query = session.createSQLQuery(sql);
+				query.addEntity(Diem.class);
+				query.setParameter("MaMonHoc", maMon);
+				query.setParameter("MaHS", MaHS);
+				resultList = query.list();
+
+				transaction.commit();
+				session.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resultList;
+	}
+
+	public List<Diem> getDSXepHangTheoMon(String maMon, String lop) {
 		List<Diem> resultList = new ArrayList<Diem>();
 		try {
 			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
@@ -131,30 +201,17 @@ public class DiemDAO implements DAOInterface<Diem>{
 				Session session = sessionFactory.openSession();
 				Transaction transaction = session.beginTransaction();
 				
-				
-//				String sql = "SELECT * FROM diem";
-//				SQLQuery query = session.createSQLQuery(sql);
-//				query.addEntity(Diem.class);	
-				
-				
-				Query query = session.createSQLQuery("call Bang_Nhap_Diem;");
-				((SQLQuery) query).addEntity(Diem.class);		
-				query.executeUpdate();
-				
-				if(maMon.equals("All")) {
+				if (maMon.equals("All")) {
 					maMon = "";
 				}
 				
-				Query query2 = session.createSQLQuery("call LayDiemTheoMonLop(:maMon, :maLop);");
-				((SQLQuery) query2).addEntity(Diem.class);		
-				query2.setParameter("maLop", maLop);
-				query2.setParameter("maMon", maMon);
-				resultList = query2.list();
-				
-				
-//				String hql = "from GiaoVien";
-//				Query query = session.createQuery(hql);
-//				resultList = query.getResultList();
+				String sql = "CALL getDSHSXepHangTheoMon(:maMon, :lop)";
+				SQLQuery query = session.createSQLQuery(sql);
+				query.setParameter("maMon", maMon);
+				query.setParameter("lop", lop);
+				query.addEntity(Diem.class);	
+					
+				resultList = query.list();
 				
 				transaction.commit();
 				session.close();
@@ -164,5 +221,4 @@ public class DiemDAO implements DAOInterface<Diem>{
 		}
 		return resultList;
 	}
-	
 }

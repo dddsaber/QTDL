@@ -10,6 +10,7 @@ import org.hibernate.Transaction;
 
 import model.GiaoVien;
 import model.HocSinh;
+import model.MonHoc;
 import util.HibernateUtil;
 
 public class HocSinhDAO implements DAOInterface<HocSinh>{
@@ -113,5 +114,54 @@ public class HocSinhDAO implements DAOInterface<HocSinh>{
 			return false;
 		}
 	}
+	
+	public List<HocSinh> getDSXepHangTheoMon(String maMon, String lop) {
+		List<HocSinh> resultList = new ArrayList<HocSinh>();
+		try {
+			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+			if(sessionFactory != null) {
+				Session session = sessionFactory.openSession();
+				Transaction transaction = session.beginTransaction();
+				
+				
+				String sql = "CALL getDSHSXepHangTheoMon(:maMon, :lop);";
+				SQLQuery query = session.createSQLQuery(sql);
+				query.setParameter("maMon", maMon);
+				query.setParameter("lop", lop);
+				query.addEntity(HocSinh.class);		
+				resultList = query.list();
 
+				transaction.commit();
+				session.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resultList;
+	}
+	
+	
+	public List<HocSinh> getDSHSDuDienKienXetHocLuc(String lop) {
+		List<HocSinh> resultList = new ArrayList<HocSinh>();
+		try {
+			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+			if(sessionFactory != null) {
+				Session session = sessionFactory.openSession();
+				Transaction transaction = session.beginTransaction();
+				
+				
+				String sql = "CALL getDSHSDuDienKienXetHocLuc(:lop)";
+				SQLQuery query = session.createSQLQuery(sql);
+				query.setParameter("lop", lop);
+				query.addEntity(HocSinh.class);		
+				resultList = query.list();
+
+				transaction.commit();
+				session.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resultList;
+	}
 }
