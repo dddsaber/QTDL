@@ -41,7 +41,8 @@ public class Lop {
 	public int getSiSo(ArrayList<HocSinh> dshs) {
 		int count = 0;
 		for (int i = 0; i < dshs.size(); i++) {
-			if(dshs.get(i).getMaLop().equals(this.MaLop)) {
+			String malop_hs = dshs.get(i).getMaLop() != null ? dshs.get(i).getMaLop() : "";
+			if(malop_hs.equals(this.MaLop)) {
 				count++;
 			}
 		}

@@ -1,6 +1,5 @@
 package controller;
 
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -17,14 +16,10 @@ public class ThongKeTabListener implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		String actionCommand = e.getActionCommand();
-		if(actionCommand.equals("Lọc")) {
-			String monLuaChon = this.view.comboBoxChonMonHocThongKe.getSelectedItem().toString();
+	 
+		if(actionCommand.equals("Thống kê")) {
 			String lopLuaChon = this.view.comboBoxChonLopThongKe.getSelectedItem().toString();
-			if(monLuaChon.equals("Tất cả")) {
-				this.view.hienThiDSXepHangTheoHocLuc(lopLuaChon);
-			} else {
-				this.view.hienThiDSXepHangTheoMon(monLuaChon, lopLuaChon);
-			}
+			this.view.layDSXepHangTheoHocLuc(lopLuaChon);
 		}
  	}
 

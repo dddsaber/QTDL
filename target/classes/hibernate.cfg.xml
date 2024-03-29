@@ -16,7 +16,7 @@
         <property name="show_sql">true</property>
         
         <!-- Mapping -->
-        <mapping class="model.ThiSinh"/>
+        <mapping class="model.ThongKeHS"/>
         <mapping class="model.GiaoVien"/>
         <mapping class="model.ChuNhiem"/>
         <mapping class="model.Diem"/>

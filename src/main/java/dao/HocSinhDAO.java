@@ -186,4 +186,50 @@ public class HocSinhDAO implements DAOInterface<HocSinh>{
 		}
 		return resultList;
 	}
+
+	public List<HocSinh> selectAllAsc() {
+		List<HocSinh> resultList = new ArrayList<HocSinh>();
+		try {
+			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+			if(sessionFactory != null) {
+				Session session = sessionFactory.openSession();
+				Transaction transaction = session.beginTransaction();
+				
+				
+				String sql = "SELECT * FROM hocsinh ORDER BY SUBSTRING_INDEX(HoTenHS, ' ', -1) ASC";
+				SQLQuery query = session.createSQLQuery(sql);
+				query.addEntity(HocSinh.class);		
+				resultList = query.list();
+
+				transaction.commit();
+				session.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resultList;
+	}
+
+	public List<HocSinh> selectAllDesc() {
+		List<HocSinh> resultList = new ArrayList<HocSinh>();
+		try {
+			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+			if(sessionFactory != null) {
+				Session session = sessionFactory.openSession();
+				Transaction transaction = session.beginTransaction();
+				
+				
+				String sql = "SELECT * FROM hocsinh ORDER BY SUBSTRING_INDEX(HoTenHS, ' ', -1) DESC";
+				SQLQuery query = session.createSQLQuery(sql);
+				query.addEntity(HocSinh.class);		
+				resultList = query.list();
+
+				transaction.commit();
+				session.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resultList;
+	}
 }

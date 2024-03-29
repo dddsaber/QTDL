@@ -180,7 +180,7 @@ public class GiaoVienDAO implements DAOInterface<GiaoVien> {
 				Transaction transaction = session.beginTransaction();
 				
 				
-				String sql = "SELECT * FROM giaovien ORDER BY maGV ASC;";
+				String sql = "SELECT * FROM giaovien ORDER BY SUBSTRING_INDEX(HoTenGV, ' ', -1) ASC;";
 				SQLQuery query = session.createSQLQuery(sql);
 				query.addEntity(GiaoVien.class);		
 				resultList = query.list();
@@ -204,7 +204,7 @@ public class GiaoVienDAO implements DAOInterface<GiaoVien> {
 				Transaction transaction = session.beginTransaction();
 				
 				
-				String sql = "SELECT * FROM giaovien ORDER BY maGV DESC;";
+				String sql = "SELECT * FROM giaovien ORDER BY SUBSTRING_INDEX(HoTenGV, ' ', -1) DESC;";
 				SQLQuery query = session.createSQLQuery(sql);
 				query.addEntity(GiaoVien.class);		
 				resultList = query.list();
