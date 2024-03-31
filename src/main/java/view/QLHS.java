@@ -52,6 +52,7 @@ import net.bytebuddy.asm.Advice.This;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -68,6 +69,8 @@ import javax.swing.SwingUtilities;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.Color;
@@ -196,6 +199,32 @@ public class QLHS extends JFrame {
 		JMenuData.setBackground(new Color(128, 128, 128));
 		JMenuData.setForeground(new Color(0, 0, 128));
 		menuBar.add(JMenuData);
+
+		JMenuItem newMenuItem = new JMenuItem("New");
+		JMenuItem openMenuItem = new JMenuItem("Open");
+		JMenuItem exitMenuItem = new JMenuItem("Exit");
+		exitMenuItem.setToolTipText("Nhấn vào đây để thoát chương trình");
+		exitMenuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				exit();
+			}
+		});
+		exitMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_DOWN_MASK));
+		JMenuAccount.add(newMenuItem);
+		JMenuAccount.addSeparator();
+		JMenuAccount.add(openMenuItem);
+		JMenuAccount.addSeparator();
+		JMenuAccount.add(exitMenuItem);
+		JMenuItem aboutMenuItem = new JMenuItem("About");
+		aboutMenuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				aboutMe();
+			}
+		});
+		aboutMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, InputEvent.CTRL_DOWN_MASK));
+		JMenuData.add(aboutMenuItem);
 //		Các tab bắt đầu từ đây
 		/*
 		 * 
@@ -644,9 +673,8 @@ public class QLHS extends JFrame {
 		scrollPaneThongTinDiemHocSinh.setBounds(10, 134, 953, 381);
 		panelScore.add(scrollPaneThongTinDiemHocSinh);
 
-		String[] cacMonHoc = new String[] { "Toán 10", "Ngữ Văn 10", "Ngoại Ngữ 10", 
-										"Toán 11", "Ngữ Văn 11", "Ngoại Ngữ 11",
-										"Toán 12", "Ngữ Văn 12", "Ngoại Ngữ 12" };
+		String[] cacMonHoc = new String[] { "Toán 10", "Ngữ Văn 10", "Ngoại Ngữ 10", "Toán 11", "Ngữ Văn 11",
+				"Ngoại Ngữ 11", "Toán 12", "Ngữ Văn 12", "Ngoại Ngữ 12" };
 
 		String[] thuTuLocDiem = new String[] { "tb >= 8.0", "tb >= 6.5", "b >= 5.0", "tb >= 3.0" };
 
@@ -1197,12 +1225,12 @@ public class QLHS extends JFrame {
 		textFieldXuatFileThongKe.setColumns(10);
 		textFieldXuatFileThongKe.setBounds(240, 251, 86, 20);
 		panelStatistic.add(textFieldXuatFileThongKe);
-		
+
 		JLabel lblTeacherName_1_1 = new JLabel("Niên khoá:");
 		lblTeacherName_1_1.setBounds(127, 41, 60, 20);
 		panelStatistic.add(lblTeacherName_1_1);
 
-		comboBoxChonNienKhoaThongKe = new JComboBox(new Object[]{});
+		comboBoxChonNienKhoaThongKe = new JComboBox(new Object[] {});
 		comboBoxChonNienKhoaThongKe.addItem("2018-2019");
 		comboBoxChonNienKhoaThongKe.addItem("2019-2020");
 		comboBoxChonNienKhoaThongKe.addItem("2020-2021");
@@ -2436,7 +2464,7 @@ public class QLHS extends JFrame {
 		}
 		this.lopModel.xuatFileDSLH(tenfile);
 		JOptionPane.showMessageDialog(this, "Xuất File thành công");
-		
+
 	}
 
 	/*
