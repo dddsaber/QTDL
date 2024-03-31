@@ -87,7 +87,7 @@ public class QLHS extends JFrame {
 	private MonHocModel mhModel;
 	private LopModel lopModel;
 	private ThongKeHSModel tkModel;
-	
+
 	// Resize attributes
 	private double widthRatio = 900;
 	private double heightRatio = 550;
@@ -157,7 +157,8 @@ public class QLHS extends JFrame {
 	private JLabel lblNewLabel_ThongKeSLHSYeu;
 	private JLabel lblNewLabel_ThongKeSLHSKem;
 	private JTextField textFieldXuatFileThongKe;
-	
+	public JComboBox comboBoxChonNienKhoaThongKe;
+
 	/**
 	 * Create the frame.
 	 */
@@ -643,7 +644,9 @@ public class QLHS extends JFrame {
 		scrollPaneThongTinDiemHocSinh.setBounds(10, 134, 953, 381);
 		panelScore.add(scrollPaneThongTinDiemHocSinh);
 
-		String[] cacMonHoc = new String[] { "Toán", "Ngữ văn", "Anh văn" };
+		String[] cacMonHoc = new String[] { "Toán 10", "Ngữ Văn 10", "Ngoại Ngữ 10", 
+										"Toán 11", "Ngữ Văn 11", "Ngoại Ngữ 11",
+										"Toán 12", "Ngữ Văn 12", "Ngoại Ngữ 12" };
 
 		String[] thuTuLocDiem = new String[] { "tb >= 8.0", "tb >= 6.5", "b >= 5.0", "tb >= 3.0" };
 
@@ -657,9 +660,15 @@ public class QLHS extends JFrame {
 
 		comboBoxChonMonHoc = new JComboBox();
 		comboBoxChonMonHoc.addItem("All");
-		comboBoxChonMonHoc.addItem("Toán");
-		comboBoxChonMonHoc.addItem("Ngoại Ngữ");
-		comboBoxChonMonHoc.addItem("Ngữ Văn");
+		comboBoxChonMonHoc.addItem("Toán 10");
+		comboBoxChonMonHoc.addItem("Ngoại Ngữ 10");
+		comboBoxChonMonHoc.addItem("Ngữ Văn 10");
+		comboBoxChonMonHoc.addItem("Toán 11");
+		comboBoxChonMonHoc.addItem("Ngoại Ngữ 11");
+		comboBoxChonMonHoc.addItem("Ngữ Văn 11");
+		comboBoxChonMonHoc.addItem("Toán 12");
+		comboBoxChonMonHoc.addItem("Ngoại Ngữ 12");
+		comboBoxChonMonHoc.addItem("Ngữ Văn 12");
 		comboBoxChonMonHoc.setToolTipText("Môn Học");
 		comboBoxChonMonHoc.setBounds(317, 50, 80, 22);
 		panelScore.add(comboBoxChonMonHoc);
@@ -1078,113 +1087,131 @@ public class QLHS extends JFrame {
 
 		JButton btnLocDiemThongKe = new JButton("Thống kê");
 		btnLocDiemThongKe.addActionListener(tktl);
-		btnLocDiemThongKe.setBounds(141, 39, 89, 23);
+		btnLocDiemThongKe.setBounds(277, 39, 89, 23);
 		panelStatistic.add(btnLocDiemThongKe);
 
 		String[] mon = new String[] { "Toan", "Van", "AV", "All" };
 
 		String[] lop = new String[] { "10", "11", "12" };
-		
+
 		String[] xephang = new String[] { "Tăng hạng", "Giảm hạng" };
-		
+
 		JLabel lblTeacherName_1_1_1_1_1_1 = new JLabel("Khối:");
 		lblTeacherName_1_1_1_1_1_1.setBounds(10, 40, 30, 20);
 		panelStatistic.add(lblTeacherName_1_1_1_1_1_1);
-		
+
 		comboBoxChonLopThongKe = new JComboBox(lop);
 		comboBoxChonLopThongKe.setToolTipText("Môn Học");
 		comboBoxChonLopThongKe.setBounds(37, 41, 80, 22);
 		panelStatistic.add(comboBoxChonLopThongKe);
-		
+
 		lblNewLabel_ThongKeSLHSGioi = new JLabel("Số học sinh giỏi:");
 		lblNewLabel_ThongKeSLHSGioi.setBounds(10, 83, 153, 23);
 		panelStatistic.add(lblNewLabel_ThongKeSLHSGioi);
-		
+
 		lblNewLabel_ThongKeSLHSKha = new JLabel("Số học sinh khá:");
 		lblNewLabel_ThongKeSLHSKha.setBounds(10, 116, 153, 23);
 		panelStatistic.add(lblNewLabel_ThongKeSLHSKha);
-		
+
 		lblNewLabel_ThongKeSLHStb = new JLabel("Số học sinh trung bình:");
 		lblNewLabel_ThongKeSLHStb.setBounds(10, 149, 153, 23);
 		panelStatistic.add(lblNewLabel_ThongKeSLHStb);
-		
+
 		lblNewLabel_ThongKeSLHSYeu = new JLabel("Số học sinh yếu:");
 		lblNewLabel_ThongKeSLHSYeu.setBounds(198, 83, 153, 23);
 		panelStatistic.add(lblNewLabel_ThongKeSLHSYeu);
-		
+
 		lblNewLabel_ThongKeSLHSKem = new JLabel("Số học sinh kém:");
 		lblNewLabel_ThongKeSLHSKem.setBounds(198, 116, 153, 23);
 		panelStatistic.add(lblNewLabel_ThongKeSLHSKem);
-		
+
 		JLabel lblNewLabel_XepHang_1 = new JLabel("Số lượng sinh viên theo từng mốc điểm của các môn");
 		lblNewLabel_XepHang_1.setFont(new Font("Tahoma", Font.ITALIC, 18));
 		lblNewLabel_XepHang_1.setBounds(506, 10, 426, 20);
 		panelStatistic.add(lblNewLabel_XepHang_1);
-		
+
 		tableDiemTheoCacMuc = new JTable();
-		this.tableDiemTheoCacMuc.setModel(new DefaultTableModel(new Object[][] {}, new String[] {"Môn", "tb >= 8.0", "6.5 <=tb < 8.0", "5.0 <= tb < 6.5", "3.5 <= tb < 5.0",
-																								"2.0 <= tb < 3.5"}));
+		this.tableDiemTheoCacMuc.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Môn", "tb >= 8.0",
+				"6.5 <=tb < 8.0", "5.0 <= tb < 6.5", "3.5 <= tb < 5.0", "2.0 <= tb < 3.5" }));
 		JScrollPane scrollPaneThongKeDiemTheoCacMuc = new JScrollPane(tableDiemTheoCacMuc);
 
 		scrollPaneThongKeDiemTheoCacMuc.setBounds(439, 40, 524, 160);
 		panelStatistic.add(scrollPaneThongKeDiemTheoCacMuc);
-		
+
 		comboBoxSapXepThongKe = new JComboBox(xephang);
 		comboBoxSapXepThongKe.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		    	hienThiDSXepHangTheoHocLuc(comboBoxSapXepThongKeTheoHocLuc.getSelectedItem().toString(),
-		    						comboBoxSapXepThongKe.getSelectedItem().toString());
-		    }});
+			public void actionPerformed(ActionEvent e) {
+				hienThiDSXepHangTheoHocLuc(comboBoxSapXepThongKeTheoHocLuc.getSelectedItem().toString(),
+						comboBoxSapXepThongKe.getSelectedItem().toString());
+			}
+		});
 		comboBoxSapXepThongKe.setToolTipText("Sắp xếp");
 		comboBoxSapXepThongKe.setBounds(883, 250, 80, 22);
 		panelStatistic.add(comboBoxSapXepThongKe);
-		
+
 		JLabel lblNewLabel_5 = new JLabel("Sắp xếp:");
 		lblNewLabel_5.setBounds(839, 254, 46, 14);
 		panelStatistic.add(lblNewLabel_5);
-		
+
 		this.tableThongKe = new JTable();
-		this.tableThongKe.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Hạng","Mã học sinh", "Tên học sinh",
-				"Điểm tb văn", "Điểm tb Toán", "Điểm tb anh văn", "Điểm tb các môn", "Học lực" }));
+		this.tableThongKe.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Hạng", "Mã học sinh",
+				"Tên học sinh", "Điểm tb văn", "Điểm tb Toán", "Điểm tb anh văn", "Điểm tb các môn", "Học lực" }));
 		JScrollPane scrollPaneThongKe = new JScrollPane(tableThongKe);
 		scrollPaneThongKe.setBounds(10, 283, 953, 220);
 		panelStatistic.add(scrollPaneThongKe);
-		
+
 		JLabel lblNewLabel_XepHang = new JLabel("Bảng xếp hạng");
 		lblNewLabel_XepHang.setFont(new Font("Tahoma", Font.ITALIC, 18));
 		lblNewLabel_XepHang.setBounds(10, 253, 131, 20);
 		panelStatistic.add(lblNewLabel_XepHang);
-		
+
 		JButton btnXuatFileTK = new JButton("Xuất File");
+		btnXuatFileTK.addActionListener(tktl);
 		btnXuatFileTK.setForeground(new Color(0, 0, 128));
 		btnXuatFileTK.setFont(new Font("Times New Roman", Font.BOLD, 11));
 		btnXuatFileTK.setBackground(SystemColor.activeCaption);
 		btnXuatFileTK.setBounds(141, 250, 89, 23);
 		panelStatistic.add(btnXuatFileTK);
-		
-		String[] hocLuc = new String[] {"Tất cả", "Giỏi", "Khá", "Trung bình", "Yếu", "Kém"};
-		
+
+		String[] hocLuc = new String[] { "Tất cả", "Giỏi", "Khá", "Trung bình", "Yếu", "Kém" };
+
 		comboBoxSapXepThongKeTheoHocLuc = new JComboBox(hocLuc);
 		comboBoxSapXepThongKeTheoHocLuc.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		    	System.out.println(e.getActionCommand().toString());
-		    	hienThiDSXepHangTheoHocLuc(comboBoxSapXepThongKeTheoHocLuc.getSelectedItem().toString(), 
-		    			comboBoxSapXepThongKe.getSelectedItem().toString());
-		    }});
+			public void actionPerformed(ActionEvent e) {
+				System.out.println(e.getActionCommand().toString());
+				hienThiDSXepHangTheoHocLuc(comboBoxSapXepThongKeTheoHocLuc.getSelectedItem().toString(),
+						comboBoxSapXepThongKe.getSelectedItem().toString());
+			}
+		});
 		comboBoxSapXepThongKeTheoHocLuc.setToolTipText("Sắp xếp");
 		comboBoxSapXepThongKeTheoHocLuc.setBounds(749, 250, 80, 22);
 		panelStatistic.add(comboBoxSapXepThongKeTheoHocLuc);
-		
+
 		JLabel lblNewLabel_5_1 = new JLabel("Học lực:");
 		lblNewLabel_5_1.setBounds(705, 254, 46, 14);
 		panelStatistic.add(lblNewLabel_5_1);
-		
+
 		textFieldXuatFileThongKe = new JTextField();
 		textFieldXuatFileThongKe.setToolTipText("Nhập tên file");
 		textFieldXuatFileThongKe.setText("Nhập tên file");
 		textFieldXuatFileThongKe.setColumns(10);
 		textFieldXuatFileThongKe.setBounds(240, 251, 86, 20);
 		panelStatistic.add(textFieldXuatFileThongKe);
+		
+		JLabel lblTeacherName_1_1 = new JLabel("Niên khoá:");
+		lblTeacherName_1_1.setBounds(127, 41, 60, 20);
+		panelStatistic.add(lblTeacherName_1_1);
+
+		comboBoxChonNienKhoaThongKe = new JComboBox(new Object[]{});
+		comboBoxChonNienKhoaThongKe.addItem("2018-2019");
+		comboBoxChonNienKhoaThongKe.addItem("2019-2020");
+		comboBoxChonNienKhoaThongKe.addItem("2020-2021");
+		comboBoxChonNienKhoaThongKe.addItem("2021-2022");
+		comboBoxChonNienKhoaThongKe.addItem("2022-2023");
+		comboBoxChonNienKhoaThongKe.addItem("2023-2024");
+		comboBoxChonNienKhoaThongKe.setToolTipText("Niên Khoá");
+		comboBoxChonNienKhoaThongKe.setBounds(187, 39, 80, 22);
+		panelStatistic.add(comboBoxChonNienKhoaThongKe);
 
 		/*
 		 * Tab thống kê kết thúc ở đây STATISTIC END
@@ -1307,7 +1334,7 @@ public class QLHS extends JFrame {
 						"Có khoá chính của dữ liệu khác tham chiếu tới dữ liệu bạn muốn xoá!\nBạn muốn xoá hết các dữ liệu liên quan không?");
 				if (pn == JOptionPane.YES_OPTION) {
 					if (this.gvModel.deleteAnyway(gv)) {
-						this.gvModel.setDsGiaoVien((ArrayList<GiaoVien>)this.gvModel.getGiaoVienDAO().selectAll());
+						this.gvModel.setDsGiaoVien((ArrayList<GiaoVien>) this.gvModel.getGiaoVienDAO().selectAll());
 						JOptionPane.showMessageDialog(this, "Xoá thành công");
 					}
 				}
@@ -1385,6 +1412,7 @@ public class QLHS extends JFrame {
 			tenfile = "NewExcel";
 		}
 		this.gvModel.xuatFileDSGV(tenfile);
+		JOptionPane.showMessageDialog(this, "Xuất File thành công");
 	}
 
 	public void aboutMe() {
@@ -1616,7 +1644,7 @@ public class QLHS extends JFrame {
 					System.out.println();
 					if (this.hsModel.deleteAnyway(hs)) {
 						this.diemModel.setdsDiem((ArrayList<Diem>) this.diemModel.getdiemDAO().selectAll());
-						this.hsModel.setDsHocSinh((ArrayList<HocSinh>)this.hsModel.getHocSinhDao().selectAll());
+						this.hsModel.setDsHocSinh((ArrayList<HocSinh>) this.hsModel.getHocSinhDao().selectAll());
 						JOptionPane.showMessageDialog(this, "Xoá thành công");
 					}
 				}
@@ -1633,7 +1661,7 @@ public class QLHS extends JFrame {
 		String maHS = mode.getValueAt(i_row, 1).toString();
 		String hoTenHS = mode.getValueAt(i_row, 2).toString();
 		Date nshs = new Date(mode.getValueAt(i_row, 3).toString());
-		Date ngaySinhHS = new Date(nshs.getDate()+ "/" + (nshs.getMonth() + 1) + "/" + (nshs.getYear() + 1900));
+		Date ngaySinhHS = new Date(nshs.getDate() + "/" + (nshs.getMonth() + 1) + "/" + (nshs.getYear() + 1900));
 		String diaChiHS = mode.getValueAt(i_row, 4).toString();
 		String soDienThoaiPH = mode.getValueAt(i_row, 5).toString();
 		String maLop = mode.getValueAt(i_row, 6) != null ? mode.getValueAt(i_row, 6).toString() : "";
@@ -1765,6 +1793,7 @@ public class QLHS extends JFrame {
 			tenfile = "NewExcel";
 		}
 		this.hsModel.xuatFileDSHS(tenfile);
+		JOptionPane.showMessageDialog(this, "Xuất File thành công");
 	}
 
 	/*
@@ -1882,7 +1911,6 @@ public class QLHS extends JFrame {
 		for (int i = 0; i < this.diemModel.getdsDiem().size(); i++) {
 			if (this.diemModel.getdsDiem().get(i).getMaHS().equals(maHS)) {
 				ds.add(this.diemModel.getdsDiem().get(i));
-				break;
 			}
 		}
 		if (ds.size() == 0) {
@@ -1926,6 +1954,7 @@ public class QLHS extends JFrame {
 			tenfile = "NewExcel";
 		}
 		this.diemModel.xuatFileDSDiem(tenfile);
+		JOptionPane.showMessageDialog(this, "Xuất File thành công");
 	}
 
 	/*
@@ -2406,6 +2435,8 @@ public class QLHS extends JFrame {
 			tenfile = "NewExcel";
 		}
 		this.lopModel.xuatFileDSLH(tenfile);
+		JOptionPane.showMessageDialog(this, "Xuất File thành công");
+		
 	}
 
 	/*
@@ -2413,22 +2444,22 @@ public class QLHS extends JFrame {
 	 * 
 	 * START
 	 */
-	
-	public void layDSXepHangTheoHocLuc(String lop) {
+
+	public void layDSXepHangTheoHocLuc(String lop, String nienKhoa) {
 //		Lấy ra học sinh đủ điều kiện để sét học lực: đủ điểm tất cả các cột của 3 môn
 //		ArrayList<HocSinh> result = (ArrayList<HocSinh>) hsModel.getHocSinhDao().getDSHSDuDienKienXetHocLuc(lop);
-		tkModel = new ThongKeHSModel(lop);
-		hienThiDSXepHangTheoHocLuc(comboBoxSapXepThongKeTheoHocLuc.getSelectedItem().toString(), 
-									comboBoxSapXepThongKe.getSelectedItem().toString());
+		tkModel = new ThongKeHSModel(lop, nienKhoa);
+		hienThiDSXepHangTheoHocLuc(comboBoxSapXepThongKeTheoHocLuc.getSelectedItem().toString(),
+				comboBoxSapXepThongKe.getSelectedItem().toString());
 		hienThiSoHocSinhTheoTungHocLuc();
 		hienThiDiemTheoCacMuc();
 	}
-	
+
 	public void hienThiSoHocSinhTheoTungHocLuc() {
 		int gioi = 0, kha = 0, trungBinh = 0, yeu = 0, kem = 0;
 		ArrayList<ThongKeHS> dsThongKe = tkModel.getThongKeList();
 		for (ThongKeHS thongKeHS : dsThongKe) {
-			if(thongKeHS.getHocLuc().equals("Giỏi"))
+			if (thongKeHS.getHocLuc().equals("Giỏi"))
 				gioi++;
 			else if (thongKeHS.getHocLuc().equals("Khá"))
 				kha++;
@@ -2445,7 +2476,7 @@ public class QLHS extends JFrame {
 		lblNewLabel_ThongKeSLHSYeu.setText("Số học sinh yếu: " + yeu);
 		lblNewLabel_ThongKeSLHSKem.setText("Số học sinh giỏi: " + kem);
 	}
-	
+
 	public void hienThiDSXepHangTheoHocLuc(String hocLuc, String thuTu) {
 //		Xóa hết dữ liệu trong bảng cũ
 		DefaultTableModel mode = (DefaultTableModel) this.tableThongKe.getModel();
@@ -2464,31 +2495,31 @@ public class QLHS extends JFrame {
 		}
 		ArrayList<ThongKeHS> dsThongKe = tkModel.getThongKeList();
 		int endIndex = dsThongKe.size();
-		if(thuTu.equals("Tăng hạng")) {
-			for(int i = 0; i < endIndex; i++) {
+		if (thuTu.equals("Tăng hạng")) {
+			for (int i = 0; i < endIndex; i++) {
 				ThongKeHS thongKeHS = dsThongKe.get(i);
-				if(hocLuc.equals("Tất cả")) {
-					mode.addRow(new Object[] {i+1, thongKeHS.getMaHS(), thongKeHS.getTenHS(), thongKeHS.getTbVan(), thongKeHS.getTbToan(),
-							thongKeHS.getTbNN(), thongKeHS.getTbMon(), thongKeHS.getHocLuc()});
+				if (hocLuc.equals("Tất cả")) {
+					mode.addRow(new Object[] { i + 1, thongKeHS.getMaHS(), thongKeHS.getTenHS(), thongKeHS.getTbVan(),
+							thongKeHS.getTbToan(), thongKeHS.getTbNN(), thongKeHS.getTbMon(), thongKeHS.getHocLuc() });
 				} else if (hocLuc.equals(thongKeHS.getHocLuc())) {
-					mode.addRow(new Object[] {i+1, thongKeHS.getMaHS(), thongKeHS.getTenHS(), thongKeHS.getTbVan(), thongKeHS.getTbToan(),
-							thongKeHS.getTbNN(), thongKeHS.getTbMon(), thongKeHS.getHocLuc()});
+					mode.addRow(new Object[] { i + 1, thongKeHS.getMaHS(), thongKeHS.getTenHS(), thongKeHS.getTbVan(),
+							thongKeHS.getTbToan(), thongKeHS.getTbNN(), thongKeHS.getTbMon(), thongKeHS.getHocLuc() });
 				}
 			}
-		}else {
-			for(int i = endIndex-1; i >= 0; i--) {
+		} else {
+			for (int i = endIndex - 1; i >= 0; i--) {
 				ThongKeHS thongKeHS = dsThongKe.get(i);
-				if(hocLuc.equals("Tất cả")) {
-					mode.addRow(new Object[] {i+1, thongKeHS.getMaHS(), thongKeHS.getTenHS(), thongKeHS.getTbVan(), thongKeHS.getTbToan(),
-							thongKeHS.getTbNN(), thongKeHS.getTbMon(), thongKeHS.getHocLuc()});
+				if (hocLuc.equals("Tất cả")) {
+					mode.addRow(new Object[] { i + 1, thongKeHS.getMaHS(), thongKeHS.getTenHS(), thongKeHS.getTbVan(),
+							thongKeHS.getTbToan(), thongKeHS.getTbNN(), thongKeHS.getTbMon(), thongKeHS.getHocLuc() });
 				} else if (hocLuc.equals(thongKeHS.getHocLuc())) {
-mode.addRow(new Object[] {i+1, thongKeHS.getMaHS(), thongKeHS.getTenHS(), thongKeHS.getTbVan(), thongKeHS.getTbToan(),
-							thongKeHS.getTbNN(), thongKeHS.getTbMon(), thongKeHS.getHocLuc()});
+					mode.addRow(new Object[] { i + 1, thongKeHS.getMaHS(), thongKeHS.getTenHS(), thongKeHS.getTbVan(),
+							thongKeHS.getTbToan(), thongKeHS.getTbNN(), thongKeHS.getTbMon(), thongKeHS.getHocLuc() });
 				}
 			}
 		}
 	}
-	
+
 	public void hienThiDiemTheoCacMuc() {
 		DefaultTableModel mode = (DefaultTableModel) tableDiemTheoCacMuc.getModel();
 		while (true) {
@@ -2507,24 +2538,28 @@ mode.addRow(new Object[] {i+1, thongKeHS.getMaHS(), thongKeHS.getTenHS(), thongK
 		ArrayList<ThongKeHS> dsThongKe = tkModel.getThongKeList();
 		int gioi = 0, kha = 0, trungBinh = 0, yeu = 0, kem = 0;
 		for (ThongKeHS thongKeHS : dsThongKe) {
-				if(thongKeHS.getTbVan() >= 8.0)
-					gioi++;
-				else if (thongKeHS.getTbVan() >= 6.5 && thongKeHS.getTbVan() < 8.0)
-					kha++;
-				else if (thongKeHS.getTbVan() >= 5.0 && thongKeHS.getTbVan() < 6.5)
-					trungBinh++;
-				else if (thongKeHS.getTbVan() >= 3.5 && thongKeHS.getTbVan() < 5.0)
-					yeu++;
-				else if (thongKeHS.getTbVan() >= 2.0 && thongKeHS.getTbVan() < 3.5)
-					kem++;
-			
-		}	
+			if (thongKeHS.getTbVan() >= 8.0)
+				gioi++;
+			else if (thongKeHS.getTbVan() >= 6.5 && thongKeHS.getTbVan() < 8.0)
+				kha++;
+			else if (thongKeHS.getTbVan() >= 5.0 && thongKeHS.getTbVan() < 6.5)
+				trungBinh++;
+			else if (thongKeHS.getTbVan() >= 3.5 && thongKeHS.getTbVan() < 5.0)
+				yeu++;
+			else if (thongKeHS.getTbVan() >= 2.0 && thongKeHS.getTbVan() < 3.5)
+				kem++;
+
+		}
 //		Thêm dòng văn phổ điểm văn
-		mode.addRow(new Object[] {"Văn", gioi, kha, trungBinh, yeu, kem});
-		
-		gioi = 0; kha = 0; trungBinh = 0; yeu = 0; kem = 0;
+		mode.addRow(new Object[] { "Văn", gioi, kha, trungBinh, yeu, kem });
+
+		gioi = 0;
+		kha = 0;
+		trungBinh = 0;
+		yeu = 0;
+		kem = 0;
 		for (ThongKeHS thongKeHS : dsThongKe) {
-			if(thongKeHS.getTbToan() >= 8.0)
+			if (thongKeHS.getTbToan() >= 8.0)
 				gioi++;
 			else if (thongKeHS.getTbToan() >= 6.5 && thongKeHS.getTbToan() < 8.0)
 				kha++;
@@ -2534,15 +2569,18 @@ mode.addRow(new Object[] {i+1, thongKeHS.getMaHS(), thongKeHS.getTenHS(), thongK
 				yeu++;
 			else if (thongKeHS.getTbToan() >= 2.0 && thongKeHS.getTbToan() < 3.5)
 				kem++;
-		
+
 		}
 //		Thêm dòng văn phổ điểm toán
-		mode.addRow(new Object[] {"Toán", gioi, kha, trungBinh, yeu, kem});
-		
+		mode.addRow(new Object[] { "Toán", gioi, kha, trungBinh, yeu, kem });
 
-		gioi = 0; kha = 0; trungBinh = 0; yeu = 0; kem = 0;
+		gioi = 0;
+		kha = 0;
+		trungBinh = 0;
+		yeu = 0;
+		kem = 0;
 		for (ThongKeHS thongKeHS : dsThongKe) {
-			if(thongKeHS.getTbNN() >= 8.0)
+			if (thongKeHS.getTbNN() >= 8.0)
 				gioi++;
 			else if (thongKeHS.getTbNN() >= 6.5 && thongKeHS.getTbNN() < 8.0)
 				kha++;
@@ -2552,9 +2590,18 @@ mode.addRow(new Object[] {i+1, thongKeHS.getMaHS(), thongKeHS.getTenHS(), thongK
 				yeu++;
 			else if (thongKeHS.getTbNN() >= 2.0 && thongKeHS.getTbNN() < 3.5)
 				kem++;
-		
+
 		}
 //		Thêm dòng văn phổ điểm Ngoại ngữ
-		mode.addRow(new Object[] {"Ngoại ngữ", gioi, kha, trungBinh, yeu, kem});
+		mode.addRow(new Object[] { "Ngoại ngữ", gioi, kha, trungBinh, yeu, kem });
+	}
+
+	public void xuatFileTK() {
+		String tenfile = this.textFieldXuatFileThongKe.getText();
+		if (tenfile.equals("Nhập tên file")) {
+			tenfile = "NewExcel";
+		}
+		this.tkModel.xuatFileDSDiem(tenfile);
+		JOptionPane.showMessageDialog(this, "Xuất File thành công");
 	}
 }

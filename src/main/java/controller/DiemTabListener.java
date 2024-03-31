@@ -3,6 +3,8 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
+
 import view.QLHS;
 
 public class DiemTabListener implements ActionListener {
@@ -21,6 +23,7 @@ public class DiemTabListener implements ActionListener {
 		}
 		else if(actionCommand.equals("Lưu")) {
 			view.luuDSDiem();
+			JOptionPane.showMessageDialog(view, "Thêm thành công");
 		}
 		else if(actionCommand.equals("Huỷ tìm")) {
 			view.hienThiDSDiemHienTai();

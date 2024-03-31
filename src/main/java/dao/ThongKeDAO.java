@@ -20,7 +20,7 @@ public class ThongKeDAO implements DAOInterface<ThongKeHS>{
 		return null;
 	}
 	
-	public List<ThongKeHS> layDSThongKe(String lop){
+	public List<ThongKeHS> layDSThongKe(String lop, String nienkhoa){
 		List<ThongKeHS> resultList = new ArrayList<ThongKeHS>();
 		try {
 			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
@@ -29,10 +29,11 @@ public class ThongKeDAO implements DAOInterface<ThongKeHS>{
 				Transaction transaction = session.beginTransaction();
 				
 				
-				String sql = "CALL LayDSThongKe(:lop);";
+				String sql = "CALL LayDSThongKe(:lop, :nienkhoa);";
 				SQLQuery query = session.createSQLQuery(sql);
 				query.addEntity(ThongKeHS.class);	
 				query.setParameter("lop", lop);
+				query.setParameter("nienkhoa", nienkhoa);
 				resultList = query.list();
 
 				transaction.commit();

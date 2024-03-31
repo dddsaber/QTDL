@@ -59,15 +59,17 @@ public class HocSinhModel {
 		this.hocSinhDao.saveOrUpdate(HocSinh);
 		this.dsHocSinh = (ArrayList<model.HocSinh>) this.hocSinhDao.selectAll();
 	}
+	
 	public ArrayList<HocSinh> findByInFor(String maHS, String hoTen, String maLop){
 		ArrayList<HocSinh> all = (ArrayList<HocSinh>)this.hocSinhDao.selectAll();
 		ArrayList<HocSinh> result =  new ArrayList<HocSinh>();
 		for (HocSinh hocSinh : all) {
 			System.out.println(hocSinh);
-			if(!maHS.isEmpty() && !hocSinh.getMaHS().equals(maHS)) {
-				continue;
+			if(hocSinh.getMaHS().equals(maHS)) {
+				result.add(hocSinh);
+				break;
 			}
-			if(!hoTen.isEmpty() && !hocSinh.getHoTenHS().equals(hoTen)) {
+			if(!hoTen.isEmpty() && !hocSinh.getHoTenHS().contains(hoTen)) {
 				continue;
 			}
 			if(!maLop.isEmpty() && !hocSinh.getMaLop().equals(maLop)) {

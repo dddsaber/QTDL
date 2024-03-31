@@ -19,7 +19,10 @@ public class ThongKeTabListener implements ActionListener{
 	 
 		if(actionCommand.equals("Thống kê")) {
 			String lopLuaChon = this.view.comboBoxChonLopThongKe.getSelectedItem().toString();
-			this.view.layDSXepHangTheoHocLuc(lopLuaChon);
+			String nienKhoa = this.view.comboBoxChonNienKhoaThongKe.getSelectedItem().toString();
+			this.view.layDSXepHangTheoHocLuc(lopLuaChon, nienKhoa);
+		} else if (actionCommand.equals("Xuất File")) {
+			this.view.xuatFileTK();
 		}
  	}
 

@@ -3,6 +3,8 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
+
 import view.QLHS;
 
 public class GiaoVienTabListener implements ActionListener {
@@ -27,6 +29,7 @@ public class GiaoVienTabListener implements ActionListener {
 		}
 		else if(actionCommand.equals("Lưu")) {
 			view.luuDuLieuGVtuInput();
+			JOptionPane.showMessageDialog(view, "Thêm thành công");
 		}
 		else if(actionCommand.equals("Chọn")) {
 			view.hienThiThongTinGVDangChon();

@@ -3,6 +3,8 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
+
 import view.QLHS;
 
 public class LopListener implements ActionListener {
@@ -23,6 +25,7 @@ private QLHS view;
 		}
 		else if(actionCommand.equals("Lưu")) {
 			view.luuDuLieuPLtuInput();
+			JOptionPane.showMessageDialog(view, "Thêm thành công");
 		}
 		else if(actionCommand.equals("Chọn")) {
 			view.hienThiThongTinPhongLopDangChon();

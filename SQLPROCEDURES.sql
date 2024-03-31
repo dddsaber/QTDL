@@ -25,7 +25,8 @@ end; $$
 delimiter ;
 
 
-
+delimiter $$
+drop procedure if exists LayDiemTheoMonLop $$
 create procedure LayDiemTheoMonLop(
 	in maMon varchar(8),
      in maLop varchar(8))
@@ -35,8 +36,8 @@ begin
 	where (d.MaMonHoc = maMon and h.MaLop = maLop) or
 		(maMon = '' and h.MaLop = maLop) or
 		(d.MaMonHoc = maMon and maLop = '') or
-        (maMon = '' and maLop = '')
-end $$
+        (maMon = '' and maLop = '');
+end; $$
 delimiter ;
 
 delimiter $$
@@ -123,9 +124,8 @@ DELIMITER ;
 -- END$$
 -- DELIMITER ;
 
-USE dataset_qtdl;
-DELIMITER $$
 
+DELIMITER $$
 DROP FUNCTION IF EXISTS TinhDiemTB $$
 CREATE FUNCTION TinhDiemTB (mahs CHAR(8), maMon CHAR(8))
 RETURNS FLOAT
@@ -137,7 +137,7 @@ BEGIN
     INTO diemtb
     FROM hocsinh h 
     LEFT JOIN diem d ON h.MaHS = d.MaHS
-    WHERE h.MaHS LIKE CONCAT('%', mahs, '%') AND d.MaMonHoc = maMon;
+    WHERE h.MaHS LIKE CONCAT('%', mahs, '%') AND d.MaMonHoc LIKE CONCAT('%', maMon, '%');
 
     RETURN diemtb;
 END$$
@@ -148,22 +148,22 @@ USE dataset_qtdl;
 DELIMITER $$
 
 DROP PROCEDURE IF EXISTS LayDSThongKe $$
-CREATE PROCEDURE LayDSThongKe (IN lop VARCHAR(8))
+CREATE PROCEDURE LayDSThongKe (IN lop VARCHAR(8), nienkhoa VARCHAR(20))
 BEGIN
     SELECT MaHS AS maHS, HoTenHS AS TenHS,
-           ROUND((SELECT TinhDiemTB(MaHS, 'VAN')), 2) AS tbVan,
-           ROUND((SELECT TinhDiemTB(MaHS, 'TOAN')), 2) AS tbToan,
-           ROUND((SELECT TinhDiemTB(MaHS, 'AV')), 2) AS tbNN,
-           ROUND(((SELECT TinhDiemTB(MaHS, 'TOAN')) + (SELECT TinhDiemTB(MaHS, 'VAN')) + (SELECT TinhDiemTB(MaHS, 'AV'))) / 3, 2) AS tbMon
+           ROUND((SELECT TinhDiemTB(MaHS, CONCAT('VAN', lop))), 2) AS tbVan,
+           ROUND((SELECT TinhDiemTB(MaHS, CONCAT('TOAN', lop))), 2) AS tbToan,
+           ROUND((SELECT TinhDiemTB(MaHS, CONCAT('AV', lop))), 2) AS tbNN,
+           ROUND(((SELECT TinhDiemTB(MaHS, CONCAT('VAN', lop))) + (SELECT TinhDiemTB(MaHS, CONCAT('TOAN', lop))) + (SELECT TinhDiemTB(MaHS, CONCAT('AV', lop)))) / 3, 2) AS tbMon
     FROM hocsinh
     WHERE MaHS IN (SELECT hocsinh.MaHS
                     FROM hocsinh 
-                    LEFT JOIN diem ON hocsinh.MaHS = diem.MaHS
-                    WHERE hocsinh.MaLop LIKE CONCAT('%', lop, '%')
+                    LEFT JOIN diem ON hocsinh.MaHS = diem.MaHS JOIN lop on hocsinh.malop = lop.malop
+                    WHERE diem.mamonhoc like CONCAT('%', lop, '%') and lop.nienkhoa = nienkhoa
                     GROUP BY hocsinh.MaHS
                     HAVING COUNT(diem.MaMonHoc) >= 3);
 END$$
 
 DELIMITER ;
 
-CALL LayDSThongKe('12');
+call laydsthongke(10, '2022-2023');

@@ -27,6 +27,7 @@ public class HocSinhTabListener implements ActionListener{
 		}
 		else if(actionCommand.equals("Lưu")) {
 			view.luuDuLieuHStuInput();
+			JOptionPane.showMessageDialog(view, "Thêm thành công");
 		}
 		else if(actionCommand.equals("Chọn")) {
 			view.hienThiThongTinHSDangChon();
