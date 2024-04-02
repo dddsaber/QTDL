@@ -140,4 +140,28 @@ public class LopDAO implements DAOInterface<Lop> {
 		}
 	}
 	
+	public int laySoHS(Lop element) {
+		try {
+			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+			if(sessionFactory != null) {
+				Session session = sessionFactory.openSession();
+				Transaction transaction = session.beginTransaction();
+				
+				Query query = session.createSQLQuery("select tinhSoHS(:maLop);");
+				query.setParameter("maLop", element.getMaLop());
+				Float sohs = (Float) query.uniqueResult();
+	            
+	            // Kiểm tra nếu kết quả là null
+	            int soHocSinh = sohs != null ? Math.round(sohs) : 0;
+				
+				transaction.commit();
+				session.close();
+				return soHocSinh;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
 }

@@ -203,11 +203,26 @@ public class QLHS extends JFrame {
 		JMenuItem newMenuItem = new JMenuItem("New");
 		JMenuItem openMenuItem = new JMenuItem("Open");
 		JMenuItem exitMenuItem = new JMenuItem("Exit");
+		JMenuItem exitLogout = new JMenuItem("Log out");
 		exitMenuItem.setToolTipText("Nhấn vào đây để thoát chương trình");
 		exitMenuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				exit();
+			}
+		});
+		exitLogout.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int tmp = JOptionPane.showConfirmDialog(contentPane, "Bạn có muốn đăng xuất?");
+				if(tmp == JOptionPane.YES_OPTION) {
+					JOptionPane.showMessageDialog(contentPane, "Đăng xuất thành công!");
+					setVisible(false);
+					QLDangNhap qldn = new QLDangNhap();
+					qldn.setVisible(true);
+				}
+				
 			}
 		});
 		exitMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_DOWN_MASK));
@@ -216,6 +231,8 @@ public class QLHS extends JFrame {
 		JMenuAccount.add(openMenuItem);
 		JMenuAccount.addSeparator();
 		JMenuAccount.add(exitMenuItem);
+		JMenuAccount.addSeparator();
+		JMenuAccount.add(exitLogout);
 		JMenuItem aboutMenuItem = new JMenuItem("About");
 		aboutMenuItem.addActionListener(new ActionListener() {
 			@Override
@@ -2413,7 +2430,7 @@ public class QLHS extends JFrame {
 	private void themLopvaoBangDL(Lop lop) {
 		DefaultTableModel mode = (DefaultTableModel) tableLopHoc.getModel();
 		mode.addRow(new Object[] { mode.getRowCount() + 1, lop.getMaLop(), lop.getTenLop(), lop.getNienKhoa(),
-				lop.getSiSo(this.hsModel.getDsHocSinh()) });
+				this.lopModel.getSiSo(lop) });
 	}
 
 	public void timKiemLopHoc() {

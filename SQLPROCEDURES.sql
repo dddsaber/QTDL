@@ -141,7 +141,6 @@ BEGIN
 
     RETURN diemtb;
 END$$
-
 DELIMITER ;
 
 USE dataset_qtdl;
@@ -166,4 +165,20 @@ END$$
 
 DELIMITER ;
 
-call laydsthongke(10, '2022-2023');
+DELIMITER $$
+DROP FUNCTION IF EXISTS TinhSoHS $$
+CREATE FUNCTION TinhSoHS (malop CHAR(8))
+RETURNS FLOAT
+BEGIN
+    DECLARE sohs int;
+
+    SELECT COUNT( h.MaHS)
+    INTO sohs
+    FROM hocsinh h inner join lop l on h.MaLop = l.MaLop
+    WHERE l.MaLop = malop
+    GROUP BY malop;
+    RETURN sohs;
+END$$
+DELIMITER ;
+
+select tinhSoHS('A001');

@@ -103,9 +103,7 @@ public class LopModel {
 			row.createCell(3).setCellValue("Niên khóa");
 			row.createCell(4).setCellValue("Sỉ số lớp");
 
-			HocSinhModel hsmodel = new HocSinhModel();
-			hsmodel.setDsHocSinh((ArrayList<HocSinh>) hsmodel.getHocSinhDao().selectAll());
-			// Ghi dữ liệu vào file Excel
+						// Ghi dữ liệu vào file Excel
 			for (int i = 0; i < data.size(); i++) {
 				row = sheet.createRow(i + 1);
 
@@ -114,7 +112,7 @@ public class LopModel {
 				row.createCell(1).setCellValue(data.get(i).getMaLop());
 				row.createCell(2).setCellValue(data.get(i).getTenLop());
 				row.createCell(3).setCellValue(data.get(i).getNienKhoa());
-				row.createCell(4).setCellValue(data.get(i).getSiSo(hsmodel.getDsHocSinh()));
+				row.createCell(4).setCellValue(this.lopDao.laySoHS(data.get(i)));
 
 			}
 
@@ -136,4 +134,7 @@ public class LopModel {
 		return false;
 	}
 
+	public int getSiSo(Lop lop) {
+		return this.lopDao.laySoHS(lop);
+	}
 }

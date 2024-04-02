@@ -181,6 +181,7 @@ public class QLDangNhap extends JFrame {
 //				mainView.openDL();
 			}
 			else if (tkCanXacThuc.xacthuc(tenTK, matKhauTK)) {
+				JOptionPane.showMessageDialog(contentPane, "Đăng nhập thành công!");
 				this.setVisible(false);
 				this.openQLHS();
 			} else {

@@ -37,17 +37,7 @@ public class Lop {
 	public void setNienKhoa(String nienKhoa) {
 		NienKhoa = nienKhoa;
 	}
-	// Truyền vào hsModel.getdshs()
-	public int getSiSo(ArrayList<HocSinh> dshs) {
-		int count = 0;
-		for (int i = 0; i < dshs.size(); i++) {
-			String malop_hs = dshs.get(i).getMaLop() != null ? dshs.get(i).getMaLop() : "";
-			if(malop_hs.equals(this.MaLop)) {
-				count++;
-			}
-		}
-		return count;
-	}
+	
 	@Override
 	public String toString() {
 		return "Lop [MaLop=" + MaLop + ", TenLop=" + TenLop + ", NienKhoa=" + NienKhoa + "]";
