@@ -22,6 +22,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.JPasswordField;
 import java.awt.Font;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
 
 public class QLDangNhap extends JFrame {
 
@@ -54,6 +55,8 @@ public class QLDangNhap extends JFrame {
 	 * Create the frame.
 	 */
 	public QLDangNhap() {
+		setTitle("Quản lý học sinh");
+		setIconImage(Toolkit.getDefaultToolkit().getImage("D:\\Java\\QLSV\\icon.jpg"));
 		setBackground(SystemColor.activeCaption);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(300, 200, 360, 425);

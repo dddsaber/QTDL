@@ -9,7 +9,7 @@
 	<artifactId>QLSV</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
-	<name>QLSV</name>
+	<name>Quản lý học sinh</name>
 	<!-- FIXME change it to the project's website -->
 	<url>http://www.example.com</url>
 
@@ -124,7 +124,35 @@
 					<artifactId>maven-project-info-reports-plugin</artifactId>
 					<version>3.0.0</version>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>3.2.0</version>
+					<executions>
+						<execution>
+							<id>copy-resources</id>
+							<phase>process-resources</phase>
+							<goals>
+								<goal>copy-resources</goal>
+							</goals>
+							<configuration>
+								<outputDirectory>
+									${project.build.directory}/classes</outputDirectory>
+								<resources>
+									<resource>
+										<directory>src/main/java</directory>
+										<filtering>true</filtering>
+										<includes>
+											<include>hibernate.cfg.xml</include>
+										</includes>
+									</resource>
+								</resources>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
 			</plugins>
 		</pluginManagement>
+
 	</build>
 </project>

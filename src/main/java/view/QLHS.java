@@ -77,6 +77,7 @@ import java.awt.Color;
 import java.awt.SystemColor;
 import javax.swing.UIManager;
 import javax.swing.JLayeredPane;
+import java.awt.Toolkit;
 
 public class QLHS extends JFrame {
 
@@ -166,6 +167,9 @@ public class QLHS extends JFrame {
 	 * Create the frame.
 	 */
 	public QLHS() {
+		setFont(new Font("Dialog", Font.BOLD, 15));
+		setTitle("Quản lý học sinh");
+		setIconImage(Toolkit.getDefaultToolkit().getImage("D:\\Java\\QLSV\\icon.jpg"));
 		this.gvModel = new GiaoVienModel();
 		this.diemModel = new DiemModel();
 		this.cnModel = new ChuNhiemModel();
