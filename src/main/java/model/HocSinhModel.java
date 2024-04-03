@@ -69,6 +69,9 @@ public class HocSinhModel {
 				result.add(hocSinh);
 				break;
 			}
+			if(!maHS.isEmpty() && !hocSinh.getMaHS().equals(maHS)) {
+				continue;
+			}
 			if(!hoTen.isEmpty() && !hocSinh.getHoTenHS().contains(hoTen)) {
 				continue;
 			}

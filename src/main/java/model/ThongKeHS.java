@@ -11,7 +11,7 @@ import dao.HocSinhDAO;
 import dao.ThongKeDAO;
 
 @Entity
-public class ThongKeHS {
+public class ThongKeHS{
 	@Id
 	private String maHS;
 	private String tenHS;
@@ -104,8 +104,6 @@ public class ThongKeHS {
 		return hocLuc;
 	}
 	
-	
-
 	
 //	public ThongKeHS(String maHS) {
 //		this.maHS = maHS;

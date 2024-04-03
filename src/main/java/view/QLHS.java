@@ -2,6 +2,7 @@ package view;
 
 import java.awt.EventQueue;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.io.FileOutputStream;
 import org.apache.poi.ss.usermodel.*;
@@ -2543,6 +2544,7 @@ public class QLHS extends JFrame {
 			}
 		}
 		ArrayList<ThongKeHS> dsThongKe = tkModel.getThongKeList();
+		
 		int endIndex = dsThongKe.size();
 		if (thuTu.equals("Tăng hạng")) {
 			for (int i = 0; i < endIndex; i++) {

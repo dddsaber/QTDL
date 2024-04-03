@@ -160,7 +160,8 @@ BEGIN
                     LEFT JOIN diem ON hocsinh.MaHS = diem.MaHS JOIN lop on hocsinh.malop = lop.malop
                     WHERE diem.mamonhoc like CONCAT('%', lop, '%') and lop.nienkhoa = nienkhoa
                     GROUP BY hocsinh.MaHS
-                    HAVING COUNT(diem.MaMonHoc) >= 3);
+                    HAVING COUNT(diem.MaMonHoc) >= 3)
+	ORDER BY tbMon DESC;
 END$$
 
 DELIMITER ;
