@@ -168,9 +168,9 @@ INSERT INTO MonHoc (MaMonHoc, TenMonHoc, Khoi) VALUES
 ('TOAN11', 'Toán 11', '11'),
 ('AV11', 'Ngoại Ngữ 11', '11'),
 ('VAN11', 'Ngữ Văn 11', '11'),
-('TOAN12', 'Toán 11', '12'),
-('VAN12', 'Ngữ Văn 11', '12'),
-('AV12', 'Ngoại Ngữ 11', '12');
+('TOAN12', 'Toán 12', '12'),
+('VAN12', 'Ngữ Văn 12', '12'),
+('AV12', 'Ngoại Ngữ 12', '12');
 
 -- Thêm 10 thể hiện cho bảng Diemtaikhoan
 INSERT INTO Diem (MaHS, MaMonHoc, DiemMieng, Diem15Phut, Diem1Tiet, DiemHocKy) VALUES
