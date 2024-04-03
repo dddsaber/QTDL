@@ -20,6 +20,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.JPasswordField;
+import java.awt.Font;
+import java.awt.SystemColor;
 
 public class QLDangNhap extends JFrame {
 
@@ -52,20 +54,24 @@ public class QLDangNhap extends JFrame {
 	 * Create the frame.
 	 */
 	public QLDangNhap() {
+		setBackground(SystemColor.activeCaption);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(300, 200, 360, 425);
 		contentPane = new JPanel();
+		contentPane.setBackground(SystemColor.activeCaption);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setBackground(SystemColor.activeCaption);
 		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		tabbedPane.setBounds(10, 11, 324, 364);
 		contentPane.add(tabbedPane);
 
 		JPanel panelDangNhap = new JPanel();
+		panelDangNhap.setBackground(SystemColor.activeCaption);
 		panelDangNhap.setToolTipText("Đăng nhập");
 		tabbedPane.addTab("Đăng nhập", null, panelDangNhap, null);
 		panelDangNhap.setLayout(null);
@@ -100,8 +106,9 @@ public class QLDangNhap extends JFrame {
 
 		panelDangNhap.add(btnDangNhap);
 
-		JLabel lblNewLabel = new JLabel("Welcome To This App");
-		lblNewLabel.setBounds(103, 63, 141, 50);
+		JLabel lblNewLabel = new JLabel("App Quản lý học sinh");
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblNewLabel.setBounds(88, 41, 164, 50);
 		panelDangNhap.add(lblNewLabel);
 
 		JPanel panelDangKy = new JPanel();
@@ -136,10 +143,6 @@ public class QLDangNhap extends JFrame {
 		});
 		panelDangKy.add(btnDangKy);
 
-		JLabel lblNewLabel_1 = new JLabel("Welcome To This App");
-		lblNewLabel_1.setBounds(104, 32, 141, 50);
-		panelDangKy.add(lblNewLabel_1);
-
 		JLabel lblMKNhapLai = new JLabel("Nhập lại mk");
 		lblMKNhapLai.setBounds(58, 202, 74, 36);
 		panelDangKy.add(lblMKNhapLai);
@@ -147,6 +150,11 @@ public class QLDangNhap extends JFrame {
 		passwordFieldDKNL = new JPasswordField();
 		passwordFieldDKNL.setBounds(142, 210, 111, 20);
 		panelDangKy.add(passwordFieldDKNL);
+		
+		JLabel lblNewLabel_1 = new JLabel("App Quản lý học sinh");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblNewLabel_1.setBounds(89, 40, 164, 50);
+		panelDangKy.add(lblNewLabel_1);
 
 		this.setVisible(true);
 	}

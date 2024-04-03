@@ -60,7 +60,7 @@
             <configuration>
               <transformers>
                 <transformer>
-                  <mainClass>QTDL.QLSV.App.java</mainClass>
+                  <mainClass>QTDL.QLSV.App</mainClass>
                 </transformer>
               </transformers>
             </configuration>

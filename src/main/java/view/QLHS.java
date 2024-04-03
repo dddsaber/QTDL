@@ -178,7 +178,7 @@ public class QLHS extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		contentPane = new JPanel();
-		contentPane.setBackground(new Color(224, 255, 255));
+		contentPane.setBackground(SystemColor.inactiveCaption);
 
 		getContentPane().add(contentPane);
 		contentPane.setLayout(null);
@@ -190,12 +190,12 @@ public class QLHS extends JFrame {
 		menuBar.setBounds(0, 0, 1084, 31);
 		contentPane.add(menuBar);
 
-		JMenu JMenuAccount = new JMenu("Tài khoản");
+		JMenu JMenuAccount = new JMenu("Account");
 		JMenuAccount.setBackground(new Color(128, 128, 128));
 		JMenuAccount.setForeground(new Color(0, 0, 128));
 		menuBar.add(JMenuAccount);
 
-		JMenu JMenuData = new JMenu("New menu");
+		JMenu JMenuData = new JMenu("Option");
 		JMenuData.setBackground(new Color(128, 128, 128));
 		JMenuData.setForeground(new Color(0, 0, 128));
 		menuBar.add(JMenuData);
@@ -247,7 +247,7 @@ public class QLHS extends JFrame {
 		 * 
 		 */
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
-		tabbedPane.setBackground(new Color(224, 255, 255));
+		tabbedPane.setBackground(SystemColor.activeCaption);
 		tabbedPane.setBounds(0, 30, 1084, 531);
 		contentPane.add(tabbedPane);
 
@@ -258,7 +258,7 @@ public class QLHS extends JFrame {
 		GiaoVienTabListener gvtl = new GiaoVienTabListener(this);
 
 		JPanel panelTeacher = new JPanel();
-		panelTeacher.setBackground(new Color(224, 255, 255));
+		panelTeacher.setBackground(SystemColor.inactiveCaption);
 		tabbedPane.addTab("Giáo viên", null, panelTeacher, null);
 		panelTeacher.setLayout(null);
 
@@ -473,7 +473,7 @@ public class QLHS extends JFrame {
 		ActionListener hstl = new HocSinhTabListener(this);
 
 		JPanel panelStudent = new JPanel();
-		panelStudent.setBackground(new Color(224, 255, 255));
+		panelStudent.setBackground(SystemColor.inactiveCaption);
 		tabbedPane.addTab("Học sinh", null, panelStudent, null);
 		panelStudent.setLayout(null);
 
@@ -669,7 +669,7 @@ public class QLHS extends JFrame {
 		ActionListener diemltn = new DiemTabListener(this);
 
 		JPanel panelScore = new JPanel();
-		panelScore.setBackground(new Color(224, 255, 255));
+		panelScore.setBackground(SystemColor.inactiveCaption);
 		tabbedPane.addTab("Quản lý điểm", null, panelScore, null);
 		panelScore.setLayout(null);
 
@@ -807,7 +807,7 @@ public class QLHS extends JFrame {
 		ActionListener plltn = new LopListener(this);
 
 		JPanel panelClassroom = new JPanel();
-		panelClassroom.setBackground(new Color(224, 255, 255));
+		panelClassroom.setBackground(SystemColor.inactiveCaption);
 		tabbedPane.addTab("Quản lý phòng học", null, panelClassroom, null);
 		panelClassroom.setLayout(null);
 
@@ -983,7 +983,7 @@ public class QLHS extends JFrame {
 		 */
 		ActionListener lhltn = new LopHocListener(this);
 		JPanel panelLopHoc = new JPanel();
-		panelLopHoc.setBackground(new Color(224, 255, 255));
+		panelLopHoc.setBackground(SystemColor.inactiveCaption);
 		tabbedPane.addTab("Lớp học", null, panelLopHoc, null);
 		tabbedPane.setForegroundAt(4, new Color(0, 0, 0));
 		panelLopHoc.setLayout(null);
@@ -1119,7 +1119,7 @@ public class QLHS extends JFrame {
 		ThongKeTabListener tktl = new ThongKeTabListener(this);
 
 		JPanel panelStatistic = new JPanel();
-		panelStatistic.setBackground(new Color(224, 255, 255));
+		panelStatistic.setBackground(SystemColor.inactiveCaption);
 		tabbedPane.addTab("Thống kê", null, panelStatistic, null);
 		panelStatistic.setLayout(null);
 
