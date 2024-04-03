@@ -115,6 +115,7 @@ public class QLDangNhap extends JFrame {
 		panelDangNhap.add(lblNewLabel);
 
 		JPanel panelDangKy = new JPanel();
+		panelDangKy.setBackground(SystemColor.activeCaption);
 		tabbedPane.addTab("Đăng ký", null, panelDangKy, null);
 		panelDangKy.setLayout(null);
 
