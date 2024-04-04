@@ -1604,6 +1604,7 @@ public class QLHS extends JFrame {
 		for (int i = 0; i < soPhanTu; i++) {
 			this.cnModel.getChuNhiemDao().saveOrUpdate(this.cnModel.getDsChuNhiem().get(i));
 		}
+		this.cnModel.setDsChuNhiem((ArrayList<ChuNhiem>) this.cnModel.getChuNhiemDao().selectAll());
 	}
 
 	public void layDSChuNhiem() {
@@ -2149,6 +2150,7 @@ public class QLHS extends JFrame {
 					this.plModel.update(pl);
 				}
 		}
+		this.plModel.setDsPhongLop((ArrayList<PhongLop>) this.plModel.getPhonglopDao().selectAll());
 		huytimPL();
 	}
 
